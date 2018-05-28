@@ -79,8 +79,8 @@ class NavDrawer extends React.Component {
         let name = this.props.username;
         
         this.state = {
-            currentTab: "Workspace",                                          //marks which drawer item to highlight based on active scene
-            userName: name.charAt(0).toUpperCase() + name.slice(1)       //user's name to be displayed on avatar
+            currentTab: "Workspace",                                                   //marks which drawer item to highlight based on active scene
+            userName: name ? name.charAt(0).toUpperCase() + name.slice(1) : null       //user's name to be displayed on avatar
         }
 
         this.goto = this.goto.bind(this);
