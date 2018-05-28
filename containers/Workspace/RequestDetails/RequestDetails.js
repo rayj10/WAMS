@@ -89,7 +89,7 @@ class RequestDetails extends React.Component {
                     { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
                     { text: 'Pick a Recipient', onPress: () => this.setState({ forwardRequest: true }) } //reopen modal
                 ])
-        }, 1000);
+        }, 1200);
 
         this.setState({ currentForwardItem: null }); //un-highlight the last choice
     }

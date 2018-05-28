@@ -5,12 +5,46 @@ import { Actions } from 'react-native-router-flux';
 
 import Scanner from '../../components/Scanner';
 import styles from './styles';
+import { color } from '../../theme/baseTheme'
 
 class QRScanner extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      option: null
+    }
+  }
+
   render() {
-    return (
-        <Scanner/>
+    let option = this.state.option;
+    let render = (
+      <View style={styles.container}>
+        <View style={styles.button}>
+          <Button
+            raised
+            borderRadius={4}
+            title={'Scan Link'}
+            backgroundColor={color.grey}
+            textStyle={styles.buttonText}
+            onPress={() => this.setState({ option: 'link' })} />
+        </View>
+        <View style={styles.button}>
+          <Button
+            raised
+            borderRadius={4}
+            title={'Scan Information'}
+            backgroundColor={color.grey}
+            textStyle={styles.buttonText}
+            onPress={() => this.setState({ option: 'information' })} />
+        </View>
+      </View>
     );
+
+    if (option) {
+      render = <Scanner type={option} />
+    }
+
+    return render;
   }
 }
 

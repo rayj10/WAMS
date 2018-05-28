@@ -11,11 +11,15 @@ import { BarCodeScanner, Permissions, Camera } from 'expo';
 import { windowWidth, windowHeight } from '../theme/baseTheme';
 
 export default class Scanner extends React.Component {
-    state = {
-        hasCameraPermission: null,
-        lastScan: null,
-    };
+    constructor(props) {
+        super(props);
 
+        this.state = {
+            hasCameraPermission: null,
+            lastScan: null,
+            type: this.props.type
+        };
+    }
     componentDidMount() {
         this._requestCameraPermission();
     }
@@ -59,12 +63,20 @@ export default class Scanner extends React.Component {
                 case BarCodeScanner.Constants.BarCodeType.upc_ean: type = "Upc_ean"; break;
             }
 
-            Alert.alert(
-                'A ' + type + ' has been found',
-                '\nContent:\n' + data,
-                [{ text: 'Open URL', onPress: () => Linking.openURL(data) },
-                { text: 'Cancel', onPress: () => { } }]
-            );
+            if (this.state.type === 'information'){
+                Alert.alert(
+                    'A ' + type + ' has been found',
+                    '\nContent:\n' + data
+                );
+            }
+            else{
+                Alert.alert(
+                    'A ' + type + ' has been found',
+                    '\nContent:\n' + data,
+                    [{ text: 'Open URL', onPress: () => Linking.openURL(data) },
+                    { text: 'Cancel', onPress: () => { } }]
+                );
+            }
         }
     }
 

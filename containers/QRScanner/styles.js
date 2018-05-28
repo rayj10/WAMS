@@ -5,11 +5,16 @@ const styles = StyleSheet.create({
   container:{
     flex:1
   },
-  content:{
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center'
-  }
+
+  button:{
+    justifyContent:'center',
+    marginTop: 40
+  },
+
+  buttonText: {
+    fontSize: fontSize.regular + 2,
+    fontFamily: fontFamily.medium
+  },
 });
 
 export default styles;
