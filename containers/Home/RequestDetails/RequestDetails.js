@@ -254,7 +254,7 @@ class RequestDetails extends React.Component {
                             onPress={this.onDecline} />
                     </View>
                 </View>);
-            forwardIcon = (<IconWrapper name='share-square' type='font-awesome' color='white' size={28} onPress={() => this.setState({ forwardRequest: true })} />);
+            forwardIcon = (<IconWrapper name='paper-plane' type='font-awesome' style={{marginRight:5}} color='white' size={28} onPress={() => this.setState({ forwardRequest: true })} />);
             forwardModal = (
                 <ForwardModal
                     visible={this.state.forwardRequest}

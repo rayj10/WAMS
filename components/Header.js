@@ -1,7 +1,7 @@
 import React from 'react';
 import { Header } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import IconWrapper from './IconWrapper';
 import { color, fontSize, fontFamily } from '../theme/baseTheme';
@@ -11,8 +11,7 @@ const styles = StyleSheet.create({
         fontSize: fontSize.large+2,
         fontFamily: fontFamily.medium,
         color: color.white,
-        padding: 10,
-        marginRight: 30 //to center the title, because there's no right component
+        padding: 10
     },
 
     headerOuterContainer: {
@@ -33,6 +32,7 @@ class PageHeader extends React.Component {
                 <Header
                     leftComponent={<IconWrapper name='menu' color='white' size={33} onPress={() => Actions.drawerOpen()} />}
                     centerComponent={{ text: this.props.title, style: styles.headerText }}
+                    rightComponent={<View style={{width:40}}/>}
                     outerContainerStyles={styles.headerOuterContainer}
                 />
         )

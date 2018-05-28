@@ -6,7 +6,7 @@ import { View, TouchableOpacity } from 'react-native';
 const IconWrapper = (props) => {
     return (
         <TouchableOpacity onPress={props.onPress}>
-            <View style={{ padding: 10 }}>
+            <View style={[{ padding: 10 }, props.style]}>
                 <Icon name={props.name} type={props.type} color={props.color} size={props.size} />
             </View>
         </TouchableOpacity>

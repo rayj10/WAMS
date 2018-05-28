@@ -62,7 +62,7 @@ export default class extends React.Component {
                     </Stack>
                     <Stack key="Main" initial={this.state.isLoggedIn}>
                         <Scene drawer key="NavDrawer" hideNavBar contentComponent={NavDrawer} type={ActionConst.REPLACE} panHandlers={null}>
-                            <Scene key="homeTab" navBar={() => <PageHeader title='Home' />} drawerLockMode={'locked-closed'}>
+                            <Scene key="homeTab" navBar={() => <PageHeader title='Workspace' />} drawerLockMode={'locked-closed'}>
                                 <Scene tabs={true} tabBarComponent={ScrollableTabBar} tabBarPosition='top' lazy={true} animationEnabled={false} swipeEnabled={false}>
                                     <Scene key="Approval" hideNavBar component={Approval} title={"Approval"}/>
                                     <Scene key="DOCustomer" hideNavBar component={DOCustomer} title={"DOCustomer"}/>

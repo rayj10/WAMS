@@ -19,8 +19,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     image: {
-        height: normalize(41),
-        width: normalize(41),
+        height: normalize(40),
+        width: normalize(40),
         resizeMode: 'contain'
     },
     textStyle: {

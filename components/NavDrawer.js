@@ -176,25 +176,25 @@ class NavDrawer extends React.Component {
                     <View style={styles.itemContainer}>
                         <TouchableOpacity onPress={() => { this.goto('Home') }}>
                             <View style={[styles.navItem, this.state.currentTab === 'Home' ? styles.activeItem : {}]}>
-                                <Icon iconStyle={styles.icon} name='home' type='material-community' color={color.grey} size={24} />
-                                <Text style={styles.navText}>Home</Text>
+                                <Icon iconStyle={styles.icon} name='briefcase' type='font-awesome' color={color.grey} size={24} />
+                                <Text style={styles.navText}>Workspace</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => { this.goto('QRScanner') }}>
                             <View style={[styles.navItem, this.state.currentTab === 'QRScanner' ? styles.activeItem : {}]}>
-                                <Icon iconStyle={styles.icon} name='qrcode-scan' type='material-community' color={color.grey} size={24} />
+                                <Icon iconStyle={styles.icon} name='qrcode' type='material-community' color={color.grey} size={24} />
                                 <Text style={styles.navText}>QR Scanner</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => { this.goto('Setting') }}>
                             <View style={[styles.navItem, this.state.currentTab === 'Setting' ? styles.activeItem : {}]}>
-                                <Icon iconStyle={styles.icon} name='settings' type='material-community' color={color.grey} size={24} />
+                                <Icon iconStyle={styles.icon} name='gears' type='font-awesome' color={color.grey} size={24} />
                                 <Text style={styles.navText}>Setting</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => { this.goto('Help') }}>
                             <View style={[styles.navItem, this.state.currentTab === 'Help' ? styles.activeItem : {}]}>
-                                <Icon iconStyle={styles.icon} name='help-circle-outline' type='material-community' color={color.grey} size={24} />
+                                <Icon iconStyle={styles.icon} name='help-circle' type='material-community' color={color.grey} size={24} />
                                 <Text style={styles.navText}>Help</Text>
                             </View>
                         </TouchableOpacity>
