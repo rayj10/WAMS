@@ -4,12 +4,12 @@ import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
-    View, Alert, Text, 
+    View, Alert, Text,
     ScrollView, TouchableOpacity, ActivityIndicator
 } from 'react-native';
 
 import styles from "./styles";
-import * as homeAction from '../../../actions/homeActions';
+import * as workspaceAction from '../../../actions/workspaceActions';
 import ForwardModal from '../../../components/ForwardModal';
 import IconWrapper from '../../../components/IconWrapper';
 import { color } from '../../../theme/baseTheme';
@@ -17,14 +17,14 @@ import { color } from '../../../theme/baseTheme';
 //Maps reducer's states to RequestDetails props
 export const mapStateToProps = state => ({
     token: state.authReducer.token,
-    isDetailsReceived: state.homeReducer.isDetailsReceived,
-    requestHead: state.homeReducer.requestHead,
-    requestDetails: state.homeReducer.requestDetails
+    isDetailsReceived: state.workspaceReducer.isDetailsReceived,
+    requestHead: state.workspaceReducer.requestHead,
+    requestDetails: state.workspaceReducer.requestDetails
 });
 
 //Maps actions to RequestDetails props
 export const mapDispatchToProps = (dispatch) => ({
-    actionsHome: bindActionCreators(homeAction, dispatch),
+    actionsWorkspace: bindActionCreators(workspaceAction, dispatch),
 });
 
 class RequestDetails extends React.Component {
@@ -42,7 +42,7 @@ class RequestDetails extends React.Component {
     }
 
     componentDidMount() {
-        this.props.actionsHome.getRequestDetails(this.props.request, this.props.token, this.onFetchFinish);
+        this.props.actionsWorkspace.getRequestDetails(this.props.request, this.props.token, this.onFetchFinish);
     }
 
     /**
@@ -51,7 +51,7 @@ class RequestDetails extends React.Component {
      */
     onFetchFinish(status) {
         if (status === 'Authentication Denied')
-            Actions.reset('Main')   //go back to home and home will logout
+            Actions.reset('Main')   //go back to workspace and workspace will logout
         else
             this.setState({ fetchStatus: status })
     }
@@ -78,16 +78,18 @@ class RequestDetails extends React.Component {
         this.setState({ forwardRequest: false });   //close modal
         let recipient = this.state.currentForwardItem;
 
-        if (recipient !== null)     //Check if recipient has been picked before pressing forward
-            Alert.alert('Forward Confirmation', 'You are about to forward to ' + recipient + '\n\nProceed?', [
-                { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-                { text: 'Proceed', onPress: () => {/*this.props.actionsHome.forwardRequest(currentForwardItem)*/ } }
-            ]);
-        else
-            Alert.alert('Oops!', 'You must pick a recipient before forwarding', [
-                { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-                { text: 'Pick a Recipient', onPress: () => this.setState({ forwardRequest: true }) } //reopen modal
-            ])
+        setTimeout(() => {
+            if (recipient !== null)     //Check if recipient has been picked before pressing forward
+                Alert.alert('Forward Confirmation', 'You are about to forward to ' + recipient + '\n\nProceed?', [
+                    { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+                    { text: 'Proceed', onPress: () => {/*this.props.actionsWorkspace.forwardRequest(currentForwardItem)*/ } }
+                ]);
+            else
+                Alert.alert('Oops!', 'You must pick a recipient before forwarding', [
+                    { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+                    { text: 'Pick a Recipient', onPress: () => this.setState({ forwardRequest: true }) } //reopen modal
+                ])
+        }, 1000);
 
         this.setState({ currentForwardItem: null }); //un-highlight the last choice
     }
@@ -124,7 +126,7 @@ class RequestDetails extends React.Component {
 
         if (status !== null) {
             if (this.props.isDetailsReceived) {
-                let request = this.props.requestHead; 
+                let request = this.props.requestHead;
                 let details = this.props.requestDetails;
                 content = (
                     <ScrollView>
@@ -254,13 +256,13 @@ class RequestDetails extends React.Component {
                             onPress={this.onDecline} />
                     </View>
                 </View>);
-            forwardIcon = (<IconWrapper name='paper-plane' type='font-awesome' style={{marginRight:5}} color='white' size={28} onPress={() => this.setState({ forwardRequest: true })} />);
+            forwardIcon = (<IconWrapper name='paper-plane' type='font-awesome' style={{ marginRight: 5 }} color='white' size={28} onPress={() => this.setState({ forwardRequest: true })} />);
             forwardModal = (
                 <ForwardModal
                     visible={this.state.forwardRequest}
                     forwardList={() => this.getForwardList()}
-                    close={() => this.setState({ forwardRequest: false })}
-                    forward={() => this.onForward()}/>);
+                    close={() => this.setState({ forwardRequest: false, currentForwardItem: null })}
+                    forward={() => this.onForward()} />);
         }
 
         return (

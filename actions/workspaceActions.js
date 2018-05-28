@@ -1,6 +1,6 @@
 import { Alert } from 'react-native';
 
-import * as types from './actionTypes/homeTypes';
+import * as types from './actionTypes/workspaceTypes';
 import { fetchAPI } from '../utils/fetch';
 
 /**

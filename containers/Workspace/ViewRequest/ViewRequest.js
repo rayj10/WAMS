@@ -6,20 +6,20 @@ import { View, Text, Alert, ScrollView, TouchableOpacity, ActivityIndicator } fr
 import { Pages } from 'react-native-pages';
 
 import styles from "./styles";
-import * as homeAction from '../../../actions/homeActions';
+import * as workspaceAction from '../../../actions/workspaceActions';
 import * as authAction from '../../../actions/authActions';
 import { color } from '../../../theme/baseTheme';
 
 //Maps store's state to ViewRequest's props
 export const mapStateToProps = state => ({
     token: state.authReducer.token,
-    requestList: state.homeReducer.requestList,
-    isRequestListReceived: state.homeReducer.isRequestListReceived,
+    requestList: state.workspaceReducer.requestList,
+    isRequestListReceived: state.workspaceReducer.isRequestListReceived,
 });
 
 //Maps imported actions to ViewRequest's props
 export const mapDispatchToProps = (dispatch) => ({
-    actionsHome: bindActionCreators(homeAction, dispatch),
+    actionsWorkspace: bindActionCreators(workspaceAction, dispatch),
     actionsAuth: bindActionCreators(authAction, dispatch)
 });
 
@@ -37,7 +37,7 @@ class ViewRequest extends React.Component {
 
     //fetch data to be displayed as soon as the component is mounted
     componentDidMount() {
-        this.props.actionsHome.getRequestList(this.props.token, this.onFetchFinish);
+        this.props.actionsWorkspace.getRequestList(this.props.token, this.onFetchFinish);
     }
 
     /**
@@ -48,7 +48,7 @@ class ViewRequest extends React.Component {
     onFetchFinish(listName, status) {
         if (status === 'Authentication Denied') {
             Alert.alert(status, 'Your session may have expired please re-enter your login credentials')
-            this.props.actionsAuth.signOut(this.props.actionsHome.successSignOut.bind(this));
+            this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));
             Actions.reset("Auth");
         }
         else {

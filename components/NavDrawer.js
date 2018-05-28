@@ -10,7 +10,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import * as authAction from '../actions/authActions';
-import * as homeAction from '../actions/homeActions';
+import * as workspaceAction from '../actions/workspaceActions';
 import { color, fontFamily, fontSize } from '../theme/baseTheme';
 
 //Maps reducer's state to NavDrawer's props
@@ -20,7 +20,7 @@ export const mapStateToProps = state => ({
 
 //Maps actions to NavDrawer's props
 export const mapDispatchToProps = (dispatch) => ({
-    actionsHome: bindActionCreators(homeAction, dispatch),
+    actionsWorkspace: bindActionCreators(workspaceAction, dispatch),
     actionsAuth: bindActionCreators(authAction, dispatch)
 });
 
@@ -79,7 +79,7 @@ class NavDrawer extends React.Component {
         let name = this.props.username;
         
         this.state = {
-            currentTab: "Home",                                          //marks which drawer item to highlight based on active scene
+            currentTab: "Workspace",                                          //marks which drawer item to highlight based on active scene
             userName: name.charAt(0).toUpperCase() + name.slice(1)       //user's name to be displayed on avatar
         }
 
@@ -100,11 +100,11 @@ class NavDrawer extends React.Component {
     handleBackButton() {
         if (Actions.currentScene === '_Approval')
             this.onSignOut()
-        else if (this.state.currentTab !== 'Home')  //in another tab
-            this.goto('Home');
+        else if (this.state.currentTab !== 'Workspace')  //in another tab
+            this.goto('Workspace');
         else if (Actions.currentScene === 'Login')
             BackHandler.exitApp();
-        else                                        //in home tab, siblings of Approval scene
+        else                                        //in workspace tab, siblings of Approval scene
             Actions.pop();
         return true;
     }
@@ -123,17 +123,17 @@ class NavDrawer extends React.Component {
         /*workaround because of problems with listeners not stacking as expected, new listener is pushed onto
         listener stack when autologin is done, Actions.pop() used instead of the defined BackHandler, hence, we
         have to set state manually in case of mismatch*/
-        if (this.state.currentTab !== 'Home' && Actions.currentScene === '_Approval')
-            this.setState({ currentTab: 'Home' })
+        if (this.state.currentTab !== 'Workspace' && Actions.currentScene === '_Approval')
+            this.setState({ currentTab: 'Workspace' })
     }
 
     /**
      * Success case callback function
-     * Call home's successSignOut() in actions.js to reset home reducer's state
+     * Call workspace's successSignOut() in actions.js to reset workspace reducer's state
      * and go back to login screen
      */
     onSuccess() {
-        this.props.actionsHome.successSignOut();
+        this.props.actionsWorkspace.successSignOut();
         Actions.reset("Auth");
     }
 
@@ -158,7 +158,7 @@ class NavDrawer extends React.Component {
         this.setState({ currentTab: route })    //change highlighted active tab
 
         switch (route){
-            case 'Home': Actions.homeTab(); break; 
+            case 'Workspace': Actions.workspaceTab(); break; 
             case 'Help': Actions.helpTab(); break;
             case 'Setting': Actions.settingTab(); break;
             case 'QRScanner': Actions.QRTab(); break;
@@ -174,8 +174,8 @@ class NavDrawer extends React.Component {
                         <Text style={styles.headerText}>{this.state.userName}</Text>
                     </View>
                     <View style={styles.itemContainer}>
-                        <TouchableOpacity onPress={() => { this.goto('Home') }}>
-                            <View style={[styles.navItem, this.state.currentTab === 'Home' ? styles.activeItem : {}]}>
+                        <TouchableOpacity onPress={() => { this.goto('Workspace') }}>
+                            <View style={[styles.navItem, this.state.currentTab === 'Workspace' ? styles.activeItem : {}]}>
                                 <Icon iconStyle={styles.icon} name='briefcase' type='font-awesome' color={color.grey} size={24} />
                                 <Text style={styles.navText}>Workspace</Text>
                             </View>

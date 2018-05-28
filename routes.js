@@ -7,16 +7,16 @@ import Splash from './components/Splash';
 import NavDrawer from './components/NavDrawer';
 import PageHeader from './components/Header';
 import ScrollableTabBar from './components/ScrollableTabBar';
-import QRScanner from './components/QRScanner';
 
 //Import Containers
 import Login from './containers/Login';
-import Approval from './containers/Home/Approval';
-import RequestDetails from './containers/Home/RequestDetails';
-import DOCustomer from './containers/Home/DOCustomer';
-import MyConfirm from './containers/Home/MyConfirm';
-import MyRequest from './containers/Home/MyRequest';
-import ViewRequest from './containers/Home/ViewRequest';
+import Approval from './containers/Workspace/Approval';
+import RequestDetails from './containers/Workspace/RequestDetails';
+import DOCustomer from './containers/Workspace/DOCustomer';
+import MyConfirm from './containers/Workspace/MyConfirm';
+import MyRequest from './containers/Workspace/MyRequest';
+import ViewRequest from './containers/Workspace/ViewRequest';
+import QRScanner from './containers/QRScanner';
 import Help from './containers/Help';
 import Setting from './containers/Setting';
 
@@ -62,7 +62,7 @@ export default class extends React.Component {
                     </Stack>
                     <Stack key="Main" initial={this.state.isLoggedIn}>
                         <Scene drawer key="NavDrawer" hideNavBar contentComponent={NavDrawer} type={ActionConst.REPLACE} panHandlers={null}>
-                            <Scene key="homeTab" navBar={() => <PageHeader title='Workspace' />} drawerLockMode={'locked-closed'}>
+                            <Scene key="workspaceTab" navBar={() => <PageHeader title='Workspace' />} drawerLockMode={'locked-closed'}>
                                 <Scene tabs={true} tabBarComponent={ScrollableTabBar} tabBarPosition='top' lazy={true} animationEnabled={false} swipeEnabled={false}>
                                     <Scene key="Approval" hideNavBar component={Approval} title={"Approval"}/>
                                     <Scene key="DOCustomer" hideNavBar component={DOCustomer} title={"DOCustomer"}/>

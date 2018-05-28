@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     },
 
     containerView:{
-        marginVertical: padding * 3,
+        marginVertical: 24,
         width: windowWidth - 40
     },
 
@@ -57,7 +57,6 @@ const styles = StyleSheet.create({
     forgotText:{
         textAlign:"center",
         color:color.black,
-        marginBottom: padding,
         fontSize: fontSize.regular,
         fontFamily: fontFamily.medium,
     }

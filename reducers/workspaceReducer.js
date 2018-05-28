@@ -1,4 +1,4 @@
-import * as t from '../actions/actionTypes/homeTypes';
+import * as t from '../actions/actionTypes/workspaceTypes';
 
 let initialState = { isRequestListReceived: false, isDetailsReceived: false, requestList: {}, requestHead: {}, requestDetails: {} };
 
@@ -7,7 +7,7 @@ let initialState = { isRequestListReceived: false, isDetailsReceived: false, req
  * @param {Object} state: initial/current state of the reducer 
  * @param {Object} action: simple object containing actionType and update on states
  */
-export default function homeReducer(state = initialState, action)
+export default function workspaceReducer(state = initialState, action)
 {
     switch (action.type) {
         case t.RECEIVE_REQUEST_LIST:
