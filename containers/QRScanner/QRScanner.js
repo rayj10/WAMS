@@ -19,23 +19,28 @@ class QRScanner extends React.Component {
     let option = this.state.option;
     let render = (
       <View style={styles.container}>
-        <View style={styles.button}>
-          <Button
-            raised
-            borderRadius={4}
-            title={'Scan Link'}
-            backgroundColor={color.grey}
-            textStyle={styles.buttonText}
-            onPress={() => this.setState({ option: 'link' })} />
-        </View>
-        <View style={styles.button}>
-          <Button
-            raised
-            borderRadius={4}
-            title={'Scan Information'}
-            backgroundColor={color.grey}
-            textStyle={styles.buttonText}
-            onPress={() => this.setState({ option: 'information' })} />
+        <Text style={styles.subheader}>
+          What would you like to scan?
+        </Text>
+        <View style={styles.buttonContainer}>
+          <View style={styles.button}>
+            <Button
+              raised
+              borderRadius={6}
+              title={'Scan Link'}
+              backgroundColor={color.blue}
+              textStyle={styles.buttonText}
+              onPress={() => this.setState({ option: 'link' })} />
+          </View>
+          <View style={styles.button}>
+            <Button
+              raised
+              borderRadius={6}
+              title={'Scan Information'}
+              backgroundColor={color.blue}
+              textStyle={styles.buttonText}
+              onPress={() => this.setState({ option: 'information' })} />
+          </View>
         </View>
       </View>
     );

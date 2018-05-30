@@ -1,5 +1,19 @@
 {
   "expo": {
-    "sdkVersion": "27.0.0"
+    "sdkVersion": "27.0.0",
+    "name": "WAMS",
+    "description": "This is a test publish",
+    "slug": "WAMS",
+    "privacy": "public",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.CBN.WAMS"
+    },
+    "android": {
+      "package": "com.CBN.WAMS"
+    }
   }
 }
