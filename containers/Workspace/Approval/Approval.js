@@ -29,7 +29,8 @@ class Approval extends React.Component {
         this.state = {
             request: null,
             PO: 'Access Denied',        //needs to be nulled
-            transfer: 'Access Denied'   //needs to be nulled
+            transfer: 'Access Denied',   //needs to be nulled
+            isMounted: false
         };
 
         this.onFetchFinish = this.onFetchFinish.bind(this);
@@ -37,7 +38,7 @@ class Approval extends React.Component {
 
     //fetch data to be displayed as soon as the component is mounted
     componentDidMount() {
-        this.isMounted = true;  
+        this.setState({ isMounted : true });
         this.props.actionsWorkspace.getRequestList(this.props.token, this.onFetchFinish);
     }
 
@@ -52,7 +53,7 @@ class Approval extends React.Component {
             this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));
             Actions.reset("Auth");
         }
-        else if (this.isMounted){
+        else if (this.state.isMounted){
             if (listName = 'Requests')
                 this.setState({ request: status })
             else if (listName = 'PO')
@@ -64,7 +65,7 @@ class Approval extends React.Component {
 
     componentWillUnmount(){
         //To make sure setState is not called when component is unmounted before fetch finished
-        this.isMounted = false;
+        this.setState({ isMounted : false });
     }
 
     /**
