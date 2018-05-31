@@ -7,7 +7,7 @@ import { color, fontFamily, fontSize, normalize } from '../theme/baseTheme';
 const styles = StyleSheet.create({
     container: {
         height: normalize(60),
-        backgroundColor: color.dark_blue
+        backgroundColor: color.blue
     },
     overlay: {
         backgroundColor: 'rgba(0,102,178,0.05)'

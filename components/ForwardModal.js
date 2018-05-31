@@ -96,7 +96,7 @@ const ForwardModal = (props) => {
                         <View style={styles.button}>
                             <Button title="Forward"
                                 textStyle={styles.buttonText}
-                                backgroundColor={color.blue}
+                                backgroundColor={color.light_blue}
                                 onPress={props.forward}
                                 borderRadius={8} />
                         </View>

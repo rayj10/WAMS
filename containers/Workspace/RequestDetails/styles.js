@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
 
   headerOuterContainer: {
-    backgroundColor: color.dark_blue,
+    backgroundColor: color.blue,
     height:75,
     padding:0,
     borderBottomWidth: 0,

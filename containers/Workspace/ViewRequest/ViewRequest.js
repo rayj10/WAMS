@@ -37,6 +37,7 @@ class ViewRequest extends React.Component {
 
     //fetch data to be displayed as soon as the component is mounted
     componentDidMount() {
+        this.mounted = true;
         this.props.actionsWorkspace.getRequestList(this.props.token, this.onFetchFinish);
     }
 
@@ -51,7 +52,7 @@ class ViewRequest extends React.Component {
             this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));
             Actions.reset("Auth");
         }
-        else {
+        else if (this.mounted) {
             if (listName = 'Requests')
                 this.setState({ request: status })
             else if (listName = 'PO')
@@ -59,6 +60,11 @@ class ViewRequest extends React.Component {
             else if (listName = 'Transfers')
                 this.setState({ transfer: status })
         }
+    }
+    
+    componentWillUnmount(){
+        //To make sure setState is not called when component is unmounted before fetch finished
+        this.mounted = false;
     }
 
     /**

@@ -28,7 +28,7 @@ class QRScanner extends React.Component {
               raised
               borderRadius={6}
               title={'Scan Link'}
-              backgroundColor={color.blue}
+              backgroundColor={color.light_blue}
               textStyle={styles.buttonText}
               onPress={() => this.setState({ option: 'link' })} />
           </View>
@@ -37,7 +37,7 @@ class QRScanner extends React.Component {
               raised
               borderRadius={6}
               title={'Scan Information'}
-              backgroundColor={color.blue}
+              backgroundColor={color.light_blue}
               textStyle={styles.buttonText}
               onPress={() => this.setState({ option: 'information' })} />
           </View>

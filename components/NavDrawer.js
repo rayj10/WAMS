@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     },
     button: {
         marginTop: 15,
-        backgroundColor: color.blue,
+        backgroundColor: color.light_blue,
         borderRadius: 4
     }
 });

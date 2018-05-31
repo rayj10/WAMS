@@ -93,7 +93,6 @@ export default class Scanner extends React.Component {
                                 onBarCodeRead={this.onSuccessRead.bind(this)}
                                 style={styles.scanArea}
                                 autoFocus={Camera.Constants.AutoFocus.on}
-                                focusDepth={1}
                             >
                                 <View style={styles.layerTop} />
                                 <View style={styles.layerCenter}>
