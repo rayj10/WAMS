@@ -68,6 +68,15 @@ class Approval extends React.Component {
         this.mounted = false;
     }
 
+    filterList(list) {
+        return list.map(item => {
+            if (item["StatusName"] === 'Open')
+                return item;
+            else
+                return null;
+        });
+    }
+
     /**
     * Page Template to render information based on pageName and availability of data
     * @param {String} pageName: Page to be rendered  
@@ -75,19 +84,19 @@ class Approval extends React.Component {
     renderPage(pageName) {
         if (pageName === 'Requests') {
             if (this.props.isRequestListReceived)
-                return <SummaryListPage title={pageName} status={this.state.request} list={this.props.requestList.data} caller='Approval' />
+                return <SummaryListPage title={pageName} status={this.state.request} list={this.filterList(this.props.requestList.data)} caller='Approval' />
             else
                 return <SummaryListPage title={pageName} status={this.state.request} list={null} caller='Approval' />
         }
         else if (pageName === 'PO') {
             if (false) //this.props.isPOListReceived
-                return <SummaryListPage title={pageName} status={this.state.PO} list={this.props.requestList.data} caller='Approval' />
+                return <SummaryListPage title={pageName} status={this.state.PO} list={this.filterList(this.props.requestList.data)} caller='Approval' />
             else
                 return <SummaryListPage title={pageName} status={this.state.PO} list={null} caller='Approval' />
         }
         else if (pageName === 'Transfers') {
             if (false) //this.props.isTransferListReceived
-                return <SummaryListPage title={pageName} status={this.state.transfer} list={this.props.requestList.data} caller='Approval' />
+                return <SummaryListPage title={pageName} status={this.state.transfer} list={this.filterList(this.props.requestList.data)} caller='Approval' />
             else
                 return <SummaryListPage title={pageName} status={this.state.transfer} list={null} caller='Approval' />
         }

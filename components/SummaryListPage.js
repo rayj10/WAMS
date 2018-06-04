@@ -53,30 +53,16 @@ class SummaryListPage extends React.Component {
 
     /**
      * Render out clickable summary (header) panels
-     * @param {Array} headers: list of header information to be extracted and rendered
+     * @param {Array} headers: list of header information to be rendered
      */
     renderSummary(headers) {
-        return headers.map((item, key) => {
-            if (this.props.caller === 'Approval') {
-                if (item["StatusName"] === 'Open') {
-                    return (
-                        <TouchableOpacity onPress={() => Actions.RequestDetails({ request: item, caller: this.props.caller })} key={key}>
-                            <View style={styles.dataPanel}>
-                                {this.buildPanel(item)}
-                            </View>
-                        </TouchableOpacity>);
-                }
-                return null;
-            }
-            else {
-                return (
-                    <TouchableOpacity onPress={() => Actions.RequestDetails({ request: item, caller: this.props.caller })} key={key}>
-                        <View style={styles.dataPanel}>
-                            {this.buildPanel(item)}
-                        </View>
-                    </TouchableOpacity>);
-            }
-        });
+        return headers.map((item, key) =>
+            (<TouchableOpacity onPress={() => Actions.RequestDetails({ request: item, caller: this.props.caller })} key={key}>
+                <View style={styles.dataPanel}>
+                    {this.buildPanel(item)}
+                </View>
+            </TouchableOpacity>)
+        );
     }
 
     /**
