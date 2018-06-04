@@ -2,47 +2,47 @@ import { StyleSheet } from 'react-native';
 import { padding, color, fontSize, fontFamily, windowWidth, normalize } from '../../../theme/baseTheme';
 
 const styles = StyleSheet.create({
-  container:{
+  container: {
     flex: 1
   },
 
-  accordionContainer:{
-    marginBottom: 10,
-    marginHorizontal: 10
+  accordionContainer: {
+    marginBottom: normalize(10),
+    marginHorizontal: normalize(10)
   },
 
-  headerContainer:{
+  headerContainer: {
     borderBottomWidth: 2,
     borderColor: color.blue,
-    marginHorizontal: 10,
-    marginVertical: 10
+    marginHorizontal: normalize(10),
+    marginVertical: normalize(10)
   },
 
-  headerText:{
+  headerText: {
     fontFamily: fontFamily.bold,
     fontSize: fontSize.large
   },
 
-  buttonContainer:{
+  buttonContainer: {
     position: 'absolute',
-    height: 40,
+    height: normalize(40),
     width: windowWidth,
     bottom: 0,
     backgroundColor: 'rgba(0, 0, 0, .5)'
   },
 
-  backButton:{
-    flex:1,
+  backButton: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row'
   },
 
-  backText:{
+  backText: {
     fontFamily: fontFamily.medium,
     fontSize: fontSize.regular + 4,
-    paddingLeft: 5,
-    paddingBottom: 4
+    paddingLeft: normalize(5),
+    paddingBottom: normalize(4)
   }
 });
 

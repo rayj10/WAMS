@@ -15,24 +15,24 @@ const styles = StyleSheet.create({
     fontSize: fontSize.large,
     fontFamily: fontFamily.medium,
     color: color.white,
-    padding:10
+    padding: normalize(10)
   },
 
   headerOuterContainer: {
     backgroundColor: color.blue,
-    height:75,
-    padding:0,
+    height: normalize(75),
+    padding: 0,
     borderBottomWidth: 0,
   },
 
   bodyContainer: {
     flex: 1,
-    backgroundColor:color.white,
-    padding: 3
+    backgroundColor: color.white,
+    padding: normalize(3)
   },
 
   requestHead: {
-    height: 110,
+    height: normalize(110),
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     borderColor: color.grey,
@@ -43,23 +43,22 @@ const styles = StyleSheet.create({
   subRequestHead: {
     flex: 1,
     justifyContent: 'space-evenly',
-    marginRight: 3
+    marginRight: normalize(3)
   },
 
   requestBody: {
     borderColor: color.grey,
     borderTopWidth: 1,
     borderWidth: 2,
-    padding:2
+    padding: normalize(2)
   },
 
   itemPanel: {
-    height: 0.425*windowHeight,
+    height: 0.425 * windowHeight,
     justifyContent: 'space-evenly',
     borderColor: color.light_grey,
     borderBottomWidth: 1,
-    marginLeft: 1,
-    marginRight: 1
+    marginHorizontal: normalize(1)
   },
 
   verticalSubPanel: {
@@ -72,40 +71,39 @@ const styles = StyleSheet.create({
   horizontalSubPanel: {
     flex: 1,
     justifyContent: 'space-around',
-    marginRight: 3
+    marginRight: normalize(3)
   },
 
   titleTextStyle: {
     flex: 1,
-    marginTop: 3,
+    marginTop: normalize(3),
     fontSize: fontSize.small,
     fontFamily: fontFamily.bold,
-    marginLeft: 15
+    marginLeft: normalize(15)
   },
 
   textStyle: {
     flex: 2,
-    marginTop:3,
+    marginTop: normalize(3),
     fontSize: fontSize.small,
     fontFamily: fontFamily.light,
-    marginLeft: 15 
+    marginLeft: normalize(15)
   },
 
   buttonContainer: {
     flex: 0,
     flexDirection: 'row',
-    justifyContent:'space-evenly',
-    paddingTop: 10,
-    paddingBottom: 10,
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
     borderTopWidth: 1.5,
     borderColor: color.light_grey,
-    height: 0.12*windowHeight,
-    backgroundColor:color.white
+    height: 0.12 * windowHeight,
+    backgroundColor: color.white
   },
 
   button: {
-    flex:1,
-    justifyContent:'center'
+    flex: 1,
+    justifyContent: 'center'
   },
 
   buttonText: {
@@ -117,19 +115,19 @@ const styles = StyleSheet.create({
     flex: 1,
     borderWidth: 1,
     borderColor: color.light_grey,
-    borderRadius: 2,
-    justifyContent:'center',
-    height:35
+    borderRadius: normalize(2),
+    justifyContent: 'center',
+    height: normalize(35)
   },
 
   forwardListText: {
     fontSize: fontSize.small,
     fontFamily: fontFamily.medium,
-    marginLeft: 10
+    marginLeft: normalize(10)
   },
 
-  activeItem:{
-    backgroundColor:'rgba(0,102,178,0.2)'   //color.blue with opacity adjusted,
+  activeItem: {
+    backgroundColor: 'rgba(0,102,178,0.2)'   //color.blue with opacity adjusted,
   }
 });
 

@@ -21,42 +21,42 @@ const styles = StyleSheet.create({
         backgroundColor: color.white
     },
 
-    image:{
-      height: 160,
-      width: windowWidth - 35,
-      marginBottom: 15,
-      resizeMode: 'contain'
+    image: {
+        height: normalize(160),
+        width: windowWidth - 35,
+        marginBottom: normalize(15),
+        resizeMode: 'contain'
     },
 
-    wrapper:{
-        justifyContent:"center",
-        alignItems:"center"
+    wrapper: {
+        justifyContent: "center",
+        alignItems: "center"
     },
 
-    errorText:{
+    errorText: {
         color: color.red,
-        width: (windowWidth - 45),
+        width: windowWidth - 45,
         marginTop: normalize(20)
     },
 
-    containerView:{
+    containerView: {
         marginVertical: 24,
         width: windowWidth - 40
     },
 
-    button:{
+    button: {
         backgroundColor: color.blue,
         height: normalize(55)
     },
 
-    buttonText:{
+    buttonText: {
         fontSize: fontSize.regular + 2,
         fontFamily: fontFamily.medium
     },
 
-    forgotText:{
-        textAlign:"center",
-        color:color.black,
+    forgotText: {
+        textAlign: "center",
+        color: color.black,
         fontSize: fontSize.regular,
         fontFamily: fontFamily.medium,
     }

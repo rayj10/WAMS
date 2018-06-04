@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { View, StyleSheet } from 'react-native';
 import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements';
@@ -7,11 +7,11 @@ import { isEmpty } from '../utils/validate';
 import { windowWidth, fontSize, fontFamily, normalize } from '../theme/baseTheme';
 
 const styles = StyleSheet.create({
-    container:{
+    container: {
         marginBottom: 10
     },
 
-    inputContainer:{
+    inputContainer: {
         width: windowWidth - 40,
         height: normalize(65),
         fontSize: fontSize.regular + 2,
@@ -40,7 +40,7 @@ class AuthTextInput extends Component {
                     secureTextEntry={secureTextEntry}
                     inputStyle={styles.inputContainer}
 
-                    value={this.props.value}/>
+                    value={this.props.value} />
                 {
                     (!isEmpty(this.props.error)) &&
                     <FormValidationMessage>

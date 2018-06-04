@@ -11,16 +11,16 @@ const styles = StyleSheet.create({
         backgroundColor: color.white
     },
 
-    image:{
-        height: 150,
+    image: {
+        height: normalize(150),
         width: windowWidth - 20,
         resizeMode: 'contain'
     },
 
     activityIndicatorContainer: {
         justifyContent: 'flex-start',
-        alignItems:'center',
-        position:'absolute',
+        alignItems: 'center',
+        position: 'absolute',
         bottom: 0,
         height: normalize(80)
     }
@@ -30,7 +30,7 @@ export default class extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                    <Image style={styles.image} source={require('../assets/images/logo.png')} />
+                <Image style={styles.image} source={require('../assets/images/logo.png')} />
                 <View style={styles.activityIndicatorContainer}>
                     <ActivityIndicator animating={true} size='large' />
                 </View>

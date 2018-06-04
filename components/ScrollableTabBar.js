@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0,102,178,0.05)'
     },
     textContainer: {
-        flex:1,
+        flex: 1,
         width: normalize(100),
         alignItems: 'center',
         justifyContent: 'center',
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     },
     textStyle: {
         fontFamily: fontFamily.medium,
-        fontSize: fontSize.regular-2,
+        fontSize: fontSize.regular - 2,
         color: color.white
     },
     activeTab: {
@@ -69,12 +69,12 @@ class ScrollableTabBar extends React.Component {
     goto(route) {
         this.setState({ currentTab: route })    //change highlighted active tab
 
-        switch (route){
-            case 'Approval': Actions.Approval(); break; 
+        switch (route) {
+            case 'Approval': Actions.Approval(); break;
             case 'My Request': Actions.MyRequest(); break;
             case 'DO Customer': Actions.DOCustomer(); break;
             case 'My Confirm': Actions.MyConfirm(); break;
-            case 'View Request': Actions.ViewRequest(); break; 
+            case 'View Request': Actions.ViewRequest(); break;
         }
     }
 
@@ -88,7 +88,7 @@ class ScrollableTabBar extends React.Component {
                     renderItem={({ item }) => {
                         let source = "";
                         switch (item) {
-                            case 'Approval': source = require('../assets/images/Approval.png'); break; 
+                            case 'Approval': source = require('../assets/images/Approval.png'); break;
                             case 'My Request': source = require('../assets/images/MyRequest.png'); break;
                             case 'DO Customer': source = require('../assets/images/DOCustomer.png'); break;
                             case 'My Confirm': source = require('../assets/images/MyConfirm.png'); break;
@@ -103,8 +103,8 @@ class ScrollableTabBar extends React.Component {
                             </TouchableOpacity>
                         );
                     }}
-                    extraData={this.state.currentTab} 
-                    keyExtractor = {(item)=>item}/>
+                    extraData={this.state.currentTab}
+                    keyExtractor={(item) => item} />
             </View>
         );
     }

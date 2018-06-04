@@ -7,9 +7,9 @@ import { padding, color, fontSize, fontFamily, windowWidth, normalize } from '..
 
 const styles = StyleSheet.create({
     header: {
-        height: 50,
-        paddingLeft: 20,
-        borderRadius: 8,
+        height: normalize(50),
+        paddingLeft: normalize(20),
+        borderRadius: normalize(8),
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -18,19 +18,19 @@ const styles = StyleSheet.create({
 
     headerText: {
         fontFamily: fontFamily.bold,
-        fontSize: fontSize.large-4
+        fontSize: fontSize.large - 4
     },
 
     icon: {
         color: color.light_black,
-        marginRight: 30
+        marginRight: normalize(30)
     },
 
     content: {
         backgroundColor: color.white,
-        marginLeft: 5,
-        marginRight: 5,
-        padding: 20,
+        marginLeft: normalize(5),
+        marginRight: normalize(5),
+        padding: normalize(20),
     },
 
     contentText: {
@@ -69,7 +69,7 @@ class Accordion extends React.Component {
         );
 
         return (
-            <View style={{flex:1, padding: 0, borderWidth: 0, }}>
+            <View style={{ flex: 1, padding: 0, borderWidth: 0, }}>
                 <TouchableOpacity onPress={() => this.setState({ open: !this.state.open })}>
                     {header}
                 </TouchableOpacity>

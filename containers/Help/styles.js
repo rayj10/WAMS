@@ -4,7 +4,7 @@ import { padding, color, fontSize, fontFamily, windowWidth, normalize, windowHei
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginVertical: 20
+    marginVertical: normalize(20)
   },
 
   horizontalContainer: {
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   button: {
     flex: 1,
     borderWidth: 1,
-    borderRadius: 8,
+    borderRadius: normalize(8),
     borderColor: color.light_blue,
     justifyContent: 'center',
     alignItems: 'center',

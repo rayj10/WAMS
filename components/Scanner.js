@@ -63,13 +63,13 @@ export default class Scanner extends React.Component {
                 case BarCodeScanner.Constants.BarCodeType.upc_ean: type = "Upc_ean"; break;
             }
 
-            if (this.state.type === 'information'){
+            if (this.state.type === 'information') {
                 Alert.alert(
                     'A ' + type + ' has been found',
                     '\nContent:\n' + data
                 );
             }
-            else{
+            else {
                 Alert.alert(
                     'A ' + type + ' has been found',
                     '\nContent:\n' + data,

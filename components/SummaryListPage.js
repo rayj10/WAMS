@@ -9,16 +9,16 @@ const styles = StyleSheet.create({
         fontSize: fontSize.large - 6,
         fontFamily: fontFamily.bold,
         color: color.light_black,
-        marginLeft: 30,
-        marginTop: 30,
-        marginBottom: 10,
+        marginLeft: normalize(30),
+        marginTop: normalize(30),
+        marginBottom: normalize(10),
     },
 
     panelContainer: {
         flex: 1,
-        marginLeft: 30,
-        marginRight: 30,
-        marginBottom: 60,
+        marginLeft: normalize(30),
+        marginRight: normalize(30),
+        marginBottom: normalize(60),
         borderColor: color.grey,
         borderRadius: 2,
         borderWidth: 2

@@ -6,7 +6,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'react-native-elements';
-import { View, StyleSheet, Text, ScrollView, Alert} from 'react-native';
+import { View, StyleSheet, Text, ScrollView, Alert } from 'react-native';
 import Modal from 'react-native-modal';
 
 import { color, fontFamily, fontSize, windowWidth, windowHeight, normalize } from '../theme/baseTheme';
@@ -17,8 +17,8 @@ const styles = StyleSheet.create({
         backgroundColor: color.white,
         width: 0.85 * windowWidth,
         height: 0.7 * windowHeight,
-        borderRadius: 4,
-        alignSelf:'center'
+        borderRadius: normalize(4),
+        alignSelf: 'center'
     },
     headerContainer: {
         flex: 1,
@@ -34,28 +34,28 @@ const styles = StyleSheet.create({
     },
     bodyContainer: {
         flex: 5,
-        justifyContent:'center'
+        justifyContent: 'center'
     },
     textStyle: {
         fontSize: fontSize.regular,
         fontFamily: fontFamily.medium,
-        marginLeft: 30,
-        marginBottom: 5,
-        marginTop:25
+        marginLeft: normalize(30),
+        marginBottom: normalize(5),
+        marginTop: normalize(25)
     },
     scrollContainer: {
-        flex:1,
+        flex: 1,
         justifyContent: 'center',
         borderWidth: 1,
-        marginBottom:25,
-        marginLeft: 35,
-        marginRight: 35
+        marginBottom: normalize(25),
+        marginLeft: normalize(35),
+        marginRight: normalize(35)
     },
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-evenly',
-        paddingTop: 10,
-        paddingBottom: 10,
+        paddingTop: normalize(10),
+        paddingBottom: normalize(10),
         borderTopWidth: 1,
         borderColor: color.light_grey,
         height: normalize(82),
@@ -72,37 +72,37 @@ const styles = StyleSheet.create({
 
 const ForwardModal = (props) => {
     return (
-        <Modal isVisible={props.visible} hideModalContentWhileAnimating={true} animationIn="zoomInDown" animationOut="zoomOutUp" animationInTiming={200} animationOutTiming={200} onBackButtonPress ={props.close} onBackdropPress ={props.close}>
-                <View style={styles.dialogBox}>
-                    <View style={styles.headerContainer}>
-                        <Text style={[styles.headerText, { color: color.light_black }]}> Forward To </Text>
-                    </View>
-                    <View style={styles.bodyContainer}>
-                        <Text style={styles.textStyle}> Select Forward Account </Text>
-                        <View style={styles.scrollContainer}>
-                            <ScrollView>
-                                {props.forwardList()}
-                            </ScrollView>
-                        </View>
-                    </View>
-                    <View style={styles.buttonContainer}>
-                        <View style={styles.button}>
-                            <Button title="Close"
-                                textStyle={styles.buttonText}
-                                backgroundColor={color.light_grey}
-                                onPress={props.close}
-                                borderRadius={8} />
-                        </View>
-                        <View style={styles.button}>
-                            <Button title="Forward"
-                                textStyle={styles.buttonText}
-                                backgroundColor={color.light_blue}
-                                onPress={props.forward}
-                                borderRadius={8} />
-                        </View>
+        <Modal isVisible={props.visible} hideModalContentWhileAnimating={true} animationIn="zoomInDown" animationOut="zoomOutUp" animationInTiming={200} animationOutTiming={200} onBackButtonPress={props.close} onBackdropPress={props.close}>
+            <View style={styles.dialogBox}>
+                <View style={styles.headerContainer}>
+                    <Text style={[styles.headerText, { color: color.light_black }]}> Forward To </Text>
+                </View>
+                <View style={styles.bodyContainer}>
+                    <Text style={styles.textStyle}> Select Forward Account </Text>
+                    <View style={styles.scrollContainer}>
+                        <ScrollView>
+                            {props.forwardList()}
+                        </ScrollView>
                     </View>
                 </View>
-        </Modal>  
+                <View style={styles.buttonContainer}>
+                    <View style={styles.button}>
+                        <Button title="Close"
+                            textStyle={styles.buttonText}
+                            backgroundColor={color.light_grey}
+                            onPress={props.close}
+                            borderRadius={8} />
+                    </View>
+                    <View style={styles.button}>
+                        <Button title="Forward"
+                            textStyle={styles.buttonText}
+                            backgroundColor={color.light_blue}
+                            onPress={props.forward}
+                            borderRadius={8} />
+                    </View>
+                </View>
+            </View>
+        </Modal>
     )
 }
 

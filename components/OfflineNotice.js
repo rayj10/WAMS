@@ -1,18 +1,18 @@
 import React from 'react';
 import { View, Text, NetInfo, Dimensions, StyleSheet } from 'react-native';
 
-import { windowWidth } from '../theme/baseTheme'
+import { windowWidth, normalize } from '../theme/baseTheme'
 
 const styles = StyleSheet.create({
     offlineContainer: {
         backgroundColor: '#b52424',
-        height: 30,
+        height: normalize(30),
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
         width: windowWidth,
         position: 'absolute',
-        top: 30
+        top: normalize(30)
     },
     offlineText: {
         color: '#fff'
@@ -37,7 +37,7 @@ class OfflineNotice extends React.Component {
 
     handleConnectivityChange = (isConnected) => {
         if (isConnected) {
-            this.setState({ isConnected : true });
+            this.setState({ isConnected: true });
         } else {
             this.setState({ isConnected: false });
         }

@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 
 import * as authAction from '../actions/authActions';
 import * as workspaceAction from '../actions/workspaceActions';
-import { color, fontFamily, fontSize } from '../theme/baseTheme';
+import { color, fontFamily, fontSize, normalize } from '../theme/baseTheme';
 
 //Maps reducer's state to NavDrawer's props
 export const mapStateToProps = state => ({
@@ -29,15 +29,15 @@ const styles = StyleSheet.create({
         flex: 1
     },
     header: {
-        height: 215,
-        paddingTop: 30,
+        height: normalize(215),
+        paddingTop: normalize(30),
         backgroundColor: '#f2f7fc',
         alignItems: 'center'
     },
     avatar: {
-        height: 140,
-        width: 140,
-        borderRadius: 70
+        height: normalize(140),
+        width: normalize(140),
+        borderRadius: normalize(70)
     },
     headerText: {
         fontFamily: fontFamily.bold,
@@ -47,18 +47,18 @@ const styles = StyleSheet.create({
         marginTop: 1
     },
     icon: {
-        paddingRight: 10
+        paddingRight: normalize(10)
     },
     navItem: {
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 20,
+        paddingTop: normalize(15),
+        paddingBottom: normalize(15),
+        paddingLeft: normalize(20),
         flexDirection: 'row',
         alignItems: 'center'
     },
     navText: {
         fontFamily: fontFamily.bold,
-        fontSize: 16,
+        fontSize: normalize(16),
     },
     activeItem: {
         backgroundColor: 'rgba(187,189,192,0.7)', //color.light_grey with opacity adjusted
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
         borderColor: color.blue
     },
     button: {
-        marginTop: 15,
+        marginTop: normalize(15),
         backgroundColor: color.light_blue,
         borderRadius: 4
     }
@@ -75,9 +75,9 @@ const styles = StyleSheet.create({
 class NavDrawer extends React.Component {
     constructor(props) {
         super(props);
-        
+
         let name = this.props.username;
-        
+
         this.state = {
             currentTab: "Workspace",                                                   //marks which drawer item to highlight based on active scene
             userName: name ? name.charAt(0).toUpperCase() + name.slice(1) : null       //user's name to be displayed on avatar
@@ -157,8 +157,8 @@ class NavDrawer extends React.Component {
         Actions.drawerClose();
         this.setState({ currentTab: route })    //change highlighted active tab
 
-        switch (route){
-            case 'Workspace': Actions.workspaceTab(); break; 
+        switch (route) {
+            case 'Workspace': Actions.workspaceTab(); break;
             case 'Help': Actions.helpTab(); break;
             case 'Setting': Actions.settingTab(); break;
             case 'QRScanner': Actions.QRTab(); break;
