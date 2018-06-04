@@ -60,21 +60,13 @@ class Accordion extends React.Component {
             </View>
         );
 
-        var content = (
-            <View style={styles.content}>
-                <Text style={styles.contentText}>
-                    {this.props.body}
-                </Text>
-            </View>
-        );
-
         return (
-            <View style={{ flex: 1, padding: 0, borderWidth: 0, }}>
+            <View style={{ flex: 1, padding: 0, borderWidth: 0}}>
                 <TouchableOpacity onPress={() => this.setState({ open: !this.state.open })}>
                     {header}
                 </TouchableOpacity>
                 <Expand value={this.state.open}>
-                    {content}
+                    {this.props.body}
                 </Expand>
             </View>
         );

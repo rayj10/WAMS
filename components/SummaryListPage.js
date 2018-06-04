@@ -108,7 +108,7 @@ class SummaryListPage extends React.Component {
                 <ActivityIndicator animating={true} size='large' />
             </View>);
 
-        if (status !== null) {
+        if (status !== null && this.props.mount) {
             if (status === 'Authenticated') {
                 content = this.renderSummary(list)
             }

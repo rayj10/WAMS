@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Alert, Text } from 'react-native';
+import { View, StyleSheet, Alert, Text, TouchableOpacity, Image } from 'react-native';
 import { Header, Button } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 
@@ -22,24 +22,22 @@ class QRScanner extends React.Component {
         <Text style={styles.subheader}>
           What would you like to scan?
         </Text>
-        <View style={styles.buttonContainer}>
-          <View style={styles.button}>
-            <Button
-              raised
-              borderRadius={6}
-              title={'Scan Link'}
-              backgroundColor={color.light_blue}
-              textStyle={styles.buttonText}
-              onPress={() => this.setState({ option: 'link' })} />
+        <View style={styles.body}>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={{ flex: 1 }} onPress={() => this.setState({ option: 'link' })}>
+              <View style={styles.button}>
+                <Image style={styles.image} source={require('../../assets/images/Link.png')} />
+                <Text style={styles.buttonText}> Scan Link </Text>
+              </View>
+            </TouchableOpacity>
           </View>
-          <View style={styles.button}>
-            <Button
-              raised
-              borderRadius={6}
-              title={'Scan Information'}
-              backgroundColor={color.light_blue}
-              textStyle={styles.buttonText}
-              onPress={() => this.setState({ option: 'information' })} />
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={{ flex: 1 }} onPress={() => this.setState({ option: 'information' })}>
+              <View style={styles.button}>
+                <Image style={styles.image} source={require('../../assets/images/Information.png')} />
+                <Text style={styles.buttonText}> Scan Information </Text>
+              </View>
+            </TouchableOpacity>
           </View>
         </View>
       </View>

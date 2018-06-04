@@ -84,7 +84,7 @@ class Approval extends React.Component {
     renderPage(pageName) {
         if (pageName === 'Requests') {
             if (this.props.isRequestListReceived)
-                return <SummaryListPage title={pageName} status={this.state.request} list={this.filterList(this.props.requestList.data)} caller='Approval' />
+                return <SummaryListPage title={pageName} mount={this.mounted} status={this.state.request} list={this.filterList(this.props.requestList.data)} caller='Approval' />
             else
                 return <SummaryListPage title={pageName} status={this.state.request} list={null} caller='Approval' />
         }

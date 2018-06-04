@@ -37,9 +37,8 @@ const styles = StyleSheet.create({
   buttonText: {
     color: color.light_blue,
     fontFamily: fontFamily.medium,
-    fontSize: fontSize.regular,
-    textAlign: 'center',
-  },
+    fontSize: fontSize.regular
+  }
 });
 
 export default styles;

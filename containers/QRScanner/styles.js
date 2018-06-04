@@ -13,22 +13,36 @@ const styles = StyleSheet.create({
     marginHorizontal: normalize(20)
   },
 
-  buttonContainer: {
+  body: {
     flex: 1,
-    borderWidth: 1,
-    borderRadius: normalize(8),
-    marginHorizontal: normalize(20),
-    marginVertical: normalize(20),
-    borderColor: color.light_grey
+    alignItems: 'center',
+    justifyContent: 'space-evenly'
+  },
+
+  buttonContainer: {
+    height: normalize(150),
+    width: normalize((windowWidth - 60) / 3)
   },
 
   button: {
-    marginTop: normalize(20)
+    flex: 1,
+    borderWidth: 1,
+    borderRadius: normalize(8),
+    borderColor: color.light_blue,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  image: {
+    height: normalize(75),
+    width: normalize(75),
+    resizeMode: 'contain'
   },
 
   buttonText: {
-    fontSize: fontSize.regular + 2,
-    fontFamily: fontFamily.medium
+    color: color.light_blue,
+    fontFamily: fontFamily.medium,
+    fontSize: fontSize.regular
   },
 });
 
