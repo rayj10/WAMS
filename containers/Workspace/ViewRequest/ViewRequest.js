@@ -14,6 +14,7 @@ import { color } from '../../../theme/baseTheme';
 //Maps store's state to ViewRequest's props
 export const mapStateToProps = state => ({
     token: state.authReducer.token,
+    userName: state.authReducer.userName,
     requestList: state.workspaceReducer.requestList,
     isRequestListReceived: state.workspaceReducer.isRequestListReceived,
 });
@@ -39,7 +40,7 @@ class ViewRequest extends React.Component {
     //fetch data to be displayed as soon as the component is mounted
     componentDidMount() {
         this.mounted = true;
-        this.props.actionsWorkspace.getRequestList(this.props.token, this.onFetchFinish);
+        this.props.actionsWorkspace.getRequestList(this.props.token, this.props.userName, this.onFetchFinish);
     }
 
     /**

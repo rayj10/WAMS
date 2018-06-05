@@ -13,6 +13,8 @@ class QRScanner extends React.Component {
     this.state = {
       option: null
     }
+
+    this.onBarcodeRead = this.onBarcodeRead.bind(this);
   }
 
   onBarcodeRead(type, data, onCancel) {
@@ -64,7 +66,7 @@ class QRScanner extends React.Component {
     if (option) {
       render = (
         <View style={{ flex: 1 }}>
-          <Scanner onRead={this.onBarcodeRead.bind(this)} />
+          <Scanner onRead={this.onBarcodeRead} />
           <View style={styles.backButtonContainer}>
             <TouchableOpacity style={{ flex: 1 }} onPress={() => this.setState({ option : null })}>
               <View style={styles.backButton}>

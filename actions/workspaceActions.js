@@ -14,11 +14,12 @@ export function successSignOut() {
 
 /**
  * Fetch the List of Requests
- * @param {String} token: User's session token 
+ * @param {String} token: User's session token
+ * @param {String} userName: User's ID 
  * @param {Function} resultCB: Callback to be executed once fetching is done 
  */
-export function getRequestList(token, resultCB) {
-    let endpoint = 'api/v1/cbn/inventory/GetRequestVerification?DeptCode=PRC&StafCode=ekow'
+export function getRequestList(token, user, resultCB) {
+    let endpoint = 'api/v1/cbn/inventory/GetRequestVerification?DeptCode=PRC&StafCode=' + user;
 
     let header = {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -29,7 +30,7 @@ export function getRequestList(token, resultCB) {
 
         return fetchAPI(endpoint, 'POST', header, null)
             .then((json) => {
-                dispatch({ type: types.RECEIVE_REQUEST_LIST, requestList : json });
+                dispatch({ type: types.RECEIVE_REQUEST_LIST, requestList: json });
                 resultCB('Requests', 'Authenticated');
             })
             .catch((error) => {
