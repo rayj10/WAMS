@@ -50,15 +50,13 @@ const styles = StyleSheet.create({
         paddingRight: normalize(10)
     },
     navItem: {
-        paddingTop: normalize(15),
-        paddingBottom: normalize(15),
-        paddingLeft: normalize(20),
+        padding: normalize(15),
         flexDirection: 'row',
         alignItems: 'center'
     },
     navText: {
         fontFamily: fontFamily.bold,
-        fontSize: normalize(16),
+        fontSize: fontSize.regular + 2,
     },
     activeItem: {
         backgroundColor: 'rgba(187,189,192,0.7)', //color.light_grey with opacity adjusted

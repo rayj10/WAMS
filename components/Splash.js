@@ -18,11 +18,10 @@ const styles = StyleSheet.create({
     },
 
     activityIndicatorContainer: {
+        position: 'absolute',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        position: 'absolute',
-        bottom: 0,
-        height: normalize(80)
+        bottom: 60
     }
 });
 
