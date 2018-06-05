@@ -10,6 +10,40 @@ import { BarCodeScanner, Permissions, Camera } from 'expo';
 
 import { windowWidth, windowHeight } from '../theme/baseTheme';
 
+const opacity = 'rgba(0, 0, 0, .6)';
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    scanArea: {
+        height: windowHeight - 65,
+        width: windowWidth
+    },
+    layerTop: {
+        flex: 1,
+        backgroundColor: opacity
+    },
+    layerCenter: {
+        flex: 2,
+        flexDirection: 'row'
+    },
+    layerLeft: {
+        flex: 1,
+        backgroundColor: opacity
+    },
+    focused: {
+        flex: 10
+    },
+    layerRight: {
+        flex: 1,
+        backgroundColor: opacity
+    },
+    layerBottom: {
+        flex: 1,
+        backgroundColor: opacity
+    },
+});
+
 export default class Scanner extends React.Component {
     constructor(props) {
         super(props);
@@ -63,20 +97,7 @@ export default class Scanner extends React.Component {
                 case BarCodeScanner.Constants.BarCodeType.upc_ean: type = "Upc_ean"; break;
             }
 
-            if (this.state.type === 'information') {
-                Alert.alert(
-                    'A ' + type + ' has been found',
-                    '\nContent:\n' + data
-                );
-            }
-            else {
-                Alert.alert(
-                    'A ' + type + ' has been found',
-                    '\nContent:\n' + data,
-                    [{ text: 'Open URL', onPress: () => Linking.openURL(data) },
-                    { text: 'Cancel', onPress: () => { } }]
-                );
-            }
+            this.props.onRead(type, data); //callback, what to do with the data on success read
         }
     }
 
@@ -92,8 +113,8 @@ export default class Scanner extends React.Component {
                             <BarCodeScanner
                                 onBarCodeRead={this.onSuccessRead.bind(this)}
                                 style={styles.scanArea}
-                                autoFocus={Camera.Constants.AutoFocus.on}
-                            >
+                                autoFocus={Camera.Constants.AutoFocus.on}>
+                                
                                 <View style={styles.layerTop} />
                                 <View style={styles.layerCenter}>
                                     <View style={styles.layerLeft} />
@@ -107,37 +128,3 @@ export default class Scanner extends React.Component {
         );
     }
 }
-
-const opacity = 'rgba(0, 0, 0, .6)';
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    scanArea: {
-        height: windowHeight - 65,
-        width: windowWidth
-    },
-    layerTop: {
-        flex: 1,
-        backgroundColor: opacity
-    },
-    layerCenter: {
-        flex: 2,
-        flexDirection: 'row'
-    },
-    layerLeft: {
-        flex: 1,
-        backgroundColor: opacity
-    },
-    focused: {
-        flex: 10
-    },
-    layerRight: {
-        flex: 1,
-        backgroundColor: opacity
-    },
-    layerBottom: {
-        flex: 1,
-        backgroundColor: opacity
-    },
-});

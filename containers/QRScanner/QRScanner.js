@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Alert, Text, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, Alert, Text, TouchableOpacity, Image, Linking } from 'react-native';
 import { Header, Button } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 
@@ -12,6 +12,23 @@ class QRScanner extends React.Component {
     super();
     this.state = {
       option: null
+    }
+  }
+
+  onBarcodeRead(type, data) {
+    if (this.state.option === 'information') {
+      Alert.alert(
+        'A ' + type + ' has been found',
+        '\nContent:\n' + data
+      );
+    }
+    else {
+      Alert.alert(
+        'A ' + type + ' has been found',
+        '\nContent:\n' + data,
+        [{ text: 'Open URL', onPress: () => Linking.openURL(data) },
+        { text: 'Cancel', onPress: () => { } }]
+      );
     }
   }
 
@@ -44,7 +61,7 @@ class QRScanner extends React.Component {
     );
 
     if (option) {
-      render = <Scanner type={option} />
+      render = <Scanner onRead={this.onBarcodeRead} />
     }
 
     return render;

@@ -6,13 +6,13 @@ import Carousel, { Pagination } from 'react-native-snap-carousel';
 
 import Accordion from '../../../components/Accordion';
 import styles from './styles';
+import { windowWidth } from '../../../theme/baseTheme';
 
 class UserManual extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       workspaceTabs: [],
-      workspaceIndex: 0
     }
   }
 
@@ -53,6 +53,8 @@ class UserManual extends React.Component {
 
   getCarousel(title) {
     let manuals = "";
+    let sliderWidth = windowWidth - 30;
+    let itemWidth = sliderWidth - 60;
 
     if (title === 'Workspace')
       manuals = this.mapTabsToManuals(this.state.workspaceTabs);
@@ -74,8 +76,8 @@ class UserManual extends React.Component {
           </View>
         );
       }}
-      sliderWidth={400}
-      itemWidth={300}
+      sliderWidth={sliderWidth}
+      itemWidth={itemWidth}
     />
   }
 

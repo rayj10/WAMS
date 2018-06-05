@@ -68,6 +68,10 @@ class Approval extends React.Component {
         this.mounted = false;
     }
 
+    /**
+     * Only take item if status is Open
+     * @param {Array} list: List to be filtered
+     */
     filterList(list) {
         return list.map(item => {
             if (item["StatusName"] === 'Open')
@@ -84,7 +88,7 @@ class Approval extends React.Component {
     renderPage(pageName) {
         if (pageName === 'Requests') {
             if (this.props.isRequestListReceived)
-                return <SummaryListPage title={pageName} mount={this.mounted} status={this.state.request} list={this.filterList(this.props.requestList.data)} caller='Approval' />
+                return <SummaryListPage title={pageName} status={this.state.request} list={this.filterList(this.props.requestList.data)} caller='Approval' />
             else
                 return <SummaryListPage title={pageName} status={this.state.request} list={null} caller='Approval' />
         }
@@ -105,7 +109,7 @@ class Approval extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <Pages indicatorColor={color.blue} indicatorOpacity={0.2}>
+                <Pages indicatorColor={color.blue} indicatorOpacity={0.2} containerStyle={styles.pages}>
                     {this.renderPage('Requests')}
                     {this.renderPage('PO')}
                     {this.renderPage('Transfers')}

@@ -100,11 +100,9 @@ class NavDrawer extends React.Component {
     handleBackButton() {
         if (Actions.currentScene === '_Approval')
             this.onSignOut()
-        else if (this.state.currentTab !== 'Workspace')  //in another tab
-            this.goto('Workspace');
         else if (Actions.currentScene === 'Login')
             BackHandler.exitApp();
-        else                                        //in workspace tab, siblings of Approval scene
+        else           
             Actions.pop();
         return true;
     }

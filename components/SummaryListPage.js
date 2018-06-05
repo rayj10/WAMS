@@ -108,11 +108,11 @@ class SummaryListPage extends React.Component {
                 <ActivityIndicator animating={true} size='large' />
             </View>);
 
-        if (status !== null && this.props.mount) {
-            if (status === 'Authenticated') {
+        if (status !== null) {
+            if (status === 'Authenticated' && list != null) {
                 content = this.renderSummary(list)
             }
-            else {
+            else if (status !== 'Authenticated') { //to make sure on cases where status is authenticated but list is null
                 //determine message based on status
                 let message = '';
                 if (status === 'Service Unavailable')

@@ -13,7 +13,6 @@ import { color, fontFamily, fontSize, windowWidth, windowHeight, normalize } fro
 
 const styles = StyleSheet.create({
     dialogBox: {
-        flex: 0,
         backgroundColor: color.white,
         width: 0.85 * windowWidth,
         height: 0.7 * windowHeight,
@@ -30,32 +29,27 @@ const styles = StyleSheet.create({
     headerText: {
         fontSize: fontSize.large,
         fontFamily: fontFamily.medium,
-        color: color.white
+        color: color.light_black
     },
     bodyContainer: {
-        flex: 5,
-        justifyContent: 'center'
+        flex: 4,
+        justifyContent: 'center',
+        padding: normalize(25)
     },
     textStyle: {
         fontSize: fontSize.regular,
         fontFamily: fontFamily.medium,
-        marginLeft: normalize(30),
         marginBottom: normalize(5),
-        marginTop: normalize(25)
     },
     scrollContainer: {
         flex: 1,
-        justifyContent: 'center',
         borderWidth: 1,
-        marginBottom: normalize(25),
-        marginLeft: normalize(35),
-        marginRight: normalize(35)
+        marginHorizontal: normalize(5)
     },
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-evenly',
-        paddingTop: normalize(10),
-        paddingBottom: normalize(10),
+        alignItems: 'center',
         borderTopWidth: 1,
         borderColor: color.light_grey,
         height: normalize(82),
@@ -75,7 +69,7 @@ const ForwardModal = (props) => {
         <Modal isVisible={props.visible} hideModalContentWhileAnimating={true} animationIn="zoomInDown" animationOut="zoomOutUp" animationInTiming={200} animationOutTiming={200} onBackButtonPress={props.close} onBackdropPress={props.close}>
             <View style={styles.dialogBox}>
                 <View style={styles.headerContainer}>
-                    <Text style={[styles.headerText, { color: color.light_black }]}> Forward To </Text>
+                    <Text style={styles.headerText}> Forward To </Text>
                 </View>
                 <View style={styles.bodyContainer}>
                     <Text style={styles.textStyle}> Select Forward Account </Text>

@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderColor: color.blue,
     marginHorizontal: normalize(10),
-    marginVertical: normalize(10)
+    marginVertical: normalize(15),
   },
 
   headerText: {
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
 
   accordionContainer: {
-    marginBottom: normalize(10),
+    marginVertical: normalize(10),
     marginHorizontal: normalize(10)
   },
 

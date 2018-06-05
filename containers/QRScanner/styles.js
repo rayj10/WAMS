@@ -9,14 +9,15 @@ const styles = StyleSheet.create({
   subheader: {
     fontFamily: fontFamily.medium,
     fontSize: fontSize.large - 2,
-    marginTop: normalize(20),
+    alignSelf: 'center',
+    marginTop: normalize(40),
     marginHorizontal: normalize(20)
   },
 
   body: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'space-evenly'
+    justifyContent: 'space-around'
   },
 
   buttonContainer: {

@@ -4,8 +4,11 @@ import { padding, color, fontSize, fontFamily, windowWidth, normalize } from '..
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: color.white,
-    paddingBottom: normalize(20)
+    backgroundColor: color.white
+  },
+
+  pages: {
+    marginBottom: normalize(20)
   }
 });
 
