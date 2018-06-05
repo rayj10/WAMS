@@ -97,7 +97,7 @@ export default class Scanner extends React.Component {
                 case BarCodeScanner.Constants.BarCodeType.upc_ean: type = "Upc_ean"; break;
             }
 
-            this.props.onRead(type, data); //callback, what to do with the data on success read
+            this.props.onRead(type, data, ()=>{this.setState({lastScan:null})}); //callback, what to do with the data on success read
         }
     }
 
@@ -113,7 +113,8 @@ export default class Scanner extends React.Component {
                             <BarCodeScanner
                                 onBarCodeRead={this.onSuccessRead.bind(this)}
                                 style={styles.scanArea}
-                                autoFocus={Camera.Constants.AutoFocus.on}>
+                                autoFocus={Camera.Constants.AutoFocus.on}
+                                focusDepth={1}>
                                 
                                 <View style={styles.layerTop} />
                                 <View style={styles.layerCenter}>

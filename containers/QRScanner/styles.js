@@ -17,12 +17,13 @@ const styles = StyleSheet.create({
   body: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    paddingBottom: 30
   },
 
   buttonContainer: {
     height: normalize(150),
-    width: normalize((windowWidth - 60) / 3)
+    width: normalize((windowWidth - 20) / 3)
   },
 
   button: {
@@ -45,6 +46,29 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily.medium,
     fontSize: fontSize.regular
   },
+
+  backButtonContainer: {
+    position: 'absolute',
+    height: normalize(40),
+    width: windowWidth,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, .2)'
+  },
+
+  backButton: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row'
+  },
+
+  backText: {
+    fontFamily: fontFamily.medium,
+    fontSize: fontSize.regular + 4,
+    color: color.white,
+    paddingLeft: normalize(5),
+    paddingBottom: normalize(4)
+  }
 });
 
 export default styles;
