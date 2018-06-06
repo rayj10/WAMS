@@ -6,42 +6,38 @@ import { color, fontSize, fontFamily, normalize } from '../theme/baseTheme';
 
 const styles = StyleSheet.create({
     subHeader: {
-        fontSize: fontSize.large - 6,
+        fontSize: fontSize.large,
         fontFamily: fontFamily.bold,
-        color: color.light_black,
-        marginLeft: normalize(30),
-        marginTop: normalize(30),
-        marginBottom: normalize(10),
+        color: color.light_black
     },
 
     panelContainer: {
         flex: 1,
-        marginLeft: normalize(30),
-        marginRight: normalize(30),
-        marginBottom: normalize(60),
-        borderColor: color.grey,
-        borderRadius: 2,
-        borderWidth: 2
+        marginBottom: normalize(30),
+        paddingTop: normalize(5)
     },
 
-    dataPanel: {
-        justifyContent: "center",
+    outterPanel: {
         height: normalize(75),
+        flexDirection: 'row',
         borderColor: color.light_grey,
         borderRadius: 3,
         borderWidth: 1.5,
-        marginLeft: 1,
-        marginRight: 1
+        marginVertical: 2
+    },
+
+    innerPanel: {
+        flex: 1,
+        justifyContent: 'space-evenly'
     },
 
     titleTextStyle: {
-        fontSize: fontSize.small - 2,
+        fontSize: fontSize.small,
         fontFamily: fontFamily.bold,
     },
 
     textStyle: {
-        flex: 1,
-        fontSize: fontSize.small - 2,
+        fontSize: fontSize.small,
         fontFamily: fontFamily.light,
     }
 });
@@ -56,13 +52,19 @@ class SummaryListPage extends React.Component {
      * @param {Array} headers: list of header information to be rendered
      */
     renderSummary(headers) {
-        return headers.map((item, key) =>
-            (<TouchableOpacity onPress={() => Actions.RequestDetails({ request: item, caller: this.props.caller })} key={key}>
-                <View style={styles.dataPanel}>
-                    {this.buildPanel(item)}
+        return headers.map((item, key) => {
+            let info = this.buildPanel(item);
+            return (<TouchableOpacity onPress={() => Actions.RequestDetails({ request: item, caller: this.props.caller })} key={key}>
+                <View style={styles.outterPanel}>
+                    <View style={[styles.innerPanel, { flex: 3.5 }]}>
+                        {info.slice(0, 3)}
+                    </View>
+                    <View style={styles.innerPanel}>
+                        {info.slice(3)}
+                    </View>
                 </View>
             </TouchableOpacity>)
-        );
+        });
     }
 
     /**
@@ -92,10 +94,10 @@ class SummaryListPage extends React.Component {
             <Text style={styles.titleTextStyle}>{"Request Date: "}</Text>
             <Text style={styles.textStyle}>{item["RequestDate"]}</Text>
         </Text>);
-        panel.push(<Text style={{ left: 15 }} key={'status'}>
-            <Text style={styles.titleTextStyle}>{"Status: "}</Text>
-            <Text style={[styles.titleTextStyle, statusColor]}>{status}</Text>
-        </Text>);
+        panel.push(<View style={{ flex: 1, justifyContent: 'space-evenly', alignItems: 'center' }} key={'status'}>
+            <Text style={[styles.titleTextStyle, { fontSize: fontSize.regular }]}>{"Status:"}</Text>
+            <Text style={[styles.titleTextStyle, { fontSize: fontSize.regular + 4 }, statusColor]}>{status}</Text>
+        </View>);
 
         return panel;
     }
@@ -134,8 +136,8 @@ class SummaryListPage extends React.Component {
         return (
             <View style={{ flex: 1 }}>
                 <Text style={styles.subHeader}>{this.props.title}</Text>
-                <View style={styles.panelContainer}>
-                    <ScrollView>
+                <View style={[styles.panelContainer, status === 'Authenticated' ? {} : { backgroundColor: '#f2f7fc' }]}>
+                    <ScrollView showsVerticalScrollIndicator={false}>
                         {content}
                     </ScrollView>
                 </View>

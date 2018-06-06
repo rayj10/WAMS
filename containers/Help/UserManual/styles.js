@@ -67,24 +67,22 @@ const styles = StyleSheet.create({
 
   buttonContainer: {
     position: 'absolute',
-    height: normalize(40),
-    width: windowWidth,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, .5)'
+    bottom: 0,    
+    height: normalize(60),
+    width: normalize(60),
+    backgroundColor: 'rgba(0, 0, 0, .4)',
+    borderTopEndRadius: normalize(10)
   },
 
   backButton: {
-    flex: 1,
-    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 0, 
+    height: normalize(57),
+    width: normalize(57),
     alignItems: 'center',
-    flexDirection: 'row'
-  },
-
-  backText: {
-    fontFamily: fontFamily.medium,
-    fontSize: fontSize.regular + 4,
-    paddingLeft: normalize(5),
-    paddingBottom: normalize(4)
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, .5)',
+    borderTopEndRadius: normalize(7)
   }
 });
 

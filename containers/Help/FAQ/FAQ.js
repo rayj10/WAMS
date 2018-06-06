@@ -13,10 +13,9 @@ class FAQ extends React.Component {
           <Text> This will be where you see the Frequently Asked Questions</Text>
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={{flex:1}} onPress={() => Actions.pop()}>
+          <TouchableOpacity style={{ flex: 1 }} onPress={() => Actions.pop()}>
             <View style={styles.backButton}>
-              <Icon name='chevron-left' type='font-awesome' size={24} />
-              <Text style={styles.backText}> Back </Text>
+              <Icon name='action-undo' type='simple-line-icon' size={40} color='white' />
             </View>
           </TouchableOpacity>
         </View>

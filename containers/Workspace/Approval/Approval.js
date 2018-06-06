@@ -110,7 +110,7 @@ class Approval extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <Pages indicatorColor={color.blue} indicatorOpacity={0.2} containerStyle={styles.pages}>
+                <Pages indicatorColor={color.blue} indicatorOpacity={0.2}>
                     {this.renderPage('Requests')}
                     {this.renderPage('PO')}
                     {this.renderPage('Transfers')}

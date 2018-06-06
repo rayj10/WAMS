@@ -67,11 +67,10 @@ class QRScanner extends React.Component {
       render = (
         <View style={{ flex: 1 }}>
           <Scanner onRead={this.onBarcodeRead} />
-          <View style={styles.backButtonContainer}>
-            <TouchableOpacity style={{ flex: 1 }} onPress={() => this.setState({ option : null })}>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={{ flex: 1 }} onPress={() => this.setState({ option: null })}>
               <View style={styles.backButton}>
-                <Icon name='chevron-left' type='font-awesome' color='white' size={24} />
-                <Text style={styles.backText}> Back </Text>
+                <Icon name='action-undo' type='simple-line-icon' size={40} color='white' />
               </View>
             </TouchableOpacity>
           </View>
