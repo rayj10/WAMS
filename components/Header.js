@@ -3,6 +3,7 @@ import { Header } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import { StyleSheet, View } from 'react-native';
 
+import OfflineNotice from './OfflineNotice';
 import IconWrapper from './IconWrapper';
 import { color, fontSize, fontFamily, normalize } from '../theme/baseTheme';
 
@@ -29,12 +30,15 @@ class PageHeader extends React.Component {
 
     render() {
         return (
-            <Header
-                leftComponent={<IconWrapper name='menu' color='white' size={33} onPress={() => Actions.drawerOpen()} />}
-                centerComponent={{ text: this.props.title, style: styles.headerText }}
-                rightComponent={<View style={{ width: 40 }} />}
-                outerContainerStyles={styles.headerOuterContainer}
-            />
+            <View>
+                <OfflineNotice />
+                <Header
+                    leftComponent={<IconWrapper name='menu' color='white' size={33} onPress={() => Actions.drawerOpen()} />}
+                    centerComponent={{ text: this.props.title, style: styles.headerText }}
+                    rightComponent={<View style={{ width: 40 }} />}
+                    outerContainerStyles={styles.headerOuterContainer}
+                />
+            </View>
         )
     }
 }

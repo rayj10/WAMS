@@ -19,7 +19,7 @@ export function successSignOut() {
  * @param {Function} resultCB: Callback to be executed once fetching is done 
  */
 export function getRequestList(token, user, resultCB) {
-    let endpoint = 'api/v1/cbn/inventory/GetRequestVerification?DeptCode=PRC&StafCode=' + user;
+    let endpoint = 'api/v1/cbn/inventory/GetRequestVerification?DeptCode=PRC&StafCode=ekow';
 
     let header = {
         "Content-Type": "application/x-www-form-urlencoded",
