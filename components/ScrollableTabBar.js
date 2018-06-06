@@ -59,7 +59,7 @@ class ScrollableTabBar extends React.Component {
      * Fetch a list of menus available for the user
      */
     getMenu() {
-        return ["Approval", "My Request", "DO Customer", "My Confirm", "View Request"];
+        return ["Approval", "My Request", "DO Customer", "My Confirmation", "View Request"];
     }
 
     /**
@@ -73,7 +73,7 @@ class ScrollableTabBar extends React.Component {
             case 'Approval': Actions.Approval(); break;
             case 'My Request': Actions.MyRequest(); break;
             case 'DO Customer': Actions.DOCustomer(); break;
-            case 'My Confirm': Actions.MyConfirm(); break;
+            case 'My Confirmation': Actions.MyConfirmation(); break;
             case 'View Request': Actions.ViewRequest(); break;
         }
     }
@@ -91,7 +91,7 @@ class ScrollableTabBar extends React.Component {
                             case 'Approval': source = require('../assets/images/Approval.png'); break;
                             case 'My Request': source = require('../assets/images/MyRequest.png'); break;
                             case 'DO Customer': source = require('../assets/images/DOCustomer.png'); break;
-                            case 'My Confirm': source = require('../assets/images/MyConfirm.png'); break;
+                            case 'My Confirmation': source = require('../assets/images/MyConfirmation.png'); break;
                             case 'View Request': source = require('../assets/images/ViewRequest.png'); break;
                         }
                         return (

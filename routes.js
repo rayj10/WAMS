@@ -13,7 +13,7 @@ import Login from './containers/Login';
 import Approval from './containers/Workspace/Approval';
 import RequestDetails from './containers/Workspace/RequestDetails';
 import DOCustomer from './containers/Workspace/DOCustomer';
-import MyConfirm from './containers/Workspace/MyConfirm';
+import MyConfirmation from './containers/Workspace/MyConfirmation';
 import MyRequest from './containers/Workspace/MyRequest';
 import ViewRequest from './containers/Workspace/ViewRequest';
 import QRScanner from './containers/QRScanner';
@@ -68,7 +68,7 @@ export default class extends React.Component {
                                 <Scene tabs={true} tabBarComponent={ScrollableTabBar} tabBarPosition='top' lazy={true} animationEnabled={false} swipeEnabled={false}>
                                     <Scene key="Approval" hideNavBar component={Approval} title={"Approval"} />
                                     <Scene key="DOCustomer" hideNavBar component={DOCustomer} title={"DO Customer"} />
-                                    <Scene key="MyConfirm" hideNavBar component={MyConfirm} title={"My Confirm"} />
+                                    <Scene key="MyConfirmation" hideNavBar component={MyConfirmation} title={"My Confirmation"} />
                                     <Scene key="MyRequest" hideNavBar component={MyRequest} title={"My Request"} />
                                     <Scene key="ViewRequest" hideNavBar component={ViewRequest} title={"View Request"} />
                                 </Scene>

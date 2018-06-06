@@ -25,7 +25,7 @@ class UserManual extends React.Component {
      * Fetch a list of menus available for the user
      */
   getMenu() {
-    return ["Approval", "My Request", "DO Customer", "My Confirm", "View Request"];
+    return ["Approval", "My Request", "DO Customer", "My Confirmation", "View Request"];
   }
 
   mapTabsToManuals(list) {
@@ -37,7 +37,7 @@ class UserManual extends React.Component {
         case 'Approval': source = require('../../../assets/images/Approval.png'); break;
         case 'My Request': source = require('../../../assets/images/MyRequest.png'); break;
         case 'DO Customer': source = require('../../../assets/images/DOCustomer.png'); break;
-        case 'My Confirm': source = require('../../../assets/images/MyConfirm.png'); break;
+        case 'My Confirmation': source = require('../../../assets/images/MyConfirmation.png'); break;
         case 'View Request': source = require('../../../assets/images/ViewRequest.png'); break;
         case 'Scan Link': source = require('../../../assets/images/LinkWhite.png'); break;
         case 'Scan Information': source = require('../../../assets/images/InformationWhite.png'); break;

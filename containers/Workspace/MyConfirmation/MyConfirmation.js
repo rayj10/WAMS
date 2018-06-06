@@ -5,16 +5,16 @@ import { Actions } from 'react-native-router-flux';
 
 import styles from './styles';
 
-class MyConfirm extends React.Component {
+class MyConfirmation extends React.Component {
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.content}>
-          <Text> My Confirm </Text>
+          <Text> My Confirmation </Text>
         </View>
       </View>
     );
   }
 }
 
-export default MyConfirm;
+export default MyConfirmation;
