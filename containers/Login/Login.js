@@ -70,19 +70,19 @@ class Login extends React.Component {
     onSubmit(data) {
         this.setState({ error: error }); //clear out error messages
         Keyboard.dismiss(); //close keyboard
-        this.props.actions.login(data, ()=>Actions.Main());
+        this.props.actions.login(data, () => Actions.Main());
     }
 
     render() {
         return (
-            <View style = {{flex:1}}>
-                <OfflineNotice />
+            <View style={{ flex: 1 }}>
                 <LoginForm fields={fields}
                     showLabel={false}
                     onSubmit={this.onSubmit}
                     buttonTitle={"LOG IN"}
                     error={this.state.error}
                     onForgotPassword={this.onForgotPassword} />
+                <OfflineNotice />
             </View>
         );
     }

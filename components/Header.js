@@ -31,13 +31,13 @@ class PageHeader extends React.Component {
     render() {
         return (
             <View>
-                <OfflineNotice />
                 <Header
                     leftComponent={<IconWrapper name='menu' color='white' size={33} onPress={() => Actions.drawerOpen()} />}
                     centerComponent={{ text: this.props.title, style: styles.headerText }}
                     rightComponent={<View style={{ width: 40 }} />}
                     outerContainerStyles={styles.headerOuterContainer}
                 />
+                <OfflineNotice />
             </View>
         )
     }
