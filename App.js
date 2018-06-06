@@ -1,12 +1,23 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { Font, AppLoading } from 'expo';
+import { Font, Asset, AppLoading } from 'expo';
+import { Image } from 'react-native';
 
 import Router from './routes'
 import store from './redux/store';
 
 function cacheFonts(fonts) {
-    return fonts.map(function(font) {return Font.loadAsync(font)});
+    return fonts.map(function (font) { return Font.loadAsync(font) });
+}
+
+function cacheImages(images) {
+    return images.map(image => {
+        if (typeof image === 'string') {
+            return Image.prefetch(image);
+        } else {
+            return Asset.fromModule(image).downloadAsync();
+        }
+    });
 }
 
 export default class App extends React.Component {
@@ -15,18 +26,33 @@ export default class App extends React.Component {
         this.state = {
             isReady: false,
         }
+        Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.PORTRAIT_UP);
     }
 
     async _loadAssetsAsync() {
         const fontAssets = cacheFonts([
-            {RobotoBlack: require('./assets/fonts/Roboto-Black.ttf')},
-            {RobotoBold: require('./assets/fonts/Roboto-Bold.ttf')},
-            {RobotoMedium: require('./assets/fonts/Roboto-Medium.ttf')},
-            {RobotoRegular: require('./assets/fonts/Roboto-Regular.ttf')},
-            {RobotoLight: require('./assets/fonts/Roboto-Light.ttf')}
+            { RobotoBlack: require('./assets/fonts/Roboto-Black.ttf') },
+            { RobotoBold: require('./assets/fonts/Roboto-Bold.ttf') },
+            { RobotoMedium: require('./assets/fonts/Roboto-Medium.ttf') },
+            { RobotoRegular: require('./assets/fonts/Roboto-Regular.ttf') },
+            { RobotoLight: require('./assets/fonts/Roboto-Light.ttf') }
         ]);
 
-        await Promise.all([...fontAssets]);
+        const imageAssets = cacheImages([
+             require('./assets/images/logo.png'),
+             require('./assets/images/Approval.png'),
+             require('./assets/images/DOCustomer.png'),
+             require('./assets/images/MyConfirmation.png'),
+             require('./assets/images/MyRequest.png'),
+             require('./assets/images/ViewRequest.png'),
+             require('./assets/images/Test.png'),
+             require('./assets/images/UserManual.png'),
+             require('./assets/images/FAQ.png'), 
+             require('./assets/images/Link.png'),
+             require('./assets/images/Information.png')
+        ]);
+
+        await Promise.all([...imageAssets, ...fontAssets]);
     }
 
     render() {
@@ -34,16 +60,15 @@ export default class App extends React.Component {
             return (
                 <AppLoading
                     startAsync={this._loadAssetsAsync}
-                    onFinish={() => this.setState({isReady: true})}
+                    onFinish={() => this.setState({ isReady: true })}
                     onError={console.warn}
                 />
             );
         }
-        console.disableYellowBox = true;
-        Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.PORTRAIT_UP);
+        //console.disableYellowBox = true;
         return (
             <Provider store={store}>
-                    <Router/>
+                <Router />
             </Provider>
         );
     }
