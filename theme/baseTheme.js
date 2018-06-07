@@ -28,6 +28,7 @@ const fontSize = {
 const fontFamily = {
     extrabold: "RobotoBlack",
     bold: "RobotoBold",
+    boldItalic: 'RobotoBoldItalic',
     medium: "RobotoMedium",
     regular: "RobotoRegular",
     light: "RobotoLight"

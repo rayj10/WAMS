@@ -33,6 +33,7 @@ export default class App extends React.Component {
         const fontAssets = cacheFonts([
             { RobotoBlack: require('./assets/fonts/Roboto-Black.ttf') },
             { RobotoBold: require('./assets/fonts/Roboto-Bold.ttf') },
+            { RobotoBoldItalic: require('./assets/fonts/Roboto-BoldItalic.ttf') },
             { RobotoMedium: require('./assets/fonts/Roboto-Medium.ttf') },
             { RobotoRegular: require('./assets/fonts/Roboto-Regular.ttf') },
             { RobotoLight: require('./assets/fonts/Roboto-Light.ttf') }

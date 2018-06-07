@@ -177,15 +177,7 @@ class RequestDetails extends React.Component {
      */
     renderItems(requestItems) {
         return requestItems.map((item, key) => {
-
-            //determine color code for status
-            let statusColor = { color: '#3fd130' };
             let status = item["StatusName"];
-            if (status === 'Reject' || status === 'Cancel')
-                statusColor = { color: '#ff3030' }
-            else if (status === 'Open')
-                statusColor = { color: '#ffae19' }
-
             return (
                 <View style={styles.itemPanel} key={key}>
                     <View style={styles.verticalSubPanel}>
@@ -223,7 +215,13 @@ class RequestDetails extends React.Component {
                     </View>
                     <View style={styles.verticalSubPanel}>
                         <Text style={[styles.titleTextStyle, { textAlign: 'right', marginLeft: 0 }]}>{"Status:"}</Text>
-                        <Text style={[styles.titleTextStyle, { marginLeft: 5 }, statusColor]}>{item['StatusName']}</Text>
+                        <Text
+                            style={[
+                                styles.titleTextStyle,
+                                { marginLeft: 5 },
+                                (status === 'Reject' || status === 'Cancel') ? { color: '#ff3030' } : (status === 'Open') ? { color: '#ffae19' } : { color: '#3fd130' }]}>
+                            {status}
+                        </Text>
                     </View>
                 </View>)
         });

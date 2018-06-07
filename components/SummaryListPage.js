@@ -31,13 +31,18 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly'
     },
 
+    idNumber: {
+        fontSize: fontSize.regular,
+        fontFamily: fontFamily.boldItalic,
+    },
+
     titleTextStyle: {
-        fontSize: fontSize.small,
+        fontSize: fontSize.small + 1,
         fontFamily: fontFamily.bold,
     },
 
     textStyle: {
-        fontSize: fontSize.small,
+        fontSize: fontSize.small + 1,
         fontFamily: fontFamily.light,
     }
 });
@@ -58,7 +63,7 @@ class SummaryListPage extends React.Component {
     renderSummary(headers) {
         return headers.map((item, key) => {
             let info = this.buildPanel(item);
-            return (<TouchableOpacity onPress={() => Actions.RequestDetails({ request: item, caller: this.props.caller })} key={key}>
+            return (<TouchableOpacity onPress={() => this.props.onShowDetails(item)} key={key}>
                 <View style={styles.outterPanel}>
                     <View style={[styles.innerPanel, { flex: 3.5 }]}>
                         {info.slice(0, 3)}
@@ -72,35 +77,35 @@ class SummaryListPage extends React.Component {
     }
 
     /**
-     * Pick out desired information from header to be rendered
-     * @param {Object} item: individual header information from the mapped array in renderRequestSummary
+     * Pick out desired information from header to be rendered based on keys passed in props
+     * @param {Object} item: individual header information from the mapped array in renderSummary
      */
     buildPanel(item) {
         let panel = [];
+        let { keys } = this.props;
 
-        //determine color code for status
-        let statusColor = { color: '#3fd130' };
-        let status = item["StatusName"];
-        if (status === 'Reject' || status === 'Cancel')
-            statusColor = { color: '#ff3030' }
-        else if (status === 'Open')
-            statusColor = { color: '#ffae19' }
+        panel.push(<Text style={{ left: 15 }} key={'id'}>
+            <Text style={styles.idNumber}>{item[keys['id']]}</Text>
+        </Text>);
+        panel.push(<Text style={{ left: 15 }} key={'department'}>
+            <Text style={styles.titleTextStyle}>{"Department: "}</Text>
+            <Text style={styles.textStyle}>{item[keys['department']]}</Text>
+        </Text>);
+        panel.push(<Text style={{ left: 15 }} key={'date'}>
+            <Text style={styles.titleTextStyle}>{"Date: "}</Text>
+            <Text style={styles.textStyle}>{item[keys['date']]}</Text>
+        </Text>);
 
-        panel.push(<Text style={{ left: 15 }} key={'reqNo'}>
-            <Text style={styles.titleTextStyle}>{"Request No.: "}</Text>
-            <Text style={styles.textStyle}>{item["RequestNo"]}</Text>
-        </Text>);
-        panel.push(<Text style={{ left: 15 }} key={'depNum'}>
-            <Text style={styles.titleTextStyle}>{"Department Name: "}</Text>
-            <Text style={styles.textStyle}>{item["dept_nm"]}</Text>
-        </Text>);
-        panel.push(<Text style={{ left: 15 }} key={'reqDate'}>
-            <Text style={styles.titleTextStyle}>{"Request Date: "}</Text>
-            <Text style={styles.textStyle}>{item["RequestDate"]}</Text>
-        </Text>);
+        let status = item[keys['status']];
         panel.push(<View style={{ flex: 1, justifyContent: 'space-evenly', alignItems: 'center' }} key={'status'}>
             <Text style={[styles.titleTextStyle, { fontSize: fontSize.regular }]}>{"Status:"}</Text>
-            <Text style={[styles.titleTextStyle, { fontSize: fontSize.regular + 4 }, statusColor]}>{status}</Text>
+            <Text
+                style={
+                    [styles.titleTextStyle,
+                    { fontSize: fontSize.regular + 4 },
+                    (status === 'Reject' || status === 'Cancel') ? { color: '#ff3030' } : (status === 'Open') ? { color: '#ffae19' } : { color: '#3fd130' }]}>
+                {status}
+            </Text>
         </View>);
 
         return panel;

@@ -78,27 +78,57 @@ class ViewRequest extends React.Component {
     }
 
     /**
+     * Map keys returned by API into internally uniform keys to be used by SummaryListPage
+     * Needed because of the different key names for each form returned in json by API
+     * @param {String} pageName: Name of page getting displayed 
+     */
+    getKeys(pageName) {
+        let keys = {
+            Requests: {
+                id: 'RequestNo',
+                department: 'dept_nm',
+                date: 'RequestDate',
+                status: 'StatusName',
+            },
+            PO: {
+                id: 'RequestNo',
+                department: 'dept_nm',
+                date: 'RequestDate',
+                status: 'StatusName',
+            },
+            Transfers: {
+                id: 'RequestNo',
+                department: 'dept_nm',
+                date: 'RequestDate',
+                status: 'StatusName',
+            },
+        }
+
+        return keys[pageName];
+    }
+
+    /**
     * Page Template to render information based on pageName and availability of data
     * @param {String} pageName: Page to be rendered  
     */
     renderPage(pageName) {
         if (pageName === 'Requests') {
             if (this.props.isRequestListReceived)
-                return <SummaryListPage title={pageName} status={this.state.request} onRefresh={this.getLists} list={this.props.requestList.data} caller='View' />
+                return <SummaryListPage title={pageName} status={this.state.request} onRefresh={this.getLists} list={this.props.requestList.data} keys={this.getKeys(pageName)} onShowDetails={(reqHead) => Actions.RequestDetails({ request: reqHead, caller: 'View' })} />
             else
-                return <SummaryListPage title={pageName} status={this.state.request} onRefresh={this.getLists} list={null} caller='View' />
+                return <SummaryListPage title={pageName} status={this.state.request} onRefresh={this.getLists}/>
         }
         else if (pageName === 'PO') {
             if (false) //this.props.isPOListReceived
-                return <SummaryListPage title={pageName} status={this.state.PO} onRefresh={this.getLists} list={this.props.requestList.data} caller='View' />
+                return <SummaryListPage title={pageName} status={this.state.PO} onRefresh={this.getLists} list={this.props.requestList.data} keys={this.getKeys(pageName)} onShowDetails={() => { }} />
             else
-                return <SummaryListPage title={pageName} status={this.state.PO} onRefresh={this.getLists} list={null} caller='View' />
+                return <SummaryListPage title={pageName} status={this.state.PO} onRefresh={this.getLists}/>
         }
         else if (pageName === 'Transfers') {
             if (false) //this.props.isTransferListReceived
-                return <SummaryListPage title={pageName} status={this.state.transfer} onRefresh={this.getLists} list={this.props.requestList.data} caller='View' />
+                return <SummaryListPage title={pageName} status={this.state.transfer} onRefresh={this.getLists} list={this.props.requestList.data} keys={this.getKeys(pageName)} onShowDetails={() => { }} />
             else
-                return <SummaryListPage title={pageName} status={this.state.transfer} onRefresh={this.getLists} list={null} caller='View' />
+                return <SummaryListPage title={pageName} status={this.state.transfer} onRefresh={this.getLists}/>
         }
     }
 
