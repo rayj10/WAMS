@@ -2,7 +2,7 @@ import React from 'react';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { View, Text, Alert, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, Alert, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Pages } from 'react-native-pages';
 
 import styles from "./styles";

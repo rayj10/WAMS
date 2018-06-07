@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity, ActivityIndicator, RefreshControl } from 'react-native';
+import { View, StyleSheet, Text, FlatList, TouchableOpacity, ActivityIndicator, RefreshControl } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
 import { color, fontSize, fontFamily, normalize } from '../theme/baseTheme';
@@ -48,7 +48,7 @@ class SummaryListPage extends React.Component {
 
         this.state = {
             refreshing: false,
-          };
+        };
     }
 
     /**
@@ -115,10 +115,10 @@ class SummaryListPage extends React.Component {
     render() {
         let { status, list } = this.props;
 
-        let content = (
+        let content = ([
             <View style={{ marginTop: 20 }}>
                 <ActivityIndicator animating={true} size='large' />
-            </View>);
+            </View>]);
 
         if (status !== null) {
             if (status === 'Authenticated' && list != null) {
@@ -134,12 +134,12 @@ class SummaryListPage extends React.Component {
                 else if (status === 'Unknown Error')
                     message = 'Sorry, but we are currently unable to diagnose the problem, please try again later';
 
-                content = (
+                content = ([
                     <View style={{ alignItems: 'center' }}>
                         <Text style={[styles.titleTextStyle, { textAlign: 'center', fontSize: 20 }]}>{'\n\n' + status + '\n'}</Text>
                         <Text style={[styles.titleTextStyle, { textAlign: 'center', fontSize: 16 }]}>{message}</Text>
                     </View>
-                );
+                ]);
             }
         }
 
@@ -147,11 +147,13 @@ class SummaryListPage extends React.Component {
             <View style={{ flex: 1 }}>
                 <Text style={styles.subHeader}>{this.props.title}</Text>
                 <View style={[styles.panelContainer, status === 'Authenticated' ? {} : { backgroundColor: '#f2f7fc' }]}>
-                    <ScrollView showsVerticalScrollIndicator={false} refreshControl={<RefreshControl
+                    <FlatList
+                        showsVerticalScrollIndicator={false}
                         refreshing={this.state.refreshing}
-                        onRefresh={this.onRefresh.bind(this)} />}>
-                        {content}
-                    </ScrollView>
+                        onRefresh={this.onRefresh.bind(this)}
+                        data={content}
+                        renderItem={({ item }) => item}
+                        keyExtractor={(item, key) => key.toString()} />
                 </View>
             </View>
         );
