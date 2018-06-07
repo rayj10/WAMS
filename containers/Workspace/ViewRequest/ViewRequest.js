@@ -35,11 +35,19 @@ class ViewRequest extends React.Component {
         };
 
         this.onFetchFinish = this.onFetchFinish.bind(this);
+        this.getLists = this.getLists.bind(this);
     }
 
     //fetch data to be displayed as soon as the component is mounted
     componentDidMount() {
         this.mounted = true;
+        this.getLists();
+    }
+
+    /**
+     * Get list of Requests, PO and Transfers
+     */
+    getLists(){
         this.props.actionsWorkspace.getRequestList(this.props.token, this.props.userName, this.onFetchFinish);
     }
 
@@ -76,21 +84,21 @@ class ViewRequest extends React.Component {
     renderPage(pageName) {
         if (pageName === 'Requests') {
             if (this.props.isRequestListReceived)
-                return <SummaryListPage title={pageName} status={this.state.request} list={this.props.requestList.data} caller='View' />
+                return <SummaryListPage title={pageName} status={this.state.request} onRefresh={this.getLists} list={this.props.requestList.data} caller='View' />
             else
-                return <SummaryListPage title={pageName} status={this.state.request} list={null} caller='View' />
+                return <SummaryListPage title={pageName} status={this.state.request} onRefresh={this.getLists} list={null} caller='View' />
         }
         else if (pageName === 'PO') {
             if (false) //this.props.isPOListReceived
-                return <SummaryListPage title={pageName} status={this.state.PO} list={this.props.requestList.data} caller='View' />
+                return <SummaryListPage title={pageName} status={this.state.PO} onRefresh={this.getLists} list={this.props.requestList.data} caller='View' />
             else
-                return <SummaryListPage title={pageName} status={this.state.PO} list={null} caller='View' />
+                return <SummaryListPage title={pageName} status={this.state.PO} onRefresh={this.getLists} list={null} caller='View' />
         }
         else if (pageName === 'Transfers') {
             if (false) //this.props.isTransferListReceived
-                return <SummaryListPage title={pageName} status={this.state.transfer} list={this.props.requestList.data} caller='View' />
+                return <SummaryListPage title={pageName} status={this.state.transfer} onRefresh={this.getLists} list={this.props.requestList.data} caller='View' />
             else
-                return <SummaryListPage title={pageName} status={this.state.transfer} list={null} caller='View' />
+                return <SummaryListPage title={pageName} status={this.state.transfer} onRefresh={this.getLists} list={null} caller='View' />
         }
     }
 

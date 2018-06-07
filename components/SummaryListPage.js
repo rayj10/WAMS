@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity, ActivityIndicator, RefreshControl } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
 import { color, fontSize, fontFamily, normalize } from '../theme/baseTheme';
@@ -45,6 +45,10 @@ const styles = StyleSheet.create({
 class SummaryListPage extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            refreshing: false,
+          };
     }
 
     /**
@@ -102,6 +106,12 @@ class SummaryListPage extends React.Component {
         return panel;
     }
 
+    onRefresh() {
+        this.setState({ refreshing: true });
+        this.props.onRefresh();
+        this.setState({ refreshing: false });
+    }
+
     render() {
         let { status, list } = this.props;
 
@@ -137,7 +147,9 @@ class SummaryListPage extends React.Component {
             <View style={{ flex: 1 }}>
                 <Text style={styles.subHeader}>{this.props.title}</Text>
                 <View style={[styles.panelContainer, status === 'Authenticated' ? {} : { backgroundColor: '#f2f7fc' }]}>
-                    <ScrollView showsVerticalScrollIndicator={false}>
+                    <ScrollView showsVerticalScrollIndicator={false} refreshControl={<RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={this.onRefresh.bind(this)} />}>
                         {content}
                     </ScrollView>
                 </View>

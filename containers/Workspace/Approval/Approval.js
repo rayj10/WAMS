@@ -35,11 +35,19 @@ class Approval extends React.Component {
         };
 
         this.onFetchFinish = this.onFetchFinish.bind(this);
+        this.getLists = this.getLists.bind(this);
     }
 
     //fetch data to be displayed as soon as the component is mounted
     componentDidMount() {
         this.mounted = true;
+        this.getLists();
+    }
+
+    /**
+     * Get list of Requests, PO and Transfers
+     */
+    getLists(){
         this.props.actionsWorkspace.getRequestList(this.props.token, this.props.userName, this.onFetchFinish);
     }
 
@@ -89,21 +97,21 @@ class Approval extends React.Component {
     renderPage(pageName) {
         if (pageName === 'Requests') {
             if (this.props.isRequestListReceived)
-                return <SummaryListPage title={pageName} status={this.state.request} list={this.filterList(this.props.requestList.data)} caller='Approval' />
+                return <SummaryListPage title={pageName} status={this.state.request} onRefresh={this.getLists} list={this.filterList(this.props.requestList.data)} caller='Approval' />
             else
-                return <SummaryListPage title={pageName} status={this.state.request} list={null} caller='Approval' />
+                return <SummaryListPage title={pageName} status={this.state.request} onRefresh={this.getLists} list={null} caller='Approval' />
         }
         else if (pageName === 'PO') {
             if (false) //this.props.isPOListReceived
-                return <SummaryListPage title={pageName} status={this.state.PO} list={this.filterList(this.props.requestList.data)} caller='Approval' />
+                return <SummaryListPage title={pageName} status={this.state.PO} onRefresh={this.getLists} list={this.filterList(this.props.requestList.data)} caller='Approval' />
             else
-                return <SummaryListPage title={pageName} status={this.state.PO} list={null} caller='Approval' />
+                return <SummaryListPage title={pageName} status={this.state.PO} onRefresh={this.getLists} list={null} caller='Approval' />
         }
         else if (pageName === 'Transfers') {
             if (false) //this.props.isTransferListReceived
-                return <SummaryListPage title={pageName} status={this.state.transfer} list={this.filterList(this.props.requestList.data)} caller='Approval' />
+                return <SummaryListPage title={pageName} status={this.state.transfer} onRefresh={this.getLists} list={this.filterList(this.props.requestList.data)} caller='Approval' />
             else
-                return <SummaryListPage title={pageName} status={this.state.transfer} list={null} caller='Approval' />
+                return <SummaryListPage title={pageName} status={this.state.transfer} onRefresh={this.getLists} list={null} caller='Approval' />
         }
     }
 
