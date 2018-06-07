@@ -106,6 +106,9 @@ class SummaryListPage extends React.Component {
         return panel;
     }
 
+    /**
+     * Fetch new data for the FlatList using callback supplied to onRefresh props
+     */
     onRefresh() {
         this.setState({ refreshing: true });
         this.props.onRefresh();

@@ -26,6 +26,9 @@ class OfflineNotice extends React.Component {
         }
     }
 
+    /**
+     * Render an offline sign on top of the screen
+     */
     miniOfflineSign() {
         return (
             <View style={styles.offlineContainer}>
@@ -35,6 +38,9 @@ class OfflineNotice extends React.Component {
         );
     }
 
+    /**
+     * Callback to be called when there's a connection change
+     */
     handleConnectivityChange = (isConnected) => {
         if (isConnected) {
             this.setState({ isConnected });

@@ -37,6 +37,8 @@ export function login(user, successCB) {
             .catch((error) => {
                 if (error === 'Bad request')
                     Alert.alert('Invalid Login', 'Username and Password did not match');
+                else
+                    Alert.alert(error, 'Please check your connection or try again later');
             })
     }
 }
