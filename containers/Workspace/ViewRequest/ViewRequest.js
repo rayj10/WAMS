@@ -14,9 +14,8 @@ import { color } from '../../../theme/baseTheme';
 //Maps store's state to ViewRequest's props
 export const mapStateToProps = state => ({
     token: state.authReducer.token,
-    userName: state.authReducer.userName,
-    requestList: state.workspaceReducer.requestList,
-    isRequestListReceived: state.workspaceReducer.isRequestListReceived,
+    requestViewList: state.workspaceReducer.requestViewList,
+    requestViewReceived: state.workspaceReducer.requestViewReceived,
 });
 
 //Maps imported actions to ViewRequest's props
@@ -48,7 +47,7 @@ class ViewRequest extends React.Component {
      * Get list of Requests, PO and Transfers
      */
     getLists(){
-        this.props.actionsWorkspace.getRequestList(this.props.token, this.props.userName, this.onFetchFinish);
+        this.props.actionsWorkspace.getRequestView(this.props.token, this.onFetchFinish);
     }
 
     /**
@@ -113,20 +112,20 @@ class ViewRequest extends React.Component {
     */
     renderPage(pageName) {
         if (pageName === 'Requests') {
-            if (this.props.isRequestListReceived)
-                return <SummaryListPage title={pageName} status={this.state.request} onRefresh={this.getLists} list={this.props.requestList.data} keys={this.getKeys(pageName)} onShowDetails={(reqHead) => Actions.RequestDetails({ request: reqHead, caller: 'View' })} />
+            if (this.props.requestViewReceived)
+                return <SummaryListPage title={pageName} status={this.state.request} onRefresh={this.getLists} list={this.props.requestViewList.data} keys={this.getKeys(pageName)} onShowDetails={(reqHead) => Actions.RequestDetails({ request: reqHead, caller: 'View' })} />
             else
                 return <SummaryListPage title={pageName} status={this.state.request} onRefresh={this.getLists}/>
         }
         else if (pageName === 'PO') {
             if (false) //this.props.isPOListReceived
-                return <SummaryListPage title={pageName} status={this.state.PO} onRefresh={this.getLists} list={this.props.requestList.data} keys={this.getKeys(pageName)} onShowDetails={() => { }} />
+                return <SummaryListPage title={pageName} status={this.state.PO} onRefresh={this.getLists} list={this.props.requestViewList.data} keys={this.getKeys(pageName)} onShowDetails={() => { }} />
             else
                 return <SummaryListPage title={pageName} status={this.state.PO} onRefresh={this.getLists}/>
         }
         else if (pageName === 'Transfers') {
             if (false) //this.props.isTransferListReceived
-                return <SummaryListPage title={pageName} status={this.state.transfer} onRefresh={this.getLists} list={this.props.requestList.data} keys={this.getKeys(pageName)} onShowDetails={() => { }} />
+                return <SummaryListPage title={pageName} status={this.state.transfer} onRefresh={this.getLists} list={this.props.requestViewList.data} keys={this.getKeys(pageName)} onShowDetails={() => { }} />
             else
                 return <SummaryListPage title={pageName} status={this.state.transfer} onRefresh={this.getLists}/>
         }

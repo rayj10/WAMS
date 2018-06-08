@@ -13,12 +13,12 @@ export function successSignOut() {
 }
 
 /**
- * Fetch the List of Requests
+ * Fetch the List of Requests that needs Approval (still open)
  * @param {String} token: User's session token
  * @param {String} userName: User's ID 
  * @param {Function} resultCB: Callback to be executed once fetching is done 
  */
-export function getRequestList(token, user, resultCB) {
+export function getRequestApproval(token, resultCB) {
     let endpoint = 'api/v1/cbn/inventory/GetRequestVerification?DeptCode=PRC&StafCode=ekow';
 
     let header = {
@@ -30,11 +30,38 @@ export function getRequestList(token, user, resultCB) {
 
         return fetchAPI(endpoint, 'POST', header, null)
             .then((json) => {
-                dispatch({ type: types.RECEIVE_REQUEST_LIST, requestList: json });
+                dispatch({ type: types.RECEIVE_REQUEST_APPROVAL, requestApprovalList: json });
                 resultCB('Requests', 'Authenticated');
             })
             .catch((error) => {
-                dispatch({ type: types.RECEIVE_EMPTY_REQUEST });
+                dispatch({ type: types.EMPTY_APPROVAL_LIST });
+                resultCB('Requests', error);
+            });
+    }
+}
+
+/**
+ * Fetch the whole List of Requests
+ * @param {String} token: User's session token
+ * @param {Function} resultCB: Callback to be executed once fetching is done 
+ */
+export function getRequestView(token, resultCB) {
+    let endpoint = 'api/v1/cbn/inventory/GetRequestVerification?DeptCode=PRC&StafCode=ekow';
+
+    let header = {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Authorization": "Bearer " + token
+    }
+
+    return dispatch => {
+
+        return fetchAPI(endpoint, 'POST', header, null)
+            .then((json) => {
+                dispatch({ type: types.RECEIVE_REQUEST_VIEW, requestViewList: json });
+                resultCB('Requests', 'Authenticated');
+            })
+            .catch((error) => {
+                dispatch({ type: types.EMPTY_VIEW_LIST });
                 resultCB('Requests', error);
             });
     }
@@ -57,11 +84,11 @@ export function getRequestDetails(request, token, resultCB) {
     return dispatch => {
         return fetchAPI(endpoint, 'POST', header, null)
             .then((json) => {
-                dispatch({ type: types.RECEIVE_DETAILED_VIEW, request, details: json.data });
+                dispatch({ type: types.RECEIVE_DETAILS, details: json.data });
                 resultCB('Success');
             })
             .catch((error) => {
-                dispatch({ type: types.RECEIVE_EMPTY_DETAILS });
+                dispatch({ type: types.EMPTY_DETAILS });
                 resultCB(error);
             });
     }

@@ -33,7 +33,7 @@ class OfflineNotice extends React.Component {
         return (
             <View style={styles.offlineContainer}>
                 <Text style={styles.offlineText}>No Internet Connection</Text>
-                <StatusBar hidden={true}/>
+                <StatusBar hidden={true} />
             </View>
         );
     }
@@ -42,14 +42,11 @@ class OfflineNotice extends React.Component {
      * Callback to be called when there's a connection change
      */
     handleConnectivityChange = (isConnected) => {
-        if (isConnected) {
-            this.setState({ isConnected });
-        } else {
-            this.setState({ isConnected });
-        }
+        this.setState({ isConnected });
     };
 
     componentDidMount() {
+        NetInfo.isConnected.fetch().then(isConnected => this.setState({ isConnected }));
         NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
     }
 

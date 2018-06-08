@@ -17,8 +17,7 @@ import { color } from '../../../theme/baseTheme';
 //Maps reducer's states to RequestDetails props
 export const mapStateToProps = state => ({
     token: state.authReducer.token,
-    isDetailsReceived: state.workspaceReducer.isDetailsReceived,
-    requestHead: state.workspaceReducer.requestHead,
+    detailsReceived: state.workspaceReducer.detailsReceived,
     requestDetails: state.workspaceReducer.requestDetails
 });
 
@@ -125,8 +124,8 @@ class RequestDetails extends React.Component {
         let status = this.state.fetchStatus;
 
         if (status !== null) {
-            if (this.props.isDetailsReceived) {
-                let request = this.props.requestHead;
+            if (this.props.detailsReceived) {
+                let request = this.props.request;
                 let details = this.props.requestDetails;
                 content = (
                     <ScrollView>
