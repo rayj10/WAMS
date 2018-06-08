@@ -8,13 +8,15 @@ const styles = StyleSheet.create({
     subHeader: {
         fontSize: fontSize.large,
         fontFamily: fontFamily.bold,
-        color: color.light_black
+        color: color.light_black,
+        marginHorizontal: normalize(15)
     },
 
     panelContainer: {
         flex: 1,
         marginBottom: normalize(30),
-        paddingTop: normalize(5)
+        marginTop: normalize(5),
+        marginHorizontal: normalize(15)
     },
 
     outterPanel: {
@@ -157,6 +159,7 @@ class SummaryListPage extends React.Component {
                 <View style={[styles.panelContainer, status === 'Authenticated' ? {} : { backgroundColor: '#f2f7fc' }]}>
                     <FlatList
                         showsVerticalScrollIndicator={false}
+                        progressViewOffset={-20}
                         refreshing={this.state.refreshing}
                         onRefresh={this.onRefresh.bind(this)}
                         data={content}

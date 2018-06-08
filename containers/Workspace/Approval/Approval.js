@@ -4,12 +4,13 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { View, Text, Alert, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Pages } from 'react-native-pages';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
 
 import styles from "./styles";
 import SummaryListPage from '../../../components/SummaryListPage';
 import * as workspaceAction from '../../../actions/workspaceActions';
 import * as authAction from '../../../actions/authActions';
-import { color } from '../../../theme/baseTheme';
+import { color, windowWidth } from '../../../theme/baseTheme';
 
 //Maps store's state to Approval's props
 export const mapStateToProps = state => ({
@@ -30,8 +31,9 @@ class Approval extends React.Component {
         super();
         this.state = {
             request: null,
-            PO: 'Access Denied',        //needs to be nulled
-            transfer: 'Access Denied'   //needs to be nulled
+            PO: 'Access Denied',         //needs to be nulled
+            transfer: 'Access Denied',   //needs to be nulled
+            carouselIndex: 0
         };
 
         this.onFetchFinish = this.onFetchFinish.bind(this);
@@ -133,13 +135,34 @@ class Approval extends React.Component {
     }
 
     render() {
+        let pages = [
+            this.renderPage('Requests'),
+            this.renderPage('PO'),
+            this.renderPage('Transfers')
+        ];
+
         return (
             <View style={styles.container}>
-                <Pages indicatorColor={color.blue} indicatorOpacity={0.2}>
-                    {this.renderPage('Requests')}
-                    {this.renderPage('PO')}
-                    {this.renderPage('Transfers')}
-                </Pages>
+                <Carousel
+                    data={pages}
+                    renderItem={({ item, index }) => item}
+                    sliderWidth={windowWidth}
+                    itemWidth={windowWidth}
+                    useScrollView={true}
+                    lockScrollWhileSnapping={true}
+                    activeSlideOffset={windowWidth / 3}
+                    swipeThreshold={windowWidth / 3}
+                    onSnapToItem={(index) => this.setState({ carouselIndex: index })}
+                />
+                <Pagination
+                    dotsLength={pages.length}
+                    activeDotIndex={this.state.carouselIndex}
+                    containerStyle={styles.pageIndicator}
+                    dotColor={color.blue}
+                    inactiveDotColor={color.blue}
+                    inactiveDotOpacity={0.3}
+                    inactiveDotScale={0.6}
+                />
             </View>
         );
     }

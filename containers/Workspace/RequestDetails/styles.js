@@ -11,6 +11,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column'
   },
 
+  icon: {
+    marginHorizontal: 10,
+    marginVertical: 10
+  },
+
   headerText: {
     fontSize: fontSize.large,
     fontFamily: fontFamily.medium,

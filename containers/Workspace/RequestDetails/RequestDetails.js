@@ -253,7 +253,7 @@ class RequestDetails extends React.Component {
                             onPress={this.onDecline} />
                     </View>
                 </View>);
-            forwardIcon = (<IconWrapper name='paper-plane' type='font-awesome' style={{ marginRight: 5 }} color='white' size={28} onPress={() => this.setState({ forwardRequest: true })} />);
+            forwardIcon = (<IconWrapper name='paper-plane' type='font-awesome' style={[styles.icon, { marginRight: 15 }]} color='white' size={28} onPress={() => this.setState({ forwardRequest: true })} />);
             forwardModal = (
                 <ForwardModal
                     visible={this.state.forwardRequest}
@@ -266,7 +266,7 @@ class RequestDetails extends React.Component {
             <View style={styles.container}>
                 {forwardModal}
                 <Header
-                    leftComponent={<IconWrapper name='chevron-left' type='font-awesome' color='white' size={28} onPress={() => Actions.pop()} />}
+                    leftComponent={<IconWrapper name='chevron-left' type='font-awesome' color='white' size={28} style={styles.icon} onPress={() => Actions.pop()} />}
                     centerComponent={{ text: 'Request Details', style: styles.headerText }}
                     rightComponent={forwardIcon}
                     outerContainerStyles={styles.headerOuterContainer} />

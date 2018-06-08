@@ -21,6 +21,11 @@ const styles = StyleSheet.create({
         padding: 0,
         borderBottomWidth: 0,
     },
+
+    icon:{
+        marginVertical: 10,
+        marginHorizontal: 10
+    }
 });
 
 class PageHeader extends React.Component {
@@ -32,9 +37,9 @@ class PageHeader extends React.Component {
         return (
             <View>
                 <Header
-                    leftComponent={<IconWrapper name='menu' color='white' size={33} onPress={() => Actions.drawerOpen()} />}
+                    leftComponent={<IconWrapper name='menu' color='white' size={33} style={styles.icon} onPress={() => Actions.drawerOpen()} />}
                     centerComponent={{ text: this.props.title, style: styles.headerText }}
-                    rightComponent={<View style={{ width: 40 }} />}
+                    rightComponent={<View style={{ width: normalize(43) }} />}
                     outerContainerStyles={styles.headerOuterContainer}
                 />
                 <OfflineNotice />
