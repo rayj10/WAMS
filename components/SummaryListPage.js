@@ -117,9 +117,8 @@ class SummaryListPage extends React.Component {
      * Fetch new data for the FlatList using callback supplied to onRefresh props
      */
     onRefresh() {
-        this.setState({ refreshing: true });
-        this.props.onRefresh();
-        this.setState({ refreshing: false });
+        this.setState({ refreshing: true },
+            () => this.props.onRefresh(() => this.setState({ refreshing: false })));
     }
 
     render() {
@@ -159,9 +158,10 @@ class SummaryListPage extends React.Component {
                 <View style={[styles.panelContainer, status === 'Authenticated' ? {} : { backgroundColor: '#f2f7fc' }]}>
                     <FlatList
                         showsVerticalScrollIndicator={false}
-                        progressViewOffset={-20}
+                        progressViewOffset={-10}
                         refreshing={this.state.refreshing}
                         onRefresh={this.onRefresh.bind(this)}
+                        onMomentumScrollEnd={(event) => event.nativeEvent.contentOffset.y === 0 ? this.onRefresh() : null}
                         data={content}
                         renderItem={({ item }) => item}
                         keyExtractor={(item, key) => key.toString()} />

@@ -48,9 +48,10 @@ class Approval extends React.Component {
 
     /**
      * Get list of Requests, PO and Transfers
+     * @param {Function} finishCB: callback to be called once the lists has been fetched (optional)
      */
-    getLists() {
-        this.props.actionsWorkspace.getRequestApproval(this.props.token, this.onFetchFinish);
+    getLists(finishCB) {
+        this.props.actionsWorkspace.getRequestApproval(this.props.token, (listName,status)=>this.onFetchFinish(listName,status, finishCB&&finishCB()));
     }
 
     /**

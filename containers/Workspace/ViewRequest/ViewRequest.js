@@ -47,9 +47,10 @@ class ViewRequest extends React.Component {
 
     /**
      * Get list of Requests, PO and Transfers
+     * @param {Function} finishCB: callback to be called once the lists has been fetched (optional)
      */
-    getLists() {
-        this.props.actionsWorkspace.getRequestView(this.props.token, this.onFetchFinish);
+    getLists(finishCB) {
+        this.props.actionsWorkspace.getRequestView(this.props.token, (listName,status)=>this.onFetchFinish(listName,status, finishCB&&finishCB()));
     }
 
     /**
