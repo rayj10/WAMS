@@ -3,7 +3,6 @@ import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { View, Text, Alert, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { Pages } from 'react-native-pages';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 
 import styles from "./styles";

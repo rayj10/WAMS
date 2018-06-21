@@ -1,3 +1,5 @@
 import Help from './Help';
+import FAQ from './FAQ';
+import UserManual from './UserManual';
 
-export default Help;
+export { Help, FAQ, UserManual };

@@ -10,16 +10,9 @@ import ScrollableTabBar from './components/ScrollableTabBar';
 
 //Import Containers
 import Login from './containers/Login';
-import Approval from './containers/Workspace/Approval';
-import RequestDetails from './containers/Workspace/RequestDetails';
-import DOCustomer from './containers/Workspace/DOCustomer';
-import MyConfirmation from './containers/Workspace/MyConfirmation';
-import MyRequest from './containers/Workspace/MyRequest';
-import ViewRequest from './containers/Workspace/ViewRequest';
+import { Approval, DOCustomer, MyConfirmation, MyRequest, ViewRequest, RequestDetails } from './containers/Workspace';
 import QRScanner from './containers/QRScanner';
-import Help from './containers/Help';
-import UserManual from './containers/Help/UserManual';
-import FAQ from './containers/Help/FAQ';
+import { Help, UserManual, FAQ } from './containers/Help';
 import Setting from './containers/Setting';
 
 //Import Store, actionTypes
