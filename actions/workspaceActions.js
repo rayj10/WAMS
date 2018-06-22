@@ -12,6 +12,26 @@ export function successSignOut() {
     }
 }
 
+export function getAvailableMenu(token){
+    let endpoint = '/api/v1/user/menu';
+
+    let header = {
+        "Authorization": "Bearer " + token,
+        "Cache-Control": "no-cache",
+    }
+
+    return dispatch => {
+
+        return fetchAPI(endpoint, 'GET', header, null)
+            .then((json) => {
+                dispatch({ type: types.RECEIVE_MENU, menu: json.data });
+            })
+            .catch((error) => {
+                dispatch({ type: types.EMPTY_MENU });
+            });
+    }
+}
+
 /**
  * Fetch the List of Requests that needs Approval (still open)
  * @param {String} token: User's session token
@@ -30,7 +50,7 @@ export function getRequestApproval(token, resultCB) {
 
         return fetchAPI(endpoint, 'POST', header, null)
             .then((json) => {
-                dispatch({ type: types.RECEIVE_REQUEST_APPROVAL, requestApprovalList: json });
+                dispatch({ type: types.RECEIVE_REQUEST_APPROVAL, requestApprovalList: json.data });
                 resultCB('Requests', 'Authenticated');
             })
             .catch((error) => {
@@ -57,7 +77,7 @@ export function getRequestView(token, resultCB) {
 
         return fetchAPI(endpoint, 'POST', header, null)
             .then((json) => {
-                dispatch({ type: types.RECEIVE_REQUEST_VIEW, requestViewList: json });
+                dispatch({ type: types.RECEIVE_REQUEST_VIEW, requestViewList: json.data });
                 resultCB('Requests', 'Authenticated');
             })
             .catch((error) => {

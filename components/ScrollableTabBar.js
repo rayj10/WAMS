@@ -1,8 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { color, fontFamily, fontSize, normalize } from '../theme/baseTheme';
+import * as workspaceAction from '../actions/workspaceActions';
 
 const styles = StyleSheet.create({
     container: {
@@ -34,32 +37,49 @@ const styles = StyleSheet.create({
     }
 });
 
+//Maps store's state to Approval's props
+export const mapStateToProps = state => ({
+    token: state.authReducer.token,
+    menuList: state.workspaceReducer.menuList,
+    menuReceived: state.workspaceReducer.menuReceived
+});
+
+//Maps imported actions to Approval's props
+export const mapDispatchToProps = (dispatch) => ({
+    actionsWorkspace: bindActionCreators(workspaceAction, dispatch),
+});
+
 class ScrollableTabBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            tabs: [],
+            tabs: null,
             currentTab: null
         }
     }
 
     componentDidMount() {
-        let menu = this.getMenu();
-        //re-initialize tab highlight and actual tab to first tab everytime tab bar remounted
-        this.goto(menu[0])
-        this.setState({ tabs: menu, currentTab: menu[0] });
+        this.initializeTabs();
     }
 
     componentDidUpdate() {
         if (this.state.currentTab !== 'Approval' && Actions.currentScene === '_Approval')
             this.setState({ currentTab: 'Approval' });
+        this.initializeTabs();
     }
 
-    /**
-     * Fetch a list of menus available for the user
-     */
-    getMenu() {
-        return ["Approval", "My Request", "DO Customer", "My Confirmation", "View Request"];
+    initializeTabs() {
+        let tabs = [];
+        if (this.props.menuReceived && !this.state.tabs) {
+            this.props.menuList.map((item) => {
+                if (item['ParentMenuID'] === this.props.tabID)
+                    tabs.push(item);
+            });
+
+            //as soon as menu is fetched, initialize the tabs and default tab
+            this.setState({ tabs, currentTab: '#' + tabs[0]['MenuID'] });
+            this.goto('#' + tabs[0]['MenuID']);
+        }
     }
 
     /**
@@ -68,14 +88,7 @@ class ScrollableTabBar extends React.Component {
      */
     goto(route) {
         this.setState({ currentTab: route })    //change highlighted active tab
-
-        switch (route) {
-            case 'Approval': Actions.Approval(); break;
-            case 'My Request': Actions.MyRequest(); break;
-            case 'DO Customer': Actions.DOCustomer(); break;
-            case 'My Confirmation': Actions.MyConfirmation(); break;
-            case 'View Request': Actions.ViewRequest(); break;
-        }
+        Actions[route].call()
     }
 
     render() {
@@ -86,28 +99,28 @@ class ScrollableTabBar extends React.Component {
                     contentContainerStyle={styles.overlay}
                     data={this.state.tabs}
                     renderItem={({ item }) => {
-                        let source = "";
-                        switch (item) {
-                            case 'Approval': source = require('../assets/images/Approval.png'); break;
-                            case 'My Request': source = require('../assets/images/MyRequest.png'); break;
-                            case 'DO Customer': source = require('../assets/images/DOCustomer.png'); break;
-                            case 'My Confirmation': source = require('../assets/images/MyConfirmation.png'); break;
-                            case 'View Request': source = require('../assets/images/ViewRequest.png'); break;
+                        let source = "", id = '#' + item['MenuID'], name = item['MenuName'];
+                        switch (item['MenuID']) {
+                            case 7556: source = require('../assets/images/Approval.png'); break;
+                            case 7552: source = require('../assets/images/MyRequest.png'); break;
+                            case 7559: source = require('../assets/images/DOCustomer.png'); break;
+                            case 7560: source = require('../assets/images/MyConfirmation.png'); break;
+                            case 7562: source = require('../assets/images/ViewRequest.png'); break;
                         }
                         return (
-                            <TouchableOpacity onPress={() => this.goto(item)}>
-                                <View style={[styles.textContainer, this.state.currentTab === item ? styles.activeTab : {}]}>
+                            <TouchableOpacity onPress={() => this.goto(id)}>
+                                <View style={[styles.textContainer, this.state.currentTab === id ? styles.activeTab : {}]}>
                                     <Image style={styles.image} source={source} />
-                                    <Text style={styles.textStyle}>{item}</Text>
+                                    <Text style={styles.textStyle}>{name}</Text>
                                 </View>
                             </TouchableOpacity>
                         );
                     }}
                     extraData={this.state.currentTab}
-                    keyExtractor={(item) => item} />
+                    keyExtractor={(item) => item['MenuName']} />
             </View>
         );
     }
 }
 
-export default ScrollableTabBar;
+export default connect(mapStateToProps, mapDispatchToProps)(ScrollableTabBar);
