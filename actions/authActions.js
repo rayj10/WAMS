@@ -1,5 +1,6 @@
 import { AsyncStorage, Alert } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import firebase from '../utils/firebase';
 
 import * as t from './actionTypes/authTypes';
 import { fetchAPI } from '../utils/fetch';
@@ -32,6 +33,25 @@ export function login(user, successCB) {
                 AsyncStorage.setItem('token', json['access_token']);
                 AsyncStorage.setItem('username', username);
                 dispatch({ type: t.LOGGED_IN, token: json['access_token'], userName: username });
+
+                //firebase auth for Chat feature
+                var dummyEmail = username + '@cbn.co.id';
+                firebase.auth()
+                    .signInWithEmailAndPassword(dummyEmail, password)
+                    .catch((error) => {
+                        //if sign in fails because it's new user, sign the user up straightaway
+                        if (error.code === 'auth/user-not-found') {
+                            firebase.auth()
+                                .createUserWithEmailAndPassword(dummyEmail, password)
+                                .catch((error) => {
+                                   console.log(error, error.message);
+                                });
+                        }
+                        else {
+                            console.log(error, error.message);
+                        }
+                    });
+
                 successCB();
             })
             .catch((error) => {
@@ -52,6 +72,7 @@ export function signOut(successCB) {
     return (dispatch) => {
         AsyncStorage.removeItem('token');
         AsyncStorage.removeItem('username');
+        firebase.auth().signOut();
         dispatch({ type: t.LOGGED_OUT });
         successCB();
     }

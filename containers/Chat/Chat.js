@@ -1,14 +1,14 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {
     View,
     Text
 } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
-import firebase from '../firebase';
+import firebase from '../utils/firebase';
 
 import styles from './styles';
 
-export default class Chat extends Component {
+export default class Chat extends React.Component {
 
     constructor(props) {
         super(props);
@@ -19,7 +19,7 @@ export default class Chat extends Component {
         this.user = firebase.auth().currentUser
         this.friend = this.props.friend
 
-        
+
 
         this.chatRef = this.getRef().child('chat/' + this.generateChatId());
         this.chatRefData = this.chatRef.orderByChild('order')
@@ -28,7 +28,7 @@ export default class Chat extends Component {
     }
 
     generateChatId() {
-        if(this.user.uid > this.friend.uid)
+        if (this.user.uid > this.friend.uid)
             return `${this.user.uid}-${this.friend.uid}`
         else
             return `${this.friend.uid}-${this.user.uid}`
@@ -45,7 +45,7 @@ export default class Chat extends Component {
             var items = [];
             snap.forEach((child) => {
                 var avatar = '../../assets/images/Ray.png'
-                var name = child.val().uid == this.user.uid? this.user.name: this.friend.name
+                var name = child.val().uid == this.user.uid ? this.user.name : this.friend.name
                 items.push({
                     _id: child.val().createdAt,
                     text: child.val().text,
@@ -76,9 +76,10 @@ export default class Chat extends Component {
 
     onSend(messages = []) {
 
-        // this.setState({
-        //     messages: GiftedChat.append(this.state.messages, messages),
-        // });
+        this.setState({
+            messages: GiftedChat.append(this.state.messages, messages),
+        });
+
         messages.forEach(message => {
             var now = new Date().getTime()
             this.chatRef.push({
@@ -89,7 +90,7 @@ export default class Chat extends Component {
                 order: -1 * now
             })
         })
-        
+
     }
     render() {
         return (
@@ -99,7 +100,7 @@ export default class Chat extends Component {
                 user={{
                     _id: this.user.uid,
                 }}
-                />
+            />
         );
     }
 }
