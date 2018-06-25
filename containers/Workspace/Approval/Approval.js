@@ -14,7 +14,6 @@ import { color, windowWidth } from '../../../theme/baseTheme';
 //Maps store's state to Approval's props
 export const mapStateToProps = state => ({
     token: state.authReducer.token,
-    userName: state.authReducer.userName,
     requestApprovalList: state.workspaceReducer.requestApprovalList,
     requestApprovalReceived: state.workspaceReducer.requestApprovalReceived,
 });
@@ -47,7 +46,7 @@ class Approval extends React.Component {
 
     /**
      * Get list of Requests, PO and Transfers
-     * @param {Function} finishCB: callback to be called once the lists has been fetched (optional)
+     * @param {Function} finishCB: callback to be called once the lists has been fetched (optional, for pull-refresh function)
      */
     getLists(finishCB) {
         this.props.actionsWorkspace.getRequestApproval(this.props.token, (listName,status)=>this.onFetchFinish(listName,status, finishCB&&finishCB()));
@@ -116,19 +115,19 @@ class Approval extends React.Component {
     renderPage(pageName) {
         if (pageName === 'Requests') {
             if (this.props.requestApprovalReceived)
-                return <SummaryListPage title={pageName} status={this.state.request} onRefresh={this.getLists} list={this.props.requestApprovalList.data} keys={this.getKeys(pageName)} onShowDetails={(reqHead) => Actions.RequestDetails({ request: reqHead, caller: 'Approval' })} />
+                return <SummaryListPage title={pageName} status={this.state.request} onRefresh={this.getLists} list={this.props.requestApprovalList} keys={this.getKeys(pageName)} onShowDetails={(reqHead) => Actions.RequestDetails({ request: reqHead, caller: 'Approval' })} />
             else
                 return <SummaryListPage title={pageName} status={this.state.request} onRefresh={this.getLists} />
         }
         else if (pageName === 'PO') {
             if (false) //this.props.isPOListReceived
-                return <SummaryListPage title={pageName} status={this.state.PO} onRefresh={this.getLists} list={this.props.requestApprovalList.data} keys={this.getKeys(pageName)} onShowDetails={() => { }} />
+                return <SummaryListPage title={pageName} status={this.state.PO} onRefresh={this.getLists} list={this.props.requestApprovalList} keys={this.getKeys(pageName)} onShowDetails={() => { }} />
             else
                 return <SummaryListPage title={pageName} status={this.state.PO} onRefresh={this.getLists} />
         }
         else if (pageName === 'Transfers') {
             if (false) //this.props.isTransferListReceived
-                return <SummaryListPage title={pageName} status={this.state.transfer} onRefresh={this.getLists} list={this.props.requestApprovalList.data} keys={this.getKeys(pageName)} onShowDetails={() => { }} />
+                return <SummaryListPage title={pageName} status={this.state.transfer} onRefresh={this.getLists} list={this.props.requestApprovalList} keys={this.getKeys(pageName)} onShowDetails={() => { }} />
             else
                 return <SummaryListPage title={pageName} status={this.state.transfer} onRefresh={this.getLists} />
         }
