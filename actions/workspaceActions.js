@@ -1,5 +1,3 @@
-import { Alert } from 'react-native';
-
 import * as types from './actionTypes/workspaceTypes';
 import { fetchAPI } from '../utils/fetch';
 
@@ -30,7 +28,7 @@ export function getRequestApproval(token, resultCB) {
 
         return fetchAPI(endpoint, 'POST', header, null)
             .then((json) => {
-                dispatch({ type: types.RECEIVE_REQUEST_APPROVAL, requestApprovalList: json });
+                dispatch({ type: types.RECEIVE_REQUEST_APPROVAL, requestApprovalList: json.data });
                 resultCB('Requests', 'Authenticated');
             })
             .catch((error) => {
@@ -57,7 +55,7 @@ export function getRequestView(token, resultCB) {
 
         return fetchAPI(endpoint, 'POST', header, null)
             .then((json) => {
-                dispatch({ type: types.RECEIVE_REQUEST_VIEW, requestViewList: json });
+                dispatch({ type: types.RECEIVE_REQUEST_VIEW, requestViewList: json.data });
                 resultCB('Requests', 'Authenticated');
             })
             .catch((error) => {

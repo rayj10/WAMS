@@ -46,7 +46,7 @@ class ViewRequest extends React.Component {
 
     /**
      * Get list of Requests, PO and Transfers
-     * @param {Function} finishCB: callback to be called once the lists has been fetched (optional)
+     * @param {Function} finishCB: callback to be called once the lists has been fetched (optional, for pull-refresh function)
      */
     getLists(finishCB) {
         this.props.actionsWorkspace.getRequestView(this.props.token, (listName,status)=>this.onFetchFinish(listName,status, finishCB&&finishCB()));
@@ -115,19 +115,19 @@ class ViewRequest extends React.Component {
     renderPage(pageName) {
         if (pageName === 'Requests') {
             if (this.props.requestViewReceived)
-                return <SummaryListPage title={pageName} status={this.state.request} onRefresh={this.getLists} list={this.props.requestViewList.data} keys={this.getKeys(pageName)} onShowDetails={(reqHead) => Actions.RequestDetails({ request: reqHead, caller: 'View' })} />
+                return <SummaryListPage title={pageName} status={this.state.request} onRefresh={this.getLists} list={this.props.requestViewList} keys={this.getKeys(pageName)} onShowDetails={(reqHead) => Actions.RequestDetails({ request: reqHead, caller: 'View' })} />
             else
                 return <SummaryListPage title={pageName} status={this.state.request} onRefresh={this.getLists} />
         }
         else if (pageName === 'PO') {
             if (false) //this.props.isPOListReceived
-                return <SummaryListPage title={pageName} status={this.state.PO} onRefresh={this.getLists} list={this.props.requestViewList.data} keys={this.getKeys(pageName)} onShowDetails={() => { }} />
+                return <SummaryListPage title={pageName} status={this.state.PO} onRefresh={this.getLists} list={this.props.requestViewList} keys={this.getKeys(pageName)} onShowDetails={() => { }} />
             else
                 return <SummaryListPage title={pageName} status={this.state.PO} onRefresh={this.getLists} />
         }
         else if (pageName === 'Transfers') {
             if (false) //this.props.isTransferListReceived
-                return <SummaryListPage title={pageName} status={this.state.transfer} onRefresh={this.getLists} list={this.props.requestViewList.data} keys={this.getKeys(pageName)} onShowDetails={() => { }} />
+                return <SummaryListPage title={pageName} status={this.state.transfer} onRefresh={this.getLists} list={this.props.requestViewList} keys={this.getKeys(pageName)} onShowDetails={() => { }} />
             else
                 return <SummaryListPage title={pageName} status={this.state.transfer} onRefresh={this.getLists} />
         }

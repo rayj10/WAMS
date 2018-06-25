@@ -1,12 +1,13 @@
 import React from 'react';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
-import { Linking, View, Keyboard } from 'react-native';
+import { Linking, View, Keyboard, ActivityIndicator } from 'react-native';
 import { bindActionCreators } from 'redux';
 
 import * as authAction from '../../actions/authActions';
 import LoginForm from '../../components/loginForm'
 import OfflineNotice from '../../components/OfflineNotice';
+import styles from './styles';
 
 //Maps store's reducer states to Login's props 
 export const mapStateToProps = state => ({

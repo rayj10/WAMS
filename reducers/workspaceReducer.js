@@ -17,19 +17,19 @@ let initialState = {
 export default function workspaceReducer(state = initialState, action) {
     switch (action.type) {
         case t.RECEIVE_REQUEST_APPROVAL:
-            return Object.assign({}, state, { requestApprovalReceived: true, requestApprovalList: action.requestApprovalList });
+            return Object.assign({}, state, { requestApprovalReceived: true, requestApprovalList: action.requestApprovalList }); break;
         case t.EMPTY_APPROVAL_LIST:
-            return Object.assign({}, state, { requestApprovalReceived: false, requestApprovalList: {} });
+            return Object.assign({}, state, { requestApprovalReceived: false, requestApprovalList: {} }); break;
         case t.RECEIVE_REQUEST_VIEW:
-            return Object.assign({}, state, { requestViewReceived: true, requestViewList: action.requestViewList });
+            return Object.assign({}, state, { requestViewReceived: true, requestViewList: action.requestViewList }); break;
         case t.EMPTY_VIEW_LIST:
-            return Object.assign({}, state, { requestViewReceived: false, requestViewList: {} });
+            return Object.assign({}, state, { requestViewReceived: false, requestViewList: {} }); break;
         case t.RECEIVE_DETAILS:
-            return Object.assign({}, state, { detailsReceived: true, requestDetails: action.details });
+            return Object.assign({}, state, { detailsReceived: true, requestDetails: action.details }); break;
         case t.EMPTY_DETAILS:
-            return Object.assign({}, state, { detailsReceived: false, requestDetails: {} });
+            return Object.assign({}, state, { detailsReceived: false, requestDetails: {} }); break;
         case t.SIGNED_OUT:
-            return Object.assign({}, state, initialState);
+            return Object.assign({}, state, initialState); break;
         default:
             return state;
     }
