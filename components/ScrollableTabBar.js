@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { color, fontFamily, fontSize, normalize } from '../theme/baseTheme';
-import * as workspaceAction from '../actions/workspaceActions';
+import * as menuAction from '../actions/menuActions';
 
 const styles = StyleSheet.create({
     container: {
@@ -40,13 +40,14 @@ const styles = StyleSheet.create({
 //Maps store's state to Approval's props
 export const mapStateToProps = state => ({
     token: state.authReducer.token,
-    menuList: state.workspaceReducer.menuList,
-    menuReceived: state.workspaceReducer.menuReceived
+    menuList: state.menuReducer.menuList,
+    menuReceived: state.menuReducer.menuReceived,
+    currentScene: state.menuReducer.currentScene
 });
 
 //Maps imported actions to Approval's props
 export const mapDispatchToProps = (dispatch) => ({
-    actionsWorkspace: bindActionCreators(workspaceAction, dispatch),
+    actionsMenu: bindActionCreators(menuAction, dispatch)
 });
 
 class ScrollableTabBar extends React.Component {
@@ -58,23 +59,24 @@ class ScrollableTabBar extends React.Component {
         }
     }
 
-    componentDidMount() {
-        this.initializeTabs();
-    }
-
+    /**
+     * When Component got a props update i.e. menu received or tabbing changed, do these adjustments
+     */
     componentDidUpdate() {
-        if (this.state.currentTab !== 'Approval' && Actions.currentScene === '_Approval')
-            this.setState({ currentTab: 'Approval' });
-        this.initializeTabs();
-    }
+        //Adjust highlighted tab position
+        let tabs = this.state.tabs;
+        if (tabs && this.state.currentTab !== '#' + tabs[0]['MenuID'] && Actions.currentScene === '_#' + tabs[0]['MenuID'])
+            this.setState({ currentTab: '#' + tabs[0]['MenuID'] });
 
-    initializeTabs() {
-        let tabs = [];
+        //if menu has just been received, grab children of this.props.tabID and sort them
+        tabs = [];
         if (this.props.menuReceived && !this.state.tabs) {
             this.props.menuList.map((item) => {
                 if (item['ParentMenuID'] === this.props.tabID)
                     tabs.push(item);
             });
+
+            tabs.sort((a, b) => { return a['MenuID'] - b['MenuID'] });
 
             //as soon as menu is fetched, initialize the tabs and default tab
             this.setState({ tabs, currentTab: '#' + tabs[0]['MenuID'] });
@@ -88,7 +90,8 @@ class ScrollableTabBar extends React.Component {
      */
     goto(route) {
         this.setState({ currentTab: route })    //change highlighted active tab
-        Actions[route].call()
+        Actions.jump(route)
+        this.props.actionsMenu.updateMenu(Actions.currentScene)    //notify redux state about scene change so it could update menus
     }
 
     render() {

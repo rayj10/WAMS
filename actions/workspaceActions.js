@@ -1,5 +1,3 @@
-import { Alert } from 'react-native';
-
 import * as types from './actionTypes/workspaceTypes';
 import { fetchAPI } from '../utils/fetch';
 
@@ -9,26 +7,6 @@ import { fetchAPI } from '../utils/fetch';
 export function successSignOut() {
     return dispatch => {
         dispatch({ type: types.SIGNED_OUT });
-    }
-}
-
-export function getAvailableMenu(token){
-    let endpoint = '/api/v1/user/menu';
-
-    let header = {
-        "Authorization": "Bearer " + token,
-        "Cache-Control": "no-cache",
-    }
-
-    return dispatch => {
-
-        return fetchAPI(endpoint, 'GET', header, null)
-            .then((json) => {
-                dispatch({ type: types.RECEIVE_MENU, menu: json.data });
-            })
-            .catch((error) => {
-                dispatch({ type: types.EMPTY_MENU });
-            });
     }
 }
 

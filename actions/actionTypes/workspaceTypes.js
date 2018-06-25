@@ -1,5 +1,6 @@
 export const RECEIVE_MENU = 'workspace/RECEIVE_MENU';
 export const EMPTY_MENU = 'workspace/EMPTY_MENU';
+export const UPDATE_MENU = 'workspace/UPDATE_MENU';
 export const RECEIVE_REQUEST_APPROVAL = 'workspace/RECEIVE_REQUEST_APPROVAL';
 export const EMPTY_APPROVAL_LIST = 'workspace/EMPTY_APPROVAL_LIST';
 export const RECEIVE_REQUEST_VIEW = 'workspace/RECEIVE_REQUEST_VIEW';

@@ -9,6 +9,7 @@ import { Actions } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import * as menuAction from '../actions/menuActions';
 import * as authAction from '../actions/authActions';
 import * as workspaceAction from '../actions/workspaceActions';
 import { color, fontFamily, fontSize, normalize } from '../theme/baseTheme';
@@ -17,14 +18,16 @@ import { color, fontFamily, fontSize, normalize } from '../theme/baseTheme';
 export const mapStateToProps = state => ({
     token: state.authReducer.token,
     username: state.authReducer.userName,
-    menuList: state.workspaceReducer.menuList,
-    menuReceived: state.workspaceReducer.menuReceived
+    menuList: state.menuReducer.menuList,
+    menuReceived: state.menuReducer.menuReceived,
+    currentScene: state.menuReducer.currentScene
 });
 
 //Maps actions to NavDrawer's props
 export const mapDispatchToProps = (dispatch) => ({
     actionsWorkspace: bindActionCreators(workspaceAction, dispatch),
-    actionsAuth: bindActionCreators(authAction, dispatch)
+    actionsAuth: bindActionCreators(authAction, dispatch),
+    actionsMenu: bindActionCreators(menuAction, dispatch)
 });
 
 const styles = StyleSheet.create({
@@ -82,58 +85,46 @@ class NavDrawer extends React.Component {
         this.state = {
             tabs: null,
             currentTab: null,                                                           //marks which drawer item to highlight based on active scene
+            initialPage: null,
             userName: name ? name.charAt(0).toUpperCase() + name.slice(1) : null,       //user's name to be displayed on avatar
         }
 
         this.goto = this.goto.bind(this);
         this.onSignOut = this.onSignOut.bind(this);
-        this.handleBackButton = this.handleBackButton.bind(this);
-    }
-
-    /**
-     * Callback to be called when Android hardware back button pressed
-     */
-    handleBackButton() {
-        console.log(Actions.currentScene)
-        if (this.state.currentTab === "Workspace")
-            this.onSignOut()
-        else if (Actions.currentScene === 'Login')
-            BackHandler.exitApp();
-        else {
-
-            Actions.pop();
-        }
-        return true;
     }
 
     componentDidMount() {
-        this.props.actionsWorkspace.getAvailableMenu(this.props.token);
-
-        if (Platform.OS === 'android')
-            BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+        this.props.actionsMenu.getAvailableMenu(this.props.token, () => {
+            if (error === 'Authentication Denied') {
+                console.log('denied')
+                Alert.alert(status, 'Your session may have expired please re-enter your login credentials')
+                this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));
+                Actions.reset("Auth");
+            }
+        });
     }
 
-    componentWillUnmount() {
-        if (Platform.OS === 'android')
-            BackHandler.removeEventListener('hardwareBackPress');
-    }
-
+    /**
+     * When Component got a props update i.e. menu received or tabbing changed, do these adjustments
+     */
     componentDidUpdate() {
-        /*workaround because of problems with listeners not stacking as expected, new listener is pushed onto
-        listener stack when autologin is done, Actions.pop() used instead of the defined BackHandler, hence, we
-        have to set state manually in case of mismatch*/
-        if (this.state.currentTab !== 'Workspace' && Actions.currentScene === '_Approval')
-            this.setState({ currentTab: 'Workspace' })
-
-        let tabs = [];
+        //Adjust highlighted tab position
+        let tabs = this.state.tabs;
+        if (tabs && this.state.currentTab !== ('#' + tabs[0]['MenuID']) && Actions.currentScene === '_#' + this.state.initialPage)
+            this.setState({ currentTab: '#' + tabs[0]['MenuID'] })
+        console.log(this.state.initialPage)
+        //if menu has just been received, grab children of this.props.tabID and sort them
+        tabs = [];
         if (this.props.menuReceived && !this.state.tabs) {
             this.props.menuList.map((item) => {
                 if (item['ParentMenuID'] === this.props.tabID)
                     tabs.push(item);
             });
 
-            //as soon as menu is fetched, initialize the tabs and default tab
-            this.setState({ tabs, currentTab: '#' + tabs[0]['MenuID'] });
+            tabs.sort((a, b) => { return a['MenuID'] - b['MenuID'] });
+
+            //as soon as menu is fetched, initialize the tabs and default tabs
+            this.setState({ tabs, currentTab: '#' + tabs[0]['MenuID'], initialPage: this.props.menuList.find((item) => item['ParentMenuID'] === tabs[0]['MenuID'])['MenuID'] });
             this.goto('#' + tabs[0]['MenuID']);
         }
     }
@@ -168,6 +159,7 @@ class NavDrawer extends React.Component {
         Actions.drawerClose();
         this.setState({ currentTab: route })    //change highlighted active tab
         Actions[route].call();
+        this.props.actionsMenu.updateMenu(Actions.currentScene)    //notify redux state about scene change so it could update menus
     }
 
     render() {

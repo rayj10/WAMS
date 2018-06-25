@@ -1,11 +1,9 @@
 import * as t from '../actions/actionTypes/workspaceTypes';
 
 let initialState = {
-    menuReceived: false,
     requestApprovalReceived: false,
     requestViewReceived: false,
     detailsReceived: false,
-    menuList: {},
     requestApprovalList: {},
     requestViewList: {},
     requestDetails: {}
@@ -18,10 +16,6 @@ let initialState = {
  */
 export default function workspaceReducer(state = initialState, action) {
     switch (action.type) {
-        case t.RECEIVE_MENU:
-            return Object.assign({}, state, { menuReceived: true, menuList: action.menu }); break;
-        case t.EMPTY_MENU:
-            return Object.assign({}, state, { menuReceived: false, menuList: {} }); break;
         case t.RECEIVE_REQUEST_APPROVAL:
             return Object.assign({}, state, { requestApprovalReceived: true, requestApprovalList: action.requestApprovalList }); break;
         case t.EMPTY_APPROVAL_LIST:
