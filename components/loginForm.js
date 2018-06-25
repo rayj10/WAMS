@@ -7,7 +7,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types'
-import { Text, View, Image, KeyboardAvoidingView, StyleSheet } from 'react-native';
+import { Text, View, Image, KeyboardAvoidingView, StyleSheet, ActivityIndicator } from 'react-native';
 import { Button } from 'react-native-elements';
 
 import { isEmpty, validate } from '../utils/validate'
@@ -19,6 +19,12 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         backgroundColor: color.white
+    },
+
+    activityIndicatorContainer: {
+        height: 100,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
 
     image: {
@@ -84,15 +90,23 @@ class loginForm extends React.Component {
         })
 
         state["error"] = error;
+        state["submitted"] = false;
+        console.log(state);
         return state;
     }
 
     onSubmit() {
         const data = this.state;
         const result = validate(data);
-
-        if (!result.success) this.setState({ error: result.error });
-        else this.props.onSubmit(this.extractData(data));
+        this.setState({ submitted: true });
+        if (!result.success) {
+            this.setState({ error: result.error });
+            setTimeout(() => this.setState({ submitted: false }), 1000)
+        }
+        else {
+            console.log('success')
+            this.props.onSubmit(this.extractData(data));
+        }
     }
 
     extractData(data) {
@@ -141,14 +155,22 @@ class loginForm extends React.Component {
                             )
                         })
                     }
-                    <Button
-                        raised
-                        title={buttonTitle}
-                        borderRadius={4}
-                        containerViewStyle={styles.containerView}
-                        buttonStyle={styles.button}
-                        textStyle={styles.buttonText}
-                        onPress={this.onSubmit} />
+                    {
+                        this.state.submitted ?
+                            <View style={styles.activityIndicatorContainer}>
+                                <ActivityIndicator animating={this.state.isSubmitted} size='large' />
+                            </View>
+                            :
+                            <Button
+                                raised
+                                title={buttonTitle}
+                                borderRadius={4}
+                                containerViewStyle={styles.containerView}
+                                buttonStyle={styles.button}
+                                textStyle={styles.buttonText}
+                                onPress={this.onSubmit} />
+                    }
+
                     {
                         this.props.onForgotPassword !== null &&
                         <Text style={styles.forgotText} onPress={onForgotPassword}>

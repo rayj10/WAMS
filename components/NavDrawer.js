@@ -94,10 +94,9 @@ class NavDrawer extends React.Component {
     }
 
     componentDidMount() {
-        this.props.actionsMenu.getAvailableMenu(this.props.token, () => {
+        this.props.actionsMenu.getAvailableMenu(this.props.token, (error) => {
             if (error === 'Authentication Denied') {
-                console.log('denied')
-                Alert.alert(status, 'Your session may have expired please re-enter your login credentials')
+                Alert.alert(error, 'Your session may have expired please re-enter your login credentials')
                 this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));
                 Actions.reset("Auth");
             }
@@ -112,7 +111,7 @@ class NavDrawer extends React.Component {
         let tabs = this.state.tabs;
         if (tabs && this.state.currentTab !== ('#' + tabs[0]['MenuID']) && Actions.currentScene === '_#' + this.state.initialPage)
             this.setState({ currentTab: '#' + tabs[0]['MenuID'] })
-        console.log(this.state.initialPage)
+    
         //if menu has just been received, grab children of this.props.tabID and sort them
         tabs = [];
         if (this.props.menuReceived && !this.state.tabs) {
