@@ -32,8 +32,46 @@ export function getRequestApproval(token, resultCB) {
                 resultCB('Requests', 'Authenticated');
             })
             .catch((error) => {
-                dispatch({ type: types.EMPTY_APPROVAL_LIST });
+                dispatch({ type: types.EMPTY_REQUEST_APPROVAL });
                 resultCB('Requests', error);
+            });
+    }
+}
+
+/**
+ * Fetch the List of Transfers that needs Approval (still open)
+ * @param {String} token: User's session token
+ * @param {String} userName: User's ID 
+ * @param {Function} resultCB: Callback to be executed once fetching is done 
+ */
+export function getTransferApproval(token, userName, resultCB) {
+    let endpoint = '/api/v1/cbn/inventory/GetFormTransfer';
+
+    let header = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+    }
+
+    let body = {
+        "TransferInput": [
+            {
+                "UserCode": userName,
+                "search": "",
+                "LocId": "ALL"
+            }
+        ]
+    };
+
+    return dispatch => {
+
+        return fetchAPI(endpoint, 'POST', header, body)
+            .then((json) => {
+                dispatch({ type: types.RECEIVE_TRANSFER_APPROVAL, transferApprovalList: json.data });
+                resultCB('Transfers', 'Authenticated');
+            })
+            .catch((error) => {
+                dispatch({ type: types.EMPTY_TRANSFER_LIST });
+                resultCB('Transfers', error);
             });
     }
 }
