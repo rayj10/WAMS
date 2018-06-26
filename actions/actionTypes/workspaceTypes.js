@@ -1,10 +1,14 @@
-export const RECEIVE_MENU = 'workspace/RECEIVE_MENU';
-export const EMPTY_MENU = 'workspace/EMPTY_MENU';
-export const UPDATE_MENU = 'workspace/UPDATE_MENU';
 export const RECEIVE_REQUEST_APPROVAL = 'workspace/RECEIVE_REQUEST_APPROVAL';
-export const EMPTY_APPROVAL_LIST = 'workspace/EMPTY_APPROVAL_LIST';
+export const EMPTY_REQUEST_APPROVAL= 'workspace/EMPTY_APPROVAL_LIST';
 export const RECEIVE_REQUEST_VIEW = 'workspace/RECEIVE_REQUEST_VIEW';
-export const EMPTY_VIEW_LIST = 'workspace/EMPTY_VIEW_LIST';
+export const EMPTY_REQUEST_VIEW = 'workspace/EMPTY_REQUEST_VIEW';
+
+export const RECEIVE_TRANSFER_APPROVAL = 'workspace/RECEIVE_TRANSFER_APPROVAL';
+export const EMPTY_TRANSFER_APPROVAL = 'workspace/EMPTY_TRANSFER_APPROVAL';
+export const RECEIVE_TRANSFER_VIEW = 'workspace/RECEIVE_TRANSFER_VIEW';
+export const EMPTY_TRANSFER_VIEW = 'workspace/EMPTY_TRANSFER_VIEW';
+
 export const RECEIVE_DETAILS = 'workspace/RECEIVE_DETAILS';
 export const EMPTY_DETAILS = 'workspace/EMPTY_DETAILS';
+
 export const SIGNED_OUT = 'workspace/SIGNED_OUT';

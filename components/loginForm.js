@@ -91,22 +91,23 @@ class loginForm extends React.Component {
 
         state["error"] = error;
         state["submitted"] = false;
-        console.log(state);
+ 
         return state;
     }
 
     onSubmit() {
+        this.setState({ submitted: true });
         const data = this.state;
         const result = validate(data);
-        this.setState({ submitted: true });
         if (!result.success) {
             this.setState({ error: result.error });
-            setTimeout(() => this.setState({ submitted: false }), 1000)
         }
         else {
-            console.log('success')
             this.props.onSubmit(this.extractData(data));
         }
+        setTimeout(() => {
+            this.setState({ submitted: false })
+        }, 500);
     }
 
     extractData(data) {
