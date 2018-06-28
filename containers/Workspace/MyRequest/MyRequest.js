@@ -11,14 +11,16 @@ import * as workspaceAction from '../../../actions/workspaceActions';
 import * as authAction from '../../../actions/authActions';
 import { color, windowWidth } from '../../../theme/baseTheme';
 
-//Maps store's state to Approval's props
+//Maps store's state to ViewRequest's props
 export const mapStateToProps = state => ({
   token: state.authReducer.token,
-  requestApprovalList: state.workspaceReducer.requestApprovalList,
-  requestApprovalReceived: state.workspaceReducer.requestApprovalReceived,
+  requestViewList: state.workspaceReducer.requestViewList,
+  requestViewReceived: state.workspaceReducer.requestViewReceived,
+  transferViewList: state.workspaceReducer.transferViewList,
+  transferViewReceived: state.workspaceReducer.transferViewReceived,
 });
 
-//Maps imported actions to Approval's props
+//Maps imported actions to ViewRequest's props
 export const mapDispatchToProps = (dispatch) => ({
   actionsWorkspace: bindActionCreators(workspaceAction, dispatch),
   actionsAuth: bindActionCreators(authAction, dispatch)
@@ -30,7 +32,7 @@ class MyRequest extends React.Component {
     this.state = {
       request: null,
       PO: 'Access Denied',         //needs to be nulled
-      transfer: 'Access Denied',   //needs to be nulled
+      transfer: null,
       carouselIndex: 0
     };
 
@@ -49,7 +51,8 @@ class MyRequest extends React.Component {
    * @param {Function} finishCB: callback to be called once the lists has been fetched (optional, for pull-refresh function)
    */
   getLists(finishCB) {
-    this.props.actionsWorkspace.getRequestApproval(this.props.token, (listName, status) => this.onFetchFinish(listName, status, finishCB && finishCB()));
+    this.props.actionsWorkspace.getRequestView(this.props.token, (listName, status) => this.onFetchFinish(listName, status, finishCB && finishCB()));
+    this.props.actionsWorkspace.getTransferView(this.props.token, (listName, status) => this.onFetchFinish(listName, status, finishCB && finishCB()));
   }
 
   /**
@@ -64,11 +67,11 @@ class MyRequest extends React.Component {
       Actions.reset("Auth");
     }
     else if (this.mounted) {
-      if (listName = 'Requests')
+      if (listName === 'Requests')
         this.setState({ request: status })
-      else if (listName = 'PO')
+      else if (listName === 'PO')
         this.setState({ PO: status })
-      else if (listName = 'Transfers')
+      else if (listName === 'Transfers')
         this.setState({ transfer: status })
     }
   }
@@ -90,6 +93,14 @@ class MyRequest extends React.Component {
         department: 'dept_nm',
         date: 'RequestDate',
         status: 'StatusName',
+        requestor: 'full_nm',
+        item: 'ItemName',
+        amount: 'AmountItem',
+        unit: 'UnitCode',
+        price: 'EstimatedPrice',
+        from: 'Origin',
+        to: 'Target',
+        targetDate: 'TargetReceivedDate'
       },
       PO: {
         id: 'RequestNo',
@@ -98,10 +109,21 @@ class MyRequest extends React.Component {
         status: 'StatusName',
       },
       Transfers: {
-        id: 'RequestNo',
-        department: 'dept_nm',
-        date: 'RequestDate',
-        status: 'StatusName',
+        id: 'Transfer No',
+        department: 'Department',
+        date: 'Request Date',
+        status: 'Status',
+        requestor: 'Transfer By',
+        from: 'Origin Location',
+        to: 'Target Location',
+        code: 'ItemCode',
+        piece: 'ItemPieceNo',
+        item: 'ItemName',
+        serial: 'SerialNumber',
+        mac: 'MacAddress',
+        amount: 'AmountPending',
+        unit: 'UnitCode',
+        sCode: 'StatusCode'
       },
     }
 
@@ -113,21 +135,23 @@ class MyRequest extends React.Component {
   * @param {String} pageName: Page to be rendered  
   */
   renderPage(pageName) {
+    let keys = this.getKeys(pageName);
+
     if (pageName === 'Requests') {
-      if (this.props.requestApprovalReceived)
-        return <SummaryListPage title={pageName} status={this.state.request} onRefresh={this.getLists} list={this.props.requestApprovalList} keys={this.getKeys(pageName)} onShowDetails={(reqHead) => Actions.RequestDetails({ request: reqHead, caller: 'View' })} />
+      if (this.props.requestViewReceived)
+        return <SummaryListPage title={pageName} status={this.state.request} onRefresh={this.getLists} list={this.props.requestViewList} keys={keys} onShowDetails={(reqHead) => Actions.RequestDetails({ header: reqHead, caller: 'View', keys })} />
       else
         return <SummaryListPage title={pageName} status={this.state.request} onRefresh={this.getLists} />
     }
     else if (pageName === 'PO') {
       if (false) //this.props.isPOListReceived
-        return <SummaryListPage title={pageName} status={this.state.PO} onRefresh={this.getLists} list={this.props.requestApprovalList} keys={this.getKeys(pageName)} onShowDetails={() => { }} />
+        return <SummaryListPage title={pageName} status={this.state.PO} onRefresh={this.getLists} list={this.props.requestViewList} keys={keys} onShowDetails={() => { }} />
       else
         return <SummaryListPage title={pageName} status={this.state.PO} onRefresh={this.getLists} />
     }
     else if (pageName === 'Transfers') {
-      if (false) //this.props.isTransferListReceived
-        return <SummaryListPage title={pageName} status={this.state.transfer} onRefresh={this.getLists} list={this.props.requestApprovalList} keys={this.getKeys(pageName)} onShowDetails={() => { }} />
+      if (this.props.transferViewReceived)
+        return <SummaryListPage title={pageName} status={this.state.transfer} onRefresh={this.getLists} list={this.props.transferViewList} keys={keys} onShowDetails={(trfHead) => Actions.TransferDetails({ header: trfHead, caller: 'View', keys })} />
       else
         return <SummaryListPage title={pageName} status={this.state.transfer} onRefresh={this.getLists} />
     }

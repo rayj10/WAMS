@@ -12,7 +12,7 @@ import ScrollableTabBar from './components/ScrollableTabBar';
 
 //Import Containers
 import Login from './containers/Login';
-import { Approval, DOCustomer, MyConfirmation, MyRequest, ViewRequest, RequestDetails } from './containers/Workspace';
+import { Approval, DOCustomer, MyConfirmation, MyRequest, ViewRequest, RequestDetails, TransferDetails } from './containers/Workspace';
 import QRScanner from './containers/QRScanner';
 import { Help, UserManual, FAQ } from './containers/Help';
 import Setting from './containers/Setting';
@@ -117,6 +117,7 @@ class Routes extends React.Component {
                                     <Scene key="#7562" hideNavBar component={ViewRequest} title={"View Request"} />
                                 </Scene>
                                 <Scene key="RequestDetails" hideNavBar component={RequestDetails} title="Request Details" />
+                                <Scene key="TransferDetails" hideNavBar component={TransferDetails} title="Transfer Details" />
                             </Scene>
                             <Scene key="#7564" navBar={() => <PageHeader title='Help' />} title="Help" drawerLockMode={'locked-closed'}>
                                 <Scene tabs={true} hideTabBar animationEnabled={false} swipeEnabled={false} lazy={true}>

@@ -1,6 +1,7 @@
 import { AsyncStorage, Alert } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import firebase from '../utils/firebase';
+var stringify = require('qs-stringify');
 
 import * as t from './actionTypes/authTypes';
 import { fetchAPI } from '../utils/fetch';
@@ -28,7 +29,7 @@ export function login(user, successCB) {
     };
 
     return dispatch => {
-        return fetchAPI(endpoint, 'POST', header, body)
+        return fetchAPI(endpoint, 'POST', header, stringify(body))
             .then((json) => {
                 AsyncStorage.setItem('token', json['access_token']);
                 AsyncStorage.setItem('username', username);

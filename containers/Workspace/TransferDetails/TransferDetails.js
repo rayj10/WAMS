@@ -5,13 +5,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
     View, Alert, Text,
-    ScrollView, TouchableOpacity, ActivityIndicator
+    ScrollView, TouchableOpacity, ActivityIndicator,
+    Picker
 } from 'react-native';
 
 import styles from "./styles";
 import * as workspaceAction from '../../../actions/workspaceActions';
-import ForwardModal from '../../../components/ForwardModal';
 import IconWrapper from '../../../components/IconWrapper';
+import PickerWrapper from '../../../components/PickerWrapper';
 import { color, normalize } from '../../../theme/baseTheme';
 
 //Maps reducer's states to RequestDetails props
@@ -26,22 +27,21 @@ export const mapDispatchToProps = (dispatch) => ({
     actionsWorkspace: bindActionCreators(workspaceAction, dispatch),
 });
 
-class RequestDetails extends React.Component {
+class TransferDetails extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            forwardRequest: false,
-            currentForwardItem: null,
-            fetchStatus: null
+            fetchStatus: null,
+            verification: null
         };
 
-        this.onApprove = this.onApprove.bind(this);
-        this.onDecline = this.onDecline.bind(this);
+        this.onConfirm = this.onConfirm.bind(this);
+        this.onDeny = this.onDeny.bind(this);
         this.onFetchFinish = this.onFetchFinish.bind(this);
     }
 
     componentDidMount() {
-        this.props.actionsWorkspace.getRequestDetails(this.props.header[this.props.keys['id']], this.props.token, this.onFetchFinish);
+        this.props.actionsWorkspace.getTransferDetails(this.props.header[this.props.keys['id']], this.props.token, this.onFetchFinish);
     }
 
     /**
@@ -56,47 +56,9 @@ class RequestDetails extends React.Component {
     }
 
     /**
-     * Fetch list of recipients from API and display it to be selected from
-     */
-    getForwardList() {
-        let list = ['Account 1', 'Account 2', 'Account 3', 'Account 4', 'Account 5', 'Account 6', 'Account 7', 'Account 8', 'Account 9', 'Account 10'];
-
-        return list.map((item, key) =>
-            <TouchableOpacity key={key} onPress={() => this.setState({ currentForwardItem: item })}>
-                <View style={[styles.forwardListItem, this.state.currentForwardItem === item ? styles.activeItem : {}]}>
-                    <Text style={styles.forwardListText}>{item}</Text>
-                </View>
-            </TouchableOpacity>
-        );
-    }
-
-    /**
-     * What to do when forward button pressed
-     */
-    onForward() {
-        this.setState({ forwardRequest: false });   //close modal
-        let recipient = this.state.currentForwardItem;
-
-        setTimeout(() => {
-            if (recipient !== null)     //Check if recipient has been picked before pressing forward
-                Alert.alert('Forward Confirmation', 'You are about to forward to ' + recipient + '\n\nProceed?', [
-                    { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-                    { text: 'Proceed', onPress: () => {/*this.props.actionsWorkspace.forwardRequest(currentForwardItem)*/ } }
-                ]);
-            else
-                Alert.alert('Oops!', 'You must pick a recipient before forwarding', [
-                    { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-                    { text: 'Pick a Recipient', onPress: () => this.setState({ forwardRequest: true }) } //reopen modal
-                ])
-        }, 1200);
-
-        this.setState({ currentForwardItem: null }); //un-highlight the last choice
-    }
-
-    /**
      * What to do when Request is approved
      */
-    onApprove() {
+    onConfirm() {
         Alert.alert('Confirmation', "You are about to APPROVE an inventory request.\n\nAre you sure you want to approve this request?", [
             { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
             { text: 'Approve', onPress: () => console.log('Approve Pressed') }, //call a function to interact with fetchAPI from actions.js
@@ -106,7 +68,7 @@ class RequestDetails extends React.Component {
     /**
      * What to do when Request is declined
      */
-    onDecline() {
+    onDeny() {
         Alert.alert('Confirmation', "You are about to DECLINE an inventory request.\n\nAre you sure you want to decline this request?", [
             { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
             { text: 'Decline', onPress: () => console.log('Decline Pressed') }, //call a function to interact with fetchAPI from actions.js
@@ -116,7 +78,7 @@ class RequestDetails extends React.Component {
     /**
      * Render complete request form with the help of renderItems to render individual panels for items
      */
-    renderRequest() {
+    renderTransfer() {
         let content = (
             <View style={{ flex: 1, justifyContent: 'center' }}>
                 <ActivityIndicator animating={true} size='large' />
@@ -130,16 +92,20 @@ class RequestDetails extends React.Component {
                     <ScrollView>
                         <View style={styles.requestHead}>
                             <View style={styles.subRequestHead}>
-                                <Text style={styles.titleTextStyle}>{"Request No.:"}</Text>
+                                <Text style={styles.titleTextStyle}>{"Transfer No.:"}</Text>
                                 <Text style={styles.textStyle}>{header[keys['id']]}</Text>
                                 <Text style={styles.titleTextStyle}>{"Request Date:"}</Text>
                                 <Text style={styles.textStyle}>{header[keys['date']]}</Text>
+                                <Text style={styles.titleTextStyle}>{"Origin Location:"}</Text>
+                                <Text style={styles.textStyle}>{header[keys['from']]}</Text>
                             </View>
                             <View style={styles.subRequestHead}>
-                                <Text style={styles.titleTextStyle}>{"Requestor:"}</Text>
+                                <Text style={styles.titleTextStyle}>{"Transfer By:"}</Text>
                                 <Text style={styles.textStyle}>{header[keys['requestor']]}</Text>
                                 <Text style={styles.titleTextStyle}>{"Department:"}</Text>
                                 <Text style={styles.textStyle}>{header[keys['department']]}</Text>
+                                <Text style={styles.titleTextStyle}>{"Target Location:"}</Text>
+                                <Text style={styles.textStyle}>{header[keys['to']]}</Text>
                             </View>
                         </View>
                         <View style={styles.requestBody}>
@@ -175,9 +141,27 @@ class RequestDetails extends React.Component {
      */
     renderItems(requestItems) {
         let { keys } = this.props;
+        let lastLine = null;
 
         return requestItems.map((item, key) => {
-            let status = item[keys['status']];
+            let status = item[keys['sCode']];
+            if (this.props.caller === 'Approval')
+                lastLine = (
+                    <View style={styles.verticalSubPanel}>
+                        <Text style={[styles.titleTextStyle, { textAlign: 'right', marginLeft: 0 }]}>{"Verification:"}</Text>
+                        <PickerWrapper items={['Arrived', 'Miss']} style={{ flex: 1.2, marginTop: normalize(3) }} />
+                    </View>
+                );
+            else if (this.props.caller === 'View')
+                lastLine = (
+                    <View style={styles.verticalSubPanel}>
+                        <Text style={[styles.titleTextStyle, { textAlign: 'right', marginLeft: 0 }]}>{"Status:"}</Text>
+                        <Text style={[styles.titleTextStyle, { marginLeft: 5 }]}>
+                            {status}
+                        </Text>
+                    </View >
+                );
+
             return (
                 <View style={styles.itemPanel} key={key}>
                     <View style={styles.verticalSubPanel}>
@@ -185,52 +169,42 @@ class RequestDetails extends React.Component {
                     </View>
                     <View style={styles.verticalSubPanel}>
                         <View style={styles.horizontalSubPanel}>
+                            <Text style={styles.titleTextStyle}>{"Item Code:"}</Text>
+                            <Text style={styles.textStyle}>{item[keys['code']]}</Text>
+                        </View>
+                        <View style={styles.horizontalSubPanel}>
+                            <Text style={styles.titleTextStyle}>{"Serial No.:"}</Text>
+                            <Text style={styles.textStyle}>{item[keys['serial']]}</Text>
+                        </View>
+                    </View>
+                    <View style={styles.verticalSubPanel}>
+                        <View style={styles.horizontalSubPanel}>
+                            <Text style={styles.titleTextStyle}>{"Mac Address:"}</Text>
+                            <Text style={styles.textStyle}>{item[keys['mac']]}</Text>
+                        </View>
+                        <View style={styles.horizontalSubPanel}>
+                            <Text style={styles.titleTextStyle}>{"Item Piece No.:"}</Text>
+                            <Text style={styles.textStyle}>{item[keys['piece']]}</Text>
+                        </View>
+                    </View>
+                    <View style={styles.verticalSubPanel}>
+                        <View style={styles.horizontalSubPanel}>
                             <Text style={styles.titleTextStyle}>{"Amount:"}</Text>
                             <Text style={styles.textStyle}>{item[keys['amount']]}</Text>
                         </View>
                         <View style={styles.horizontalSubPanel}>
-                            <Text style={styles.titleTextStyle}>{"Est. Price:"}</Text>
-                            <Text style={styles.textStyle}>{"Rp." + item[keys['price']]}</Text>
+                            <Text style={styles.titleTextStyle}>{"Unit Code:"}</Text>
+                            <Text style={styles.textStyle}>{item[keys['unit']]}</Text>
                         </View>
                     </View>
-                    <View style={styles.verticalSubPanel}>
-                        <View style={styles.horizontalSubPanel}>
-                            <Text style={styles.titleTextStyle}>{"From Warehouse:"}</Text>
-                            <Text style={styles.textStyle}>{item[keys['from']]}</Text>
-                        </View>
-                        <View style={styles.horizontalSubPanel}>
-                            <Text style={styles.titleTextStyle}>{"Target Warehouse:"}</Text>
-                            <Text style={styles.textStyle}>{item[keys['to']]}</Text>
-                        </View>
-                    </View>
-                    <View style={styles.verticalSubPanel}>
-                        <View style={styles.horizontalSubPanel}>
-                            <Text style={styles.titleTextStyle}>{"Target Receive Date:"}</Text>
-                            <Text style={styles.textStyle}>{item[keys['targetDate']]}</Text>
-                        </View>
-                        <View style={styles.horizontalSubPanel}>
-                            <Text style={styles.titleTextStyle}>{"Requested By:"}</Text>
-                            <Text style={styles.textStyle}>{item[keys['requestor']]}</Text>
-                        </View>
-                    </View>
-                    <View style={styles.verticalSubPanel}>
-                        <Text style={[styles.titleTextStyle, { textAlign: 'right', marginLeft: 0 }]}>{"Status:"}</Text>
-                        <Text
-                            style={[
-                                styles.titleTextStyle,
-                                { marginLeft: 5 },
-                                (status === 'Reject' || status === 'Cancel') ? { color: '#ff3030' } : (status === 'Open') ? { color: '#ffae19' } : { color: '#3fd130' }]}>
-                            {status}
-                        </Text>
-                    </View>
-                </View>)
+                    {lastLine}
+                </View>
+            );
         });
     }
 
     render() {
         let buttons = null;
-        let forwardIcon = <View style={{ width: normalize(38) }} />;
-        let forwardModal = null;
 
         if (this.props.caller === 'Approval') {
             buttons = (
@@ -239,40 +213,32 @@ class RequestDetails extends React.Component {
                         <Button
                             raised
                             borderRadius={8}
-                            title={'APPROVE'}
+                            title={'CONFIRM'}
                             backgroundColor={color.green}
                             textStyle={styles.buttonText}
-                            onPress={this.onApprove} />
+                            onPress={this.onConfirm} />
                     </View>
                     <View style={styles.button}>
                         <Button
                             raised
                             borderRadius={8}
-                            title={'DECLINE'}
+                            title={'DENY'}
                             backgroundColor={color.red}
                             textStyle={styles.buttonText}
-                            onPress={this.onDecline} />
+                            onPress={this.onDeny} />
                     </View>
                 </View>);
-            forwardIcon = (<IconWrapper name='paper-plane' type='font-awesome' style={[styles.icon, { marginRight: 15 }]} color='white' size={24} onPress={() => this.setState({ forwardRequest: true })} />);
-            forwardModal = (
-                <ForwardModal
-                    visible={this.state.forwardRequest}
-                    forwardList={() => this.getForwardList()}
-                    close={() => this.setState({ forwardRequest: false, currentForwardItem: null })}
-                    forward={() => this.onForward()} />);
         }
 
         return (
             <View style={styles.container}>
-                {forwardModal}
                 <Header
                     leftComponent={<IconWrapper name='chevron-left' type='font-awesome' color='white' size={28} style={styles.icon} onPress={() => Actions.pop()} />}
-                    centerComponent={{ text: 'Request Details', style: styles.headerText }}
-                    rightComponent={forwardIcon}
+                    centerComponent={{ text: 'Transfer Details', style: styles.headerText }}
+                    rightComponent={<View style={{ width: normalize(38) }} />}
                     outerContainerStyles={styles.headerOuterContainer} />
                 <View style={styles.bodyContainer}>
-                    {this.renderRequest()}
+                    {this.renderTransfer()}
                 </View>
                 {buttons}
             </View>
@@ -280,4 +246,4 @@ class RequestDetails extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RequestDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(TransferDetails);

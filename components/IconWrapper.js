@@ -9,7 +9,7 @@ const IconWrapper = (props) => {
     return (
         <TouchableOpacity onPress={props.onPress} hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}>
             <View style={props.style}>
-                <Icon name={props.name} type={props.type} color={props.color} size={props.size} />
+                <Icon name={props.name} type={props.type} color={props.color} size={normalize(props.size)} />
             </View>
         </TouchableOpacity>
     );

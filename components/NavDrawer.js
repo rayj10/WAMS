@@ -111,7 +111,7 @@ class NavDrawer extends React.Component {
         let tabs = this.state.tabs;
         if (tabs && this.state.currentTab !== ('#' + tabs[0]['MenuID']) && Actions.currentScene === '_#' + this.state.initialPage)
             this.setState({ currentTab: '#' + tabs[0]['MenuID'] })
-    
+            
         //if menu has just been received, grab children of this.props.tabID and sort them
         tabs = [];
         if (this.props.menuReceived && !this.state.tabs) {

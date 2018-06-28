@@ -1,5 +1,4 @@
 import _ from 'lodash';
-var stringify = require('qs-stringify');
 
 /**
  * All-purpose fetch function to be used to interact with API
@@ -14,9 +13,9 @@ export function fetchAPI(endpoint, method, header, data) {
     let options = {
             method: method,
             headers: header,
-            body: stringify(data)
+            body: data
           };
-  
+
     return fetch(url, options)
         .then(response => {
             return response.json()

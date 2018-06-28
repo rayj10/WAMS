@@ -91,7 +91,7 @@ class loginForm extends React.Component {
 
         state["error"] = error;
         state["submitted"] = false;
- 
+
         return state;
     }
 
@@ -101,13 +101,12 @@ class loginForm extends React.Component {
         const result = validate(data);
         if (!result.success) {
             this.setState({ error: result.error });
+            setTimeout(() => {
+                this.setState({ submitted: false })
+            }, 500);
         }
-        else {
+        else
             this.props.onSubmit(this.extractData(data));
-        }
-        setTimeout(() => {
-            this.setState({ submitted: false })
-        }, 500);
     }
 
     extractData(data) {
