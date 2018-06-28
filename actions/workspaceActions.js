@@ -11,21 +11,54 @@ export function successSignOut() {
 }
 
 /**
- * Fetch the List of Requests that needs Approval (still open)
+ * Fetch the List of Users to forward the Approval form to
  * @param {String} token: User's session token
- * @param {Function} resultCB: Callback to be executed once fetching is done 
  */
-export function getRequestApproval(token, resultCB) {
-    let endpoint = 'api/v1/cbn/inventory/GetRequestVerification?DeptCode=PRC&StafCode=ekow';
+export function getForwardList(token) {
+    let endpoint = '/api/v1/cbn/inventory/GetListUserVerification';
 
     let header = {
-        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Type": "application/json",
         "Authorization": "Bearer " + token
     }
 
     return dispatch => {
 
         return fetchAPI(endpoint, 'POST', header, null)
+            .then((json) => {
+                dispatch({ type: types.RECEIVE_FORWARD_LIST, forwardList: json.data });
+            })
+            .catch((error) => {
+                dispatch({ type: types.EMPTY_FORWARD_LIST });
+            });
+    }
+}
+
+/**
+ * Fetch the List of Requests that needs Approval (still open)
+ * @param {String} token: User's session token
+ * @param {Function} resultCB: Callback to be executed once fetching is done 
+ */
+export function getRequestApproval(token, resultCB) {
+    let endpoint = 'api/v1/cbn/inventory/GetRequestVerification';
+
+    let header = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+    }
+
+    let body = {
+        "RequestTransferInput":[
+            {
+                "DepartmentCode":"PRC",
+                "Search":""
+            }
+        ]
+    }
+
+    return dispatch => {
+
+        return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
             .then((json) => {
                 dispatch({ type: types.RECEIVE_REQUEST_APPROVAL, requestApprovalList: json.data });
                 resultCB('Requests', 'Authenticated');
@@ -79,29 +112,38 @@ export function getTransferApproval(token, resultCB) {
  * @param {Function} resultCB: Callback to be executed once fetching is done 
  */
 export function getRequestView(token, resultCB) {
-    let endpoint = 'api/v1/cbn/inventory/GetRequestVerification?DeptCode=PRC&StafCode=ekow';
+    let endpoint = 'api/v1/cbn/inventory/GetRequestVerification';
 
     let header = {
-        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Type": "application/json",
         "Authorization": "Bearer " + token
     }
 
+    let body = {
+        "RequestTransferInput":[
+            {
+                "DepartmentCode":"PRC",
+                "Search":""
+            }
+        ]
+    };
+
     return dispatch => {
 
-        return fetchAPI(endpoint, 'POST', header, null)
+        return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
             .then((json) => {
                 dispatch({ type: types.RECEIVE_REQUEST_VIEW, requestViewList: json.data });
                 resultCB('Requests', 'Authenticated');
             })
             .catch((error) => {
-                dispatch({ type: types.EMPTY_VIEW_LIST });
+                dispatch({ type: types.EMPTY_REQUEST_VIEW });
                 resultCB('Requests', error);
             });
     }
 }
 
 /**
- * Fetch the List of Transfers that needs Approval (still open)
+ * Fetch the whole List of Transfers
  * @param {String} token: User's session token
  * @param {Function} resultCB: Callback to be executed once fetching is done 
  */
@@ -137,7 +179,7 @@ export function getTransferView(token, resultCB) {
 }
 
 /**
- * Fetch the full details of a request
+ * Fetch the full details of a Request
  * @param {Object} requestNo: Request to be fetched 
  * @param {String} token: User's session token 
  * @param {Function} resultCB: Callback to be executed once fetching is done 
@@ -164,7 +206,7 @@ export function getRequestDetails(requestNo, token, resultCB) {
 }
 
 /**
- * Fetch the full details of a transfer
+ * Fetch the full details of a Transfer
  * @param {Object} transferNo: Transfer to be fetched 
  * @param {String} token: User's session token 
  * @param {Function} resultCB: Callback to be executed once fetching is done 

@@ -18,7 +18,9 @@ import { color, normalize } from '../../../theme/baseTheme';
 export const mapStateToProps = state => ({
     token: state.authReducer.token,
     detailsReceived: state.workspaceReducer.detailsReceived,
-    details: state.workspaceReducer.details
+    details: state.workspaceReducer.details,
+    forwardListReceived: state.workspaceReducer.forwardListReceived,
+    forwardList: state.workspaceReducer.forwardList
 });
 
 //Maps actions to RequestDetails props
@@ -42,6 +44,7 @@ class RequestDetails extends React.Component {
 
     componentDidMount() {
         this.props.actionsWorkspace.getRequestDetails(this.props.header[this.props.keys['id']], this.props.token, this.onFetchFinish);
+        this.props.actionsWorkspace.getForwardList(this.props.token);
     }
 
     /**
@@ -59,7 +62,10 @@ class RequestDetails extends React.Component {
      * Fetch list of recipients from API and display it to be selected from
      */
     getForwardList() {
-        let list = ['Account 1', 'Account 2', 'Account 3', 'Account 4', 'Account 5', 'Account 6', 'Account 7', 'Account 8', 'Account 9', 'Account 10'];
+        let list = [];
+
+        if (this.props.forwardListReceived)
+            this.props.forwardList.map((item) => list.push(item['Name']));
 
         return list.map((item, key) =>
             <TouchableOpacity key={key} onPress={() => this.setState({ currentForwardItem: item })}>

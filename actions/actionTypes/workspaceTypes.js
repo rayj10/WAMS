@@ -8,6 +8,9 @@ export const EMPTY_TRANSFER_APPROVAL = 'workspace/EMPTY_TRANSFER_APPROVAL';
 export const RECEIVE_TRANSFER_VIEW = 'workspace/RECEIVE_TRANSFER_VIEW';
 export const EMPTY_TRANSFER_VIEW = 'workspace/EMPTY_TRANSFER_VIEW';
 
+export const RECEIVE_FORWARD_LIST = 'workspace/RECEIVE_FORWARD_LIST';
+export const EMPTY_FORWARD_LIST = 'workspace/EMPTY_FORWARD_LIST';
+
 export const RECEIVE_DETAILS = 'workspace/RECEIVE_DETAILS';
 export const EMPTY_DETAILS = 'workspace/EMPTY_DETAILS';
 

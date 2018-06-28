@@ -5,8 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
     View, Alert, Text,
-    ScrollView, TouchableOpacity, ActivityIndicator,
-    Picker
+    ScrollView, TouchableOpacity, ActivityIndicator
 } from 'react-native';
 
 import styles from "./styles";
@@ -32,9 +31,10 @@ class TransferDetails extends React.Component {
         super(props);
         this.state = {
             fetchStatus: null,
-            verification: null
+            verifications: []
         };
 
+        this.onPickerSelect = this.onPickerSelect.bind(this);
         this.onConfirm = this.onConfirm.bind(this);
         this.onDeny = this.onDeny.bind(this);
         this.onFetchFinish = this.onFetchFinish.bind(this);
@@ -53,6 +53,18 @@ class TransferDetails extends React.Component {
             Actions.reset('Main')   //go back to workspace and workspace will logout
         else
             this.setState({ fetchStatus: status })
+    }
+
+    onPickerSelect(itemPieceNo, verification) {
+        let temp = this.state.verifications;
+
+        //make sure no doubles
+        let existingIndex = temp.findIndex((item) => item['itemPieceNo'] === itemPieceNo);
+        if (existingIndex > -1)
+            temp.splice(existingIndex,1);
+
+        temp.push({ itemPieceNo, verification });
+        this.setState({ verifications: temp });
     }
 
     /**
@@ -149,7 +161,7 @@ class TransferDetails extends React.Component {
                 lastLine = (
                     <View style={styles.verticalSubPanel}>
                         <Text style={[styles.titleTextStyle, { textAlign: 'right', marginLeft: 0 }]}>{"Verification:"}</Text>
-                        <PickerWrapper items={['Arrived', 'Miss']} style={{ flex: 1.2, marginTop: normalize(3) }} />
+                        <PickerWrapper items={['Arrived', 'Miss']} style={{ flex: 1.2, marginTop: normalize(3) }} onSelect={(verification) => this.onPickerSelect(item[keys['piece']], verification)} />
                     </View>
                 );
             else if (this.props.caller === 'View')

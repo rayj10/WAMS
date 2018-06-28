@@ -6,11 +6,13 @@ let initialState = {
     transferApprovalReceived: false,
     transferViewReceived: false,
     detailsReceived: false,
+    forwardListReceived: false,
     requestApprovalList: {},
     requestViewList: {},
     transferApprovalList: {},
     transferViewList: {},
-    details: {}
+    details: {},
+    forwardList: {}
 };
 
 /**
@@ -37,6 +39,11 @@ export default function workspaceReducer(state = initialState, action) {
             return Object.assign({}, state, { transferViewReceived: true, transferViewList: action.transferViewList }); break;
         case t.EMPTY_TRANSFER_VIEW:
             return Object.assign({}, state, { transferViewReceived: false, transferViewList: {} }); break;
+
+        case t.RECEIVE_FORWARD_LIST:
+            return Object.assign({}, state, { forwardListReceived: true, forwardList: action.forwardList }); break;
+        case t.EMPTY_FORWARD_LIST:
+            return Object.assign({}, state, { forwardListReceived: false, forwardList: {} }); break;
 
         case t.RECEIVE_DETAILS:
             return Object.assign({}, state, { detailsReceived: true, details: action.details }); break;
