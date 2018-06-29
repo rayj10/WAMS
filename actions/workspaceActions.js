@@ -13,8 +13,9 @@ export function successSignOut() {
 /**
  * Fetch the List of Users to forward the Approval form to
  * @param {String} token: User's session token
+ * @param {Function} errorCB: Callback in case fetch failed
  */
-export function getForwardList(token) {
+export function getForwardList(token, errorCB) {
     let endpoint = '/api/v1/cbn/inventory/GetListUserVerification';
 
     let header = {
@@ -30,6 +31,7 @@ export function getForwardList(token) {
             })
             .catch((error) => {
                 dispatch({ type: types.EMPTY_FORWARD_LIST });
+                errorCB();
             });
     }
 }

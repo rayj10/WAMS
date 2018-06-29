@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 
 import { color, fontFamily, fontSize, normalize } from '../theme/baseTheme';
 import * as menuAction from '../actions/menuActions';
+import * as img from '../assets/images';
 
 const styles = StyleSheet.create({
     container: {
@@ -120,11 +121,11 @@ class ScrollableTabBar extends React.Component {
                     renderItem={({ item }) => {
                         let source = "", id = '#' + item['MenuID'], name = item['MenuName'];
                         switch (item['MenuID']) {
-                            case 7556: source = require('../assets/images/Approval.png'); break;
-                            case 7552: source = require('../assets/images/MyRequest.png'); break;
-                            case 7559: source = require('../assets/images/DOCustomer.png'); break;
-                            case 7560: source = require('../assets/images/MyConfirmation.png'); break;
-                            case 7562: source = require('../assets/images/ViewRequest.png'); break;
+                            case 7556: source = img.Approval; break;
+                            case 7552: source = img.MyRequest; break;
+                            case 7559: source = img.DOCustomer; break;
+                            case 7560: source = img.MyConfirmation; break;
+                            case 7562: source = img.ViewRequest; break;
                         }
                         return (
                             <TouchableOpacity onPress={() => this.goto(id)}>

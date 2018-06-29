@@ -6,6 +6,7 @@ import { Actions } from 'react-native-router-flux';
 import Scanner from '../../components/Scanner';
 import styles from './styles';
 import { color } from '../../theme/baseTheme'
+import { Link, Information } from '../../assets/images';
 
 class QRScanner extends React.Component {
   constructor() {
@@ -46,7 +47,7 @@ class QRScanner extends React.Component {
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={{ flex: 1 }} onPress={() => this.setState({ option: 'link' })}>
               <View style={styles.button}>
-                <Image style={styles.image} source={require('../../assets/images/Link.png')} />
+                <Image style={styles.image} source={Link} />
                 <Text style={styles.buttonText}> Link </Text>
               </View>
             </TouchableOpacity>
@@ -54,7 +55,7 @@ class QRScanner extends React.Component {
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={{ flex: 1 }} onPress={() => this.setState({ option: 'information' })}>
               <View style={styles.button}>
-                <Image style={styles.image} source={require('../../assets/images/Information.png')} />
+                <Image style={styles.image} source={Information} />
                 <Text style={styles.buttonText}> Information </Text>
               </View>
             </TouchableOpacity>

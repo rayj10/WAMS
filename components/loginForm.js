@@ -13,6 +13,7 @@ import { Button } from 'react-native-elements';
 import { isEmpty, validate } from '../utils/validate'
 import AuthTextInput from './AuthTextInput'
 import { color, padding, windowWidth, normalize, fontSize, fontFamily } from '../theme/baseTheme';
+import { Logo } from '../assets/images';
 
 const styles = StyleSheet.create({
     container: {
@@ -81,8 +82,12 @@ class loginForm extends React.Component {
         this.onSubmit = this.onSubmit.bind(this);
     }
 
+    /**
+     * Iterate the fields and create state based on that
+     * @param {Object} fields: Input from textboxes
+     * @param {Object} error: Error messages 
+     */
     createState(fields, error) {
-        //create the state
         const state = {};
         fields.forEach((field) => {
             let { key, type, value } = field;
@@ -95,25 +100,33 @@ class loginForm extends React.Component {
         return state;
     }
 
+    /**
+     * Validates input fields and determine whether to show error or log user in
+     */
     onSubmit() {
-        this.setState({ submitted: true });
+        this.setState({ submitted: true }); //shows activity indicator
+
         const data = this.state;
         const result = validate(data);
         if (!result.success) {
             this.setState({ error: result.error });
             setTimeout(() => {
-                this.setState({ submitted: false })
+                this.setState({ submitted: false }) //terminate activity indicator
             }, 500);
         }
         else
             this.props.onSubmit(this.extractData(data));
     }
 
+    /**
+     * Extract validated data from textboxes form it into Object of login credentials
+     * @param {Object} data: Textbox input 
+     */
     extractData(data) {
         const retData = {};
 
         Object.keys(data).forEach(function (key) {
-            if (key !== "error") {
+            if (key !== "error" && key !== "submitted") {
                 let { value } = data[key];
                 retData[key] = value;
             }
@@ -122,6 +135,11 @@ class loginForm extends React.Component {
         return retData;
     }
 
+    /**
+     * Update textbox input display using state
+     * @param {String} key: Textbox name 
+     * @param {String} text: Textbox content 
+     */
     onChange(key, text) {
         const state = this.state;
         state[key]['value'] = text;
@@ -134,7 +152,7 @@ class loginForm extends React.Component {
         return (
             <KeyboardAvoidingView style={styles.container} behavior="padding">
                 <View style={styles.wrapper}>
-                    <Image style={styles.image} source={require('../assets/images/logo.png')} />
+                    <Image style={styles.image} source={Logo} />
                     {
                         (!isEmpty(this.state.error['general'])) &&
                         <Text style={styles.errorText}>{this.state.error['general']}</Text>

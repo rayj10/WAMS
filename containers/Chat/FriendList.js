@@ -12,6 +12,7 @@ import { Actions } from 'react-native-router-flux';
 import firebase from '../utils/firebase';
 
 import styles from './styles';
+import { Avatar } from '../../assets/images';
 
 export default class FriendsList extends React.Component {
 
@@ -61,7 +62,7 @@ export default class FriendsList extends React.Component {
     renderRow = (rowData) => {
         return <TouchableOpacity onPress={() => Actions.Chat({ friend: rowData })}>
             <View style={styles.profileContainer}>
-                <Image source={require('../../assets/images/Ray.png')} style={styles.profileImage} />
+                <Image source={Avatar} style={styles.profileImage} />
                 <Text style={styles.profileName}>{rowData.name}</Text>
             </View>
         </TouchableOpacity>

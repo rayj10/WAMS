@@ -2,7 +2,7 @@ import React from 'react';
 import {
     View, Text, StyleSheet, TouchableOpacity,
     ScrollView, Alert, Image, BackHandler,
-    Platform, FlatList
+    FlatList
 } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
@@ -13,6 +13,7 @@ import * as menuAction from '../actions/menuActions';
 import * as authAction from '../actions/authActions';
 import * as workspaceAction from '../actions/workspaceActions';
 import { color, fontFamily, fontSize, normalize } from '../theme/baseTheme';
+import { Avatar } from '../assets/images';
 
 //Maps reducer's state to NavDrawer's props
 export const mapStateToProps = state => ({
@@ -95,7 +96,7 @@ class NavDrawer extends React.Component {
 
     componentDidMount() {
         this.props.actionsMenu.getAvailableMenu(this.props.token, (error) => {
-            if (error === 'Authentication Denied') {
+            if (error === 'Authentication Denied' && this.props.token) {
                 Alert.alert(error, 'Your session may have expired please re-enter your login credentials')
                 this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));
                 Actions.reset("Auth");
@@ -111,7 +112,7 @@ class NavDrawer extends React.Component {
         let tabs = this.state.tabs;
         if (tabs && this.state.currentTab !== ('#' + tabs[0]['MenuID']) && Actions.currentScene === '_#' + this.state.initialPage)
             this.setState({ currentTab: '#' + tabs[0]['MenuID'] })
-            
+
         //if menu has just been received, grab children of this.props.tabID and sort them
         tabs = [];
         if (this.props.menuReceived && !this.state.tabs) {
@@ -165,14 +166,17 @@ class NavDrawer extends React.Component {
         return (
             <View>
                 <View style={styles.header}>
-                    <Image source={require('../assets/images/Ray.png')} style={styles.avatar} />
+                    <Image source={Avatar} style={styles.avatar} />
                     <Text style={styles.headerText}>{this.state.userName}</Text>
                 </View>
                 <View style={styles.itemContainer}>
                     <FlatList showVerticalScrollIndicator={false}
                         data={this.state.tabs}
                         renderItem={({ item }) => {
-                            let source = "", id = '#' + item['MenuID'], name = item['MenuName'];
+                            let source = "",
+                                id = '#' + item['MenuID'],
+                                name = item['MenuName'];
+
                             switch (item['MenuID']) {
                                 case 7546: source = { name: 'briefcase', type: 'font-awesome' }; break;
                                 case 7565: source = { name: 'gears', type: 'font-awesome' }; break;

@@ -40,7 +40,7 @@ export default class App extends React.Component {
         ]);
 
         const imageAssets = cacheImages([
-             require('./assets/images/logo.png'),
+             require('./assets/images/Logo.png'),
              require('./assets/images/Approval.png'),
              require('./assets/images/DOCustomer.png'),
              require('./assets/images/MyConfirmation.png'),

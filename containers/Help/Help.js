@@ -5,6 +5,7 @@ import { Actions } from 'react-native-router-flux';
 
 import styles from './styles';
 import { color } from '../../theme/baseTheme';
+import * as img from '../../assets/images';
 
 class Help extends React.Component {
 
@@ -15,7 +16,7 @@ class Help extends React.Component {
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={{ flex: 1 }} onPress={() => Actions.UserManual()}>
               <View style={styles.button}>
-                <Image style={styles.image} source={require('../../assets/images/UserManual.png')} />
+                <Image style={styles.image} source={img.UserManual} />
                 <Text style={styles.buttonText}> User Manual </Text>
               </View>
             </TouchableOpacity>
@@ -23,7 +24,7 @@ class Help extends React.Component {
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={{ flex: 1 }} onPress={() => Actions.FAQ()}>
               <View style={styles.button}>
-                <Image style={styles.image} source={require('../../assets/images/FAQ.png')} />
+                <Image style={styles.image} source={img.FAQ} />
                 <Text style={styles.buttonText}> FAQ </Text>
               </View>
             </TouchableOpacity>
@@ -31,7 +32,7 @@ class Help extends React.Component {
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={{ flex: 1 }} onPress={() => { }}>
               <View style={styles.button}>
-                <Image style={styles.image} source={require('../../assets/images/Test.png')} />
+                <Image style={styles.image} source={img.Test} />
                 <Text style={styles.buttonText}> Test Panel </Text>
               </View>
             </TouchableOpacity>
@@ -42,7 +43,7 @@ class Help extends React.Component {
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={{ flex: 1 }} onPress={() => { }}>
               <View style={styles.button}>
-                <Image style={styles.image} source={require('../../assets/images/Test.png')} />
+                <Image style={styles.image} source={img.Test} />
                 <Text style={styles.buttonText}> Test Panel </Text>
               </View>
             </TouchableOpacity>
@@ -50,7 +51,7 @@ class Help extends React.Component {
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={{ flex: 1 }} onPress={() => { }}>
               <View style={styles.button}>
-                <Image style={styles.image} source={require('../../assets/images/Test.png')} />
+                <Image style={styles.image} source={img.Test} />
                 <Text style={styles.buttonText}> Test Panel </Text>
               </View>
             </TouchableOpacity>
@@ -61,7 +62,7 @@ class Help extends React.Component {
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={{ flex: 1 }} onPress={() => { }}>
               <View style={styles.button}>
-                <Image style={styles.image} source={require('../../assets/images/Test.png')} />
+                <Image style={styles.image} source={img.Test} />
                 <Text style={styles.buttonText}> Test Panel </Text>
               </View>
             </TouchableOpacity>

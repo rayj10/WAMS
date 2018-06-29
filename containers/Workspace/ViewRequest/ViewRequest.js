@@ -61,7 +61,7 @@ class ViewRequest extends React.Component {
      * @param {String} status: Fetch status response (directly related to HTTP status code response) 
      */
     onFetchFinish(listName, status) {
-        if (status === 'Authentication Denied') {
+        if (status === 'Authentication Denied' && this.props.token) {
             Alert.alert(status, 'Your session may have expired please re-enter your login credentials')
             this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));
             Actions.reset("Auth");

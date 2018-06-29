@@ -5,7 +5,7 @@ import _ from 'lodash';
  * @param {String} endpoint: URL endpoint to be accessed
  * @param {String} method: Typically POST or GET  
  * @param {Object} header: Typically contains Authorization details and Content-type 
- * @param {Object} data: Typically contains Credentials (username & password) and Grant-type 
+ * @param {Object} data: Typically contains Parameters for the request 
  */
 export function fetchAPI(endpoint, method, header, data) {
     let url = 'http://10.64.2.149:8082/' + endpoint;  

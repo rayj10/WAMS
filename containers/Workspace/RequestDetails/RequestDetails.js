@@ -62,18 +62,14 @@ class RequestDetails extends React.Component {
      * Fetch list of recipients from API and display it to be selected from
      */
     getForwardList() {
-        let list = [];
-
         if (this.props.forwardListReceived)
-            this.props.forwardList.map((item) => list.push(item['Name']));
-
-        return list.map((item, key) =>
-            <TouchableOpacity key={key} onPress={() => this.setState({ currentForwardItem: item })}>
-                <View style={[styles.forwardListItem, this.state.currentForwardItem === item ? styles.activeItem : {}]}>
-                    <Text style={styles.forwardListText}>{item}</Text>
-                </View>
-            </TouchableOpacity>
-        );
+            return this.props.forwardList.map((item, key) =>
+                <TouchableOpacity key={key} onPress={() => this.setState({ currentForwardItem: item['Name'] })}>
+                    <View style={[styles.forwardListItem, this.state.currentForwardItem === item['Name'] ? styles.activeItem : {}]}>
+                        <Text style={styles.forwardListText}>{item['Name']}</Text>
+                    </View>
+                </TouchableOpacity>);
+        return [];
     }
 
     /**
