@@ -214,7 +214,7 @@ export function getRequestDetails(requestNo, token, resultCB) {
  * @param {Function} resultCB: Callback to be executed once fetching is done 
  */
 export function getTransferDetails(transferNo, token, resultCB) {
-    let endpoint = '/api/v1/cbn/inventory/GetTransferItem'
+    let endpoint = '/api/v1/cbn/inventory/GetTransferItem';
 
     let header = {
         "Content-Type": "application/json",
@@ -237,6 +237,66 @@ export function getTransferDetails(transferNo, token, resultCB) {
             })
             .catch((error) => {
                 dispatch({ type: types.EMPTY_DETAILS });
+                resultCB(error);
+            });
+    }
+}
+
+export function confirmTransferDetails(token, transferNo, origin, target, itemPieceNo, itemVerified, resultCB) {
+    let endpoint = '/api/v1/cbn/inventory/GetInsertConfirm';
+
+    let header = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+    };
+
+    let body = {
+        "InsertConfirm": [
+            {
+                "Fullname": "",
+                "DepartmentCode": "",
+                "TransferNo": transferNo,
+                "OriginLocation": origin,
+                "TargetLocation": target,
+                "ItemPieceNo": itemPieceNo,
+                "ItemVerified": itemVerified
+            }
+        ]
+    };
+    console.log(body)
+    return dispatch => {
+        return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
+            .then((json) => {
+                resultCB('Transfer Confirmation Successful');
+            })
+            .catch((error) => {
+                resultCB(error);
+            });
+    }
+}
+
+export function getCheckTransferItem(token, transferNo, resultCB) {
+    let endpoint = '/api/v1/cbn/inventory/GetCheckTransferItem';
+
+    let header = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+    };
+
+    let body = {
+        "TransferInputNo": [
+            {
+                "TransferNo": transferNo
+            }
+        ]
+    };
+   
+    return dispatch => {
+        return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
+            .then((json) => {
+                resultCB(json.data[0]['Origin Code'].trimRight(), json.data[0]['TargetCode'].trimRight())
+            })
+            .catch((error) => {
                 resultCB(error);
             });
     }

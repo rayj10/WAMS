@@ -23,7 +23,6 @@ class PickerWrapper extends React.Component {
                         this.props.onSelect(itemValue);
                     }}
                 >
-                    <Picker.Item label={'- Select -'} value={null}/>
                     {this.props.items.map((item, key) => <Picker.Item label={item} value={item} key={key} />)}
                 </Picker>
             </View>

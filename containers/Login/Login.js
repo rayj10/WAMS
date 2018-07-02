@@ -59,7 +59,7 @@ class Login extends React.Component {
         }
 
         this.onSubmit = this.onSubmit.bind(this);
-        this.onSuccess = this.onSuccess.bind(this);
+        this.onFinish = this.onFinish.bind(this);
     }
 
     /**
@@ -73,21 +73,24 @@ class Login extends React.Component {
      * When Login button pressed, call actions.login, move to Main stack on success
      * @param {Object} data: inputs from Form's fields
      */
-    onSubmit(data) {
+    onSubmit(data, callback) {
         this.setState({ error: error }); //clear out error messages
         Keyboard.dismiss(); //close keyboard
-        this.props.actionsAuth.login(data, (token) => this.onSuccess(token));
+        this.props.actionsAuth.login(data, (token) => this.onFinish(token, callback));
     }
 
-    onSuccess(token) {
-        this.props.actionsMenu.getAvailableMenu(token, (error) => {
-            if (error === 'Authentication Denied' && this.props.token) {
-                Alert.alert(error, 'Your session may have expired please re-enter your login credentials')
-                this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));
-                Actions.reset("Auth");
-            }
-        });
-        Actions.Main();
+    onFinish(token, callback) {
+        if (token) {
+            this.props.actionsMenu.getAvailableMenu(token, (error) => {
+                if (error === 'Authentication Denied' && this.props.token) {
+                    Alert.alert(error, 'Your session may have expired please re-enter your login credentials')
+                    this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));
+                    Actions.reset("Auth");
+                }
+            });
+            Actions.Main();
+        }
+        callback();
     }
 
     render() {

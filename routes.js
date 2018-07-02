@@ -98,10 +98,10 @@ class Routes extends React.Component {
                         <Scene drawer key="NavDrawer" hideNavBar contentComponent={NavDrawer} type={ActionConst.REPLACE} panHandlers={null}>
                             <Scene key="Workspace" navBar={() => <PageHeader title='Workspace' />} drawerLockMode={'locked-closed'}>
                                 <Scene tabs={true} tabBarComponent={() => <ScrollableTabBar tabID={ID.WORKSPACE} />} tabBarPosition='top' lazy={true} animationEnabled={false} swipeEnabled={false}>
-                                    <Scene key="MyRequest" hideNavBar component={MyRequest} title={"My Request"} />
+                                    <Scene key="My Request" hideNavBar component={MyRequest} title={"My Request"} />
                                     <Scene key="Approval" hideNavBar component={Approval} title={"Approval"} />
-                                    <Scene key="DOCustomer" hideNavBar component={DOCustomer} title={"DO Customer"} />
-                                    <Scene key="MyConfirmation" hideNavBar component={MyConfirmation} title={"My Confirmation"} />
+                                    <Scene key="DO Customer" hideNavBar component={DOCustomer} title={"DO Customer"} />
+                                    <Scene key="My Confirmation" hideNavBar component={MyConfirmation} title={"My Confirmation"} />
                                     <Scene key="View" hideNavBar component={ViewRequest} title={"View"} />
                                 </Scene>
                                 <Scene key="RequestDetails" hideNavBar component={RequestDetails} title="Request Details" />
@@ -110,7 +110,7 @@ class Routes extends React.Component {
                             <Scene key="Help" navBar={() => <PageHeader title='Help' />} title="Help" drawerLockMode={'locked-closed'}>
                                 <Scene tabs={true} hideTabBar animationEnabled={false} swipeEnabled={false} lazy={true}>
                                     <Scene key="Help" hideNavBar component={Help} title={"Help"} />
-                                    <Scene key="UserManual" hideNavBar component={UserManual} title={"User Manual"} />
+                                    <Scene key="User Manual" hideNavBar component={UserManual} title={"User Manual"} />
                                     <Scene key="FAQ" hideNavBar component={FAQ} title={"FAQ"} />
                                 </Scene>
                             </Scene>
@@ -119,9 +119,9 @@ class Routes extends React.Component {
                                     <Scene key="Setting" hideNavBar component={Setting} title={"Setting"} />
                                 </Scene>
                             </Scene>
-                            <Scene key="QRScanner" navBar={() => <PageHeader title='QR Scanner' />} title="QR" drawerLockMode={'locked-closed'}>
+                            <Scene key="QR Scanner" navBar={() => <PageHeader title='QR Scanner' />} title="QR" drawerLockMode={'locked-closed'}>
                                 <Scene>
-                                    <Scene key="QRScanner" hideNavBar component={QRScanner} title={"QR Scanner"} />
+                                    <Scene key="QR Scanner" hideNavBar component={QRScanner} title={"QR Scanner"} />
                                 </Scene>
                             </Scene>
                         </Scene>

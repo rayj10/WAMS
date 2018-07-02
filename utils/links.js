@@ -52,14 +52,14 @@ export function IDtoIcon(id, type) {
 export function IDtoName(id) {
     switch (id) {
         case ID.WORKSPACE: return "Workspace";
-        case ID.MYREQUEST: return "MyRequest";
+        case ID.MYREQUEST: return "My Request";
         case ID.APPROVAL: return "Approval"
-        case ID.DOCUSTOMER: return "DOCustomer";
-        case ID.MYCONFIRMATION: return "MyConfirmation";
+        case ID.DOCUSTOMER: return "DO Customer";
+        case ID.MYCONFIRMATION: return "My Confirmation";
         case ID.VIEW: return "View";
         case ID.HELP: return "Help";
         case ID.SETTING: return "Setting";
-        case ID.QRSCANNER: return "QRScanner";
+        case ID.QRSCANNER: return "QR Scanner";
         case ID.LINK: return "Link";
         case ID.INFORMATION: return "Information";
     }

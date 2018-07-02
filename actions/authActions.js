@@ -10,9 +10,9 @@ import { fetchAPI } from '../utils/fetch';
  * Fetch token to API based on user login credentials, 
  * then dispatch the information to redux store.
  * @param {Object} user: User's login credentials 
- * @param {Function} successCB: callback - what to do when login successful 
+ * @param {Function} finishCB: callback - what to do when fetch finished
  */
-export function login(user, successCB) {
+export function login(user, finishCB) {
 
     var endpoint = "oauth/token";
     const { username, password } = user;
@@ -45,7 +45,7 @@ export function login(user, successCB) {
                             firebase.auth()
                                 .createUserWithEmailAndPassword(dummyEmail, password)
                                 .catch((error) => {
-                                   console.log(error, error.message);
+                                    console.log(error, error.message);
                                 });
                         }
                         else {
@@ -53,13 +53,14 @@ export function login(user, successCB) {
                         }
                     });
 
-                successCB(json['access_token']);
+                finishCB(json['access_token']);
             })
             .catch((error) => {
                 if (error === 'Bad request')
                     Alert.alert('Invalid Login', 'Username and Password did not match');
                 else
                     Alert.alert(error, 'Please check your connection or try again later');
+                finishCB(null);
             })
     }
 }

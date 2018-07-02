@@ -31,7 +31,9 @@ class TransferDetails extends React.Component {
         super(props);
         this.state = {
             fetchStatus: null,
-            verifications: []
+            verifications: [],
+            origin: null,
+            target: null
         };
 
         this.onPickerSelect = this.onPickerSelect.bind(this);
@@ -41,6 +43,9 @@ class TransferDetails extends React.Component {
     }
 
     componentDidMount() {
+        this.props.actionsWorkspace.getCheckTransferItem(this.props.token, this.props.header[this.props.keys['id']], (origin, target) => {
+            this.setState({ origin, target })
+        });
         this.props.actionsWorkspace.getTransferDetails(this.props.header[this.props.keys['id']], this.props.token, this.onFetchFinish);
     }
 
@@ -52,18 +57,22 @@ class TransferDetails extends React.Component {
         if (status === 'Authentication Denied')
             Actions.reset('Main')   //go back to workspace and workspace will logout
         else
-            this.setState({ fetchStatus: status })
+            this.setState({ fetchStatus: status });
     }
 
     onPickerSelect(itemPieceNo, verification) {
-        let temp = this.state.verifications;
+        let temp = this.state.verifications,
+            verID = 1;
 
-        //make sure no doubles
-        let existingIndex = temp.findIndex((item) => item['itemPieceNo'] === itemPieceNo);
-        if (existingIndex > -1)
-            temp.splice(existingIndex,1);
+        if (verification === 'Missed')
+            verID = 0;
 
-        temp.push({ itemPieceNo, verification });
+        //replace existing value
+        let index = temp.findIndex((item) => item['itemPieceNo'] === itemPieceNo)
+        if (index > -1)
+            temp.splice(index, 1);
+
+        temp.push({ itemPieceNo, verID });
         this.setState({ verifications: temp });
     }
 
@@ -71,10 +80,31 @@ class TransferDetails extends React.Component {
      * What to do when Request is approved
      */
     onConfirm() {
-        Alert.alert('Confirmation', "You are about to APPROVE an inventory request.\n\nAre you sure you want to approve this request?", [
+        let itemPieceNo = "", verification = "";
+        let { header, keys } = this.props;
+
+        //set default verification to "Arrived" for the rest of the items
+        this.props.details.forEach((element) => {
+            if (this.state.verifications.findIndex((item) => item['itemPieceNo'] === element[this.props.keys['piece']]) === -1) {
+                itemPieceNo += element[this.props.keys['piece']] + ",";
+                verification += (1 + ",");
+            }
+        })
+
+        //turn into individual strings
+        this.state.verifications.forEach((element) => {
+            itemPieceNo += element['itemPieceNo'] + ",";
+            verification += element['verID'] + ",";
+        });
+
+        Alert.alert('Confirmation', "You are about to CONFIRM a transfer request.\n\nAre you sure you want to confirm this transfer?", [
             { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-            { text: 'Approve', onPress: () => console.log('Approve Pressed') }, //call a function to interact with fetchAPI from actions.js
-        ], )
+            {
+                text: 'Confirm', onPress: () => {
+                    this.props.actionsWorkspace.confirmTransferDetails(this.props.token, header[keys['id']], this.state.origin, this.state.target, itemPieceNo.substr(0, itemPieceNo.length - 1), verification.substr(0, verification.length - 1), (msg) => Alert.alert(msg))
+                }
+            },
+        ]);
     }
 
     /**
@@ -155,13 +185,14 @@ class TransferDetails extends React.Component {
         let { keys } = this.props;
         let lastLine = null;
 
-        return requestItems.map((item, key) => {
+        let items = requestItems.map((item, key) => {
             let status = item[keys['sCode']];
+
             if (this.props.caller === 'Approval')
                 lastLine = (
                     <View style={styles.verticalSubPanel}>
                         <Text style={[styles.titleTextStyle, { textAlign: 'right', marginLeft: 0 }]}>{"Verification:"}</Text>
-                        <PickerWrapper items={['Arrived', 'Miss']} style={{ flex: 1.2, marginTop: normalize(3) }} onSelect={(verification) => this.onPickerSelect(item[keys['piece']], verification)} />
+                        <PickerWrapper items={['Arrived', 'Missed']} style={{ flex: 1.2, marginTop: normalize(3) }} onSelect={(verification) => this.onPickerSelect(item[keys['piece']], verification)} />
                     </View>
                 );
             else if (this.props.caller === 'View')
@@ -213,6 +244,8 @@ class TransferDetails extends React.Component {
                 </View>
             );
         });
+
+        return items;
     }
 
     render() {

@@ -115,7 +115,7 @@ class loginForm extends React.Component {
             }, 500);
         }
         else
-            this.props.onSubmit(this.extractData(data));
+            this.props.onSubmit(this.extractData(data), () => this.setState({ submitted: false }));
     }
 
     /**
