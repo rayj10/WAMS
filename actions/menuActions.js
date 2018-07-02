@@ -1,11 +1,12 @@
 import * as types from './actionTypes/menuTypes';
 import { fetchAPI } from '../utils/fetch';
+import { ID } from '../utils/links';
 
 /**
  * Keeps track of current scene to be used by backhandler
  * @param {String} currentScene: current active scene on the stack 
  */
-export function updateMenu(currentScene){
+export function updateMenu(currentScene) {
     return dispatch => {
         dispatch({ type: types.UPDATE_MENU, currentScene });
     }
@@ -16,7 +17,7 @@ export function updateMenu(currentScene){
  * @param {String} token User's session token
  * @param {Function} errorCB: Callback in case fetch failed
  */
-export function getAvailableMenu(token, errorCB){
+export function getAvailableMenu(token, errorCB) {
     let endpoint = '/api/v1/user/menu';
 
     let header = {
@@ -28,7 +29,27 @@ export function getAvailableMenu(token, errorCB){
 
         return fetchAPI(endpoint, 'GET', header, null)
             .then((json) => {
-                dispatch({ type: types.RECEIVE_MENU, menu: json.data });
+                let menu = [];
+                //find level 1 menu and sort them
+                json.data.map((item) => {
+                    if (item['ParentMenuID'] === ID.ROOT) {
+                        menu.push(item);
+                    }
+                });
+                menu.sort((a, b) => { return a['MenuID'] - b['MenuID'] });
+
+                //iterate the level 1 menu
+                menu.forEach((item) => {
+                    let subMenu = []
+                    //find the children of currently iterated menu in the list
+                    json.data.map((subitem) => {
+                        if (subitem['ParentMenuID'] === item['MenuID'])
+                            subMenu.push(subitem);
+                    });
+                    item['Children'] = subMenu;
+                });
+    
+                dispatch({ type: types.RECEIVE_MENU, menu: menu });
             })
             .catch((error) => {
                 dispatch({ type: types.EMPTY_MENU });

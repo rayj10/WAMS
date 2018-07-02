@@ -53,7 +53,7 @@ export function login(user, successCB) {
                         }
                     });
 
-                successCB();
+                successCB(json['access_token']);
             })
             .catch((error) => {
                 if (error === 'Bad request')

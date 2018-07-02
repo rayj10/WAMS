@@ -5,6 +5,8 @@ import { Linking, View, Keyboard, ActivityIndicator } from 'react-native';
 import { bindActionCreators } from 'redux';
 
 import * as authAction from '../../actions/authActions';
+import * as menuAction from '../../actions/menuActions';
+import * as workspaceAction from '../../actions/workspaceActions';
 import LoginForm from '../../components/loginForm'
 import OfflineNotice from '../../components/OfflineNotice';
 import styles from './styles';
@@ -17,7 +19,9 @@ export const mapStateToProps = state => ({
 
 //Maps actions from authActions to Login's props
 export const mapDispatchToProps = (dispatch) => ({
-    actions: bindActionCreators(authAction, dispatch)
+    actionsAuth: bindActionCreators(authAction, dispatch),
+    actionsMenu: bindActionCreators(menuAction, dispatch),
+    actionsWorkspace: bindActionCreators(workspaceAction, dispatch)
 });
 
 //initialize values to be passed as props to Form
@@ -55,6 +59,7 @@ class Login extends React.Component {
         }
 
         this.onSubmit = this.onSubmit.bind(this);
+        this.onSuccess = this.onSuccess.bind(this);
     }
 
     /**
@@ -71,7 +76,18 @@ class Login extends React.Component {
     onSubmit(data) {
         this.setState({ error: error }); //clear out error messages
         Keyboard.dismiss(); //close keyboard
-        this.props.actions.login(data, () => Actions.Main());
+        this.props.actionsAuth.login(data, (token) => this.onSuccess(token));
+    }
+
+    onSuccess(token) {
+        this.props.actionsMenu.getAvailableMenu(token, (error) => {
+            if (error === 'Authentication Denied' && this.props.token) {
+                Alert.alert(error, 'Your session may have expired please re-enter your login credentials')
+                this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));
+                Actions.reset("Auth");
+            }
+        });
+        Actions.Main();
     }
 
     render() {

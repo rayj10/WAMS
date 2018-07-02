@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux';
 import { color, fontFamily, fontSize, normalize } from '../theme/baseTheme';
 import * as menuAction from '../actions/menuActions';
 import * as img from '../assets/images';
+import * as links from '../utils/links';
 
 const styles = StyleSheet.create({
     container: {
@@ -60,19 +61,12 @@ class ScrollableTabBar extends React.Component {
         }
     }
 
-    componentDidMount(){
-        tabs = [];
+    componentDidMount() {
+        //When menu is fetched and component mounted, initialize the tabs and default tab
         if (this.props.menuReceived && !this.state.tabs) {
-            this.props.menuList.map((item) => {
-                if (item['ParentMenuID'] === this.props.tabID)
-                    tabs.push(item);
-            });
-
-            tabs.sort((a, b) => { return a['MenuID'] - b['MenuID'] });
-
-            //as soon as menu is fetched, initialize the tabs and default tab
-            this.setState({ tabs, currentTab: '#' + tabs[0]['MenuID'] });
-            this.goto('#' + tabs[0]['MenuID']);
+            let tabs = this.props.menuList.find((item) => item['MenuID'] === this.props.tabID)['Children'];
+            this.setState({ tabs, currentTab: links.IDtoName(tabs[0]['MenuID']) });
+            this.goto(links.IDtoName(tabs[0]['MenuID']));
         }
     }
 
@@ -82,22 +76,14 @@ class ScrollableTabBar extends React.Component {
     componentDidUpdate() {
         //Adjust highlighted tab position
         let tabs = this.state.tabs;
-        if (tabs && this.state.currentTab !== '#' + tabs[0]['MenuID'] && Actions.currentScene === '_#' + tabs[0]['MenuID'])
-            this.setState({ currentTab: '#' + tabs[0]['MenuID'] });
+        if (tabs && this.state.currentTab !== links.IDtoName(tabs[0]['MenuID']) && Actions.currentScene === '_' + links.IDtoName(tabs[0]['MenuID']))
+            this.setState({ currentTab: links.IDtoName(tabs[0]['MenuID']) });
 
-        //if menu has just been received, grab children of this.props.tabID and sort them
-        tabs = [];
+        //When menu is fetched, initialize the tabs and default tab
         if (this.props.menuReceived && !this.state.tabs) {
-            this.props.menuList.map((item) => {
-                if (item['ParentMenuID'] === this.props.tabID)
-                    tabs.push(item);
-            });
-
-            tabs.sort((a, b) => { return a['MenuID'] - b['MenuID'] });
-
-            //as soon as menu is fetched, initialize the tabs and default tab
-            this.setState({ tabs, currentTab: '#' + tabs[0]['MenuID'] });
-            this.goto('#' + tabs[0]['MenuID']);
+            tabs = this.props.menuList.find((item) => item['MenuID'] === this.props.tabID)['Children'];
+            this.setState({ tabs, currentTab: links.IDtoName(tabs[0]['MenuID']) });
+            this.goto(links.IDtoName(tabs[0]['MenuID']));
         }
     }
 
@@ -106,7 +92,7 @@ class ScrollableTabBar extends React.Component {
      * @param {String} route: Name of screen to be displayed
      */
     goto(route) {
-        this.setState({ currentTab: route })    //change highlighted active tab
+        this.setState({ currentTab: route })                       //change highlighted active tab
         Actions.jump(route)
         this.props.actionsMenu.updateMenu(Actions.currentScene)    //notify redux state about scene change so it could update menus
     }
@@ -119,17 +105,12 @@ class ScrollableTabBar extends React.Component {
                     contentContainerStyle={styles.overlay}
                     data={this.state.tabs}
                     renderItem={({ item }) => {
-                        let source = "", id = '#' + item['MenuID'], name = item['MenuName'];
-                        switch (item['MenuID']) {
-                            case 7556: source = img.Approval; break;
-                            case 7552: source = img.MyRequest; break;
-                            case 7559: source = img.DOCustomer; break;
-                            case 7560: source = img.MyConfirmation; break;
-                            case 7562: source = img.ViewRequest; break;
-                        }
+                        let source = links.IDtoIcon(item['MenuID']), 
+                            name = links.IDtoName(item['MenuID']);
+
                         return (
-                            <TouchableOpacity onPress={() => this.goto(id)}>
-                                <View style={[styles.textContainer, this.state.currentTab === id ? styles.activeTab : {}]}>
+                            <TouchableOpacity onPress={() => this.goto(name)}>
+                                <View style={[styles.textContainer, this.state.currentTab === name ? styles.activeTab : {}]}>
                                     <Image style={styles.image} source={source} />
                                     <Text style={styles.textStyle}>{name}</Text>
                                 </View>

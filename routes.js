@@ -1,6 +1,6 @@
 import React from 'react';
 import { Scene, Router, Actions, ActionConst, Stack } from 'react-native-router-flux';
-import { AsyncStorage, StyleSheet } from 'react-native';
+import { AsyncStorage, StyleSheet, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -23,6 +23,7 @@ import * as aType from './actions/actionTypes/authTypes';
 import * as authAction from './actions/authActions';
 import * as workspaceAction from './actions/workspaceActions';
 import * as menuAction from './actions/menuActions';
+import { ID } from './utils/links';
 
 //Maps actions to NavDrawer's props
 export const mapDispatchToProps = (dispatch) => ({
@@ -47,6 +48,13 @@ class Routes extends React.Component {
             AsyncStorage.getItem('token').then((data) => {
                 setTimeout(() => {
                     if (data !== null) {
+                        this.props.actionsMenu.getAvailableMenu(data, (error) => {
+                            if (error === 'Authentication Denied' && this.props.token) {
+                                Alert.alert(error, 'Your session may have expired please re-enter your login credentials')
+                                this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));
+                                Actions.reset("Auth");
+                            }
+                        });
                         store.dispatch({ type: aType.LOGGED_IN, token: data, userName: name });
                         this.setState({ isReady: true, isLoggedIn: true });
                     }
@@ -63,8 +71,10 @@ class Routes extends React.Component {
      * Callback to be called when Android hardware back button pressed
      */
     handleBackButton() {
-        if (Actions.currentScene === '_#7552')
-            this.onSignOut()
+        if (Actions.currentScene === '_MyRequest'){
+            this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));
+            Actions.reset("Auth");
+        }
         else if (Actions.currentScene === 'Login')
             BackHandler.exitApp();
         else {
@@ -73,28 +83,6 @@ class Routes extends React.Component {
         }
 
         return true;
-    }
-
-    /**
-     * Success case callback function
-     * Call workspace's successSignOut() in actions.js to reset workspace reducer's state
-     * and go back to login screen
-     */
-    onSuccess() {
-        this.props.actionsWorkspace.successSignOut();
-        Actions.reset("Auth");
-    }
-
-    onError(error) {
-        Alert.alert('Oops!', error.message);
-    }
-
-    /**
-     * When user clicks Logout button from Drawer
-     * use signOut() from auth's actions.js 
-     */
-    onSignOut() {
-        this.props.actionsAuth.signOut(this.onSuccess.bind(this), this.onError.bind(this))
     }
 
     render() {
@@ -107,31 +95,31 @@ class Routes extends React.Component {
                         <Scene key="Login" hideNavBar component={Login} title="Login" />
                     </Stack>
                     <Stack key="Main" initial={this.state.isLoggedIn}>
-                        <Scene drawer key="NavDrawer" hideNavBar contentComponent={() => <NavDrawer tabID={7540} />} type={ActionConst.REPLACE} panHandlers={null}>
-                            <Scene key="#7546" navBar={() => <PageHeader title='Workspace' />} drawerLockMode={'locked-closed'}>
-                                <Scene tabs={true} tabBarComponent={() => <ScrollableTabBar tabID={7546} />} tabBarPosition='top' lazy={true} animationEnabled={false} swipeEnabled={false}>
-                                    <Scene key="#7552" hideNavBar component={MyRequest} title={"My Request"} />
-                                    <Scene key="#7556" hideNavBar component={Approval} title={"Approval"} />
-                                    <Scene key="#7559" hideNavBar component={DOCustomer} title={"DO Customer"} />
-                                    <Scene key="#7560" hideNavBar component={MyConfirmation} title={"My Confirmation"} />
-                                    <Scene key="#7562" hideNavBar component={ViewRequest} title={"View Request"} />
+                        <Scene drawer key="NavDrawer" hideNavBar contentComponent={NavDrawer} type={ActionConst.REPLACE} panHandlers={null}>
+                            <Scene key="Workspace" navBar={() => <PageHeader title='Workspace' />} drawerLockMode={'locked-closed'}>
+                                <Scene tabs={true} tabBarComponent={() => <ScrollableTabBar tabID={ID.WORKSPACE} />} tabBarPosition='top' lazy={true} animationEnabled={false} swipeEnabled={false}>
+                                    <Scene key="MyRequest" hideNavBar component={MyRequest} title={"My Request"} />
+                                    <Scene key="Approval" hideNavBar component={Approval} title={"Approval"} />
+                                    <Scene key="DOCustomer" hideNavBar component={DOCustomer} title={"DO Customer"} />
+                                    <Scene key="MyConfirmation" hideNavBar component={MyConfirmation} title={"My Confirmation"} />
+                                    <Scene key="View" hideNavBar component={ViewRequest} title={"View"} />
                                 </Scene>
                                 <Scene key="RequestDetails" hideNavBar component={RequestDetails} title="Request Details" />
                                 <Scene key="TransferDetails" hideNavBar component={TransferDetails} title="Transfer Details" />
                             </Scene>
-                            <Scene key="#7564" navBar={() => <PageHeader title='Help' />} title="Help" drawerLockMode={'locked-closed'}>
+                            <Scene key="Help" navBar={() => <PageHeader title='Help' />} title="Help" drawerLockMode={'locked-closed'}>
                                 <Scene tabs={true} hideTabBar animationEnabled={false} swipeEnabled={false} lazy={true}>
                                     <Scene key="Help" hideNavBar component={Help} title={"Help"} />
                                     <Scene key="UserManual" hideNavBar component={UserManual} title={"User Manual"} />
                                     <Scene key="FAQ" hideNavBar component={FAQ} title={"FAQ"} />
                                 </Scene>
                             </Scene>
-                            <Scene key="#7565" navBar={() => <PageHeader title='Settings' />} title="Settings" drawerLockMode={'locked-closed'}>
+                            <Scene key="Setting" navBar={() => <PageHeader title='Setting' />} title="Setting" drawerLockMode={'locked-closed'}>
                                 <Scene>
                                     <Scene key="Setting" hideNavBar component={Setting} title={"Setting"} />
                                 </Scene>
                             </Scene>
-                            <Scene key="#7566" navBar={() => <PageHeader title='QR Scanner' />} title="QR" drawerLockMode={'locked-closed'}>
+                            <Scene key="QRScanner" navBar={() => <PageHeader title='QR Scanner' />} title="QR" drawerLockMode={'locked-closed'}>
                                 <Scene>
                                     <Scene key="QRScanner" hideNavBar component={QRScanner} title={"QR Scanner"} />
                                 </Scene>

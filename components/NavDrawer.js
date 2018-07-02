@@ -1,8 +1,7 @@
 import React from 'react';
 import {
     View, Text, StyleSheet, TouchableOpacity,
-    ScrollView, Alert, Image, BackHandler,
-    FlatList
+    ScrollView, Alert, Image, FlatList
 } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
@@ -14,6 +13,7 @@ import * as authAction from '../actions/authActions';
 import * as workspaceAction from '../actions/workspaceActions';
 import { color, fontFamily, fontSize, normalize } from '../theme/baseTheme';
 import { Avatar } from '../assets/images';
+import * as links from '../utils/links';
 
 //Maps reducer's state to NavDrawer's props
 export const mapStateToProps = state => ({
@@ -95,52 +95,29 @@ class NavDrawer extends React.Component {
     }
 
     componentDidMount() {
-        this.props.actionsMenu.getAvailableMenu(this.props.token, (error) => {
-            if (error === 'Authentication Denied' && this.props.token) {
-                Alert.alert(error, 'Your session may have expired please re-enter your login credentials')
-                this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));
-                Actions.reset("Auth");
-            }
-        });
+        //When menu is fetched and component mounted, initialize the tabs and default tab
+        if (this.props.menuReceived && !this.state.tabs) {
+            let tabs = this.props.menuList;
+            this.setState({ tabs, currentTab: links.IDtoName(tabs[0]['MenuID']), initialPage: links.IDtoName(tabs[0]['Children'][0]['MenuID']) });
+            this.goto(links.IDtoName(tabs[0]['MenuID']));
+        }
     }
 
     /**
      * When Component got a props update i.e. menu received or tabbing changed, do these adjustments
      */
     componentDidUpdate() {
+        let tabs = this.props.menuList;
+        
         //Adjust highlighted tab position
-        let tabs = this.state.tabs;
-        if (tabs && this.state.currentTab !== ('#' + tabs[0]['MenuID']) && Actions.currentScene === '_#' + this.state.initialPage)
-            this.setState({ currentTab: '#' + tabs[0]['MenuID'] })
+        if (this.props.menuReceived && this.state.currentTab !== links.IDtoName(tabs[0]['MenuID']) && Actions.currentScene === '_' + this.state.initialPage)
+            this.setState({ currentTab: links.IDtoName(tabs[0]['MenuID']) })
 
-        //if menu has just been received, grab children of this.props.tabID and sort them
-        tabs = [];
+        //When is fetched, initialize the tabs and default tabs
         if (this.props.menuReceived && !this.state.tabs) {
-            this.props.menuList.map((item) => {
-                if (item['ParentMenuID'] === this.props.tabID)
-                    tabs.push(item);
-            });
-
-            tabs.sort((a, b) => { return a['MenuID'] - b['MenuID'] });
-
-            //as soon as menu is fetched, initialize the tabs and default tabs
-            this.setState({ tabs, currentTab: '#' + tabs[0]['MenuID'], initialPage: this.props.menuList.find((item) => item['ParentMenuID'] === tabs[0]['MenuID'])['MenuID'] });
-            this.goto('#' + tabs[0]['MenuID']);
+            this.setState({ tabs, currentTab: links.IDtoName(tabs[0]['MenuID']), initialPage: links.IDtoName(tabs[0]['Children'][0]['MenuID']) });
+            this.goto(links.IDtoName(tabs[0]['MenuID']));
         }
-    }
-
-    /**
-     * Success case callback function
-     * Call workspace's successSignOut() in actions.js to reset workspace reducer's state
-     * and go back to login screen
-     */
-    onSuccess() {
-        this.props.actionsWorkspace.successSignOut();
-        Actions.reset("Auth");
-    }
-
-    onError(error) {
-        Alert.alert('Oops!', error.message);
     }
 
     /**
@@ -148,7 +125,8 @@ class NavDrawer extends React.Component {
      * use signOut() from auth's actions.js 
      */
     onSignOut() {
-        this.props.actionsAuth.signOut(this.onSuccess.bind(this), this.onError.bind(this))
+        this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));
+        Actions.reset("Auth");
     }
 
     /**
@@ -157,9 +135,11 @@ class NavDrawer extends React.Component {
      */
     goto(route) {
         Actions.drawerClose();
-        this.setState({ currentTab: route })    //change highlighted active tab
-        Actions[route].call();
-        this.props.actionsMenu.updateMenu(Actions.currentScene)    //notify redux state about scene change so it could update menus
+        if (this.state.currentTab !== route) {
+            this.setState({ currentTab: route })                       //change highlighted active tab
+            Actions[route].call();
+            this.props.actionsMenu.updateMenu(Actions.currentScene)    //notify redux state about scene change so it could update menus
+        }
     }
 
     render() {
@@ -173,19 +153,12 @@ class NavDrawer extends React.Component {
                     <FlatList showVerticalScrollIndicator={false}
                         data={this.state.tabs}
                         renderItem={({ item }) => {
-                            let source = "",
-                                id = '#' + item['MenuID'],
-                                name = item['MenuName'];
+                            let source = links.IDtoIcon(item['MenuID']),
+                                name = links.IDtoName(item['MenuID']);
 
-                            switch (item['MenuID']) {
-                                case 7546: source = { name: 'briefcase', type: 'font-awesome' }; break;
-                                case 7565: source = { name: 'gears', type: 'font-awesome' }; break;
-                                case 7564: source = { name: 'help-circle', type: 'material-community' }; break;
-                                case 7566: source = { name: 'qrcode', type: 'material-community' }; break;
-                            }
                             return (
-                                <TouchableOpacity onPress={() => this.goto(id)}>
-                                    <View style={[styles.navItem, this.state.currentTab === id ? styles.activeItem : {}]}>
+                                <TouchableOpacity onPress={() => this.goto(name)}>
+                                    <View style={[styles.navItem, this.state.currentTab === name ? styles.activeItem : {}]}>
                                         <Icon iconStyle={styles.icon} name={source['name']} type={source['type']} color={color.grey} size={24} />
                                         <Text style={styles.navText}>{name}</Text>
                                     </View>
