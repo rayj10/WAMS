@@ -10,7 +10,7 @@ import { fetchAPI } from '../utils/fetch';
  * Fetch token to API based on user login credentials, 
  * then dispatch the information to redux store.
  * @param {Object} user: User's login credentials 
- * @param {Function} finishCB: callback - what to do when fetch finished
+ * @param {Function} finishCB: Callback to be executed once the fetching process is done
  */
 export function login(user, finishCB) {
 
@@ -68,7 +68,7 @@ export function login(user, finishCB) {
 /**
  * Signs out user, clean up AsyncStorage containing user credentials,
  * tell redux store about the logout, execute callback
- * @param {Function} successCB: callback - what to do when logout is done 
+ * @param {Function} successCB: Callback to be executed once user has been logged out successfully
  */
 export function signOut(successCB) {
     return (dispatch) => {

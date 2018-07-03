@@ -39,7 +39,7 @@ class OfflineNotice extends React.Component {
     }
 
     /**
-     * Callback to be called when there's a connection change
+     * Callback to be executed when there's a connection change
      */
     handleConnectivityChange = (isConnected) => {
         this.setState({ isConnected });

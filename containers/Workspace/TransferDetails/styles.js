@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
 
   itemPanel: {
-    height: 0.425 * windowHeight,
+    height: 0.42 * windowHeight,
     justifyContent: 'space-evenly',
     borderColor: color.light_grey,
     borderBottomWidth: 1,

@@ -34,7 +34,7 @@ class UserManual extends React.Component {
 
       return {
         image: source,
-        title: item['MenuName'],
+        title: links.IDtoName(item['MenuID']),
         content: text
       }
     });
@@ -80,7 +80,7 @@ class UserManual extends React.Component {
               if (item['MenuID'] !== links.ID.HELP)
                 return (
                   <View style={styles.accordionContainer} key={key}>
-                    <Accordion title={item['MenuName']} body={this.getCarousel(item)} />
+                    <Accordion title={links.IDtoName(item['MenuID'])} body={this.getCarousel(item)} />
                   </View>)
             }) : null
           }

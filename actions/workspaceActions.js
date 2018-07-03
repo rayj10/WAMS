@@ -50,10 +50,10 @@ export function getRequestApproval(token, resultCB) {
     }
 
     let body = {
-        "RequestTransferInput":[
+        "RequestTransferInput": [
             {
-                "DepartmentCode":"PRC",
-                "Search":""
+                "DepartmentCode": "PRC",
+                "Search": ""
             }
         ]
     }
@@ -122,10 +122,10 @@ export function getRequestView(token, resultCB) {
     }
 
     let body = {
-        "RequestTransferInput":[
+        "RequestTransferInput": [
             {
-                "DepartmentCode":"PRC",
-                "Search":""
+                "DepartmentCode": "PRC",
+                "Search": ""
             }
         ]
     };
@@ -242,6 +242,49 @@ export function getTransferDetails(transferNo, token, resultCB) {
     }
 }
 
+/**
+ * Get additional info for confirm/deny transfer 
+ * @param {String} token: User's session token 
+ * @param {String} transferNo: Transfer number of interest 
+ * @param {Function} resultCB: Callback to be executed once fetching process is done 
+ */
+export function getCheckTransferItem(token, transferNo, resultCB) {
+    let endpoint = '/api/v1/cbn/inventory/GetCheckTransferItem';
+
+    let header = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+    };
+
+    let body = {
+        "TransferInputNo": [
+            {
+                "TransferNo": transferNo
+            }
+        ]
+    };
+
+    return dispatch => {
+        return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
+            .then((json) => {
+                resultCB(json.data[0]['Origin Code'].trimRight(), json.data[0]['TargetCode'].trimRight())
+            })
+            .catch((error) => {
+                resultCB(error);
+            });
+    }
+}
+
+/**
+ * Confirm a transfer request for each item, each with their own verification.
+ * @param {String} token: User's session token 
+ * @param {String} transferNo: Transfer number of interest 
+ * @param {String} origin: Origin location code fetched from getCheckTransferItem 
+ * @param {String} target: Target location code fetched from getCheckTransferItem 
+ * @param {String} itemPieceNo: List (in the form of concat string) of item piece numbers from that particular transfer request 
+ * @param {String} itemVerified: List (in the form of concat string) of corresponding item verification for each item piece number 
+ * @param {Function} resultCB: Callback to be executed once the API fetch is done 
+ */
 export function confirmTransferDetails(token, transferNo, origin, target, itemPieceNo, itemVerified, resultCB) {
     let endpoint = '/api/v1/cbn/inventory/GetInsertConfirm';
 
@@ -263,7 +306,7 @@ export function confirmTransferDetails(token, transferNo, origin, target, itemPi
             }
         ]
     };
-    console.log(body)
+
     return dispatch => {
         return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
             .then((json) => {
@@ -275,8 +318,14 @@ export function confirmTransferDetails(token, transferNo, origin, target, itemPi
     }
 }
 
-export function getCheckTransferItem(token, transferNo, resultCB) {
-    let endpoint = '/api/v1/cbn/inventory/GetCheckTransferItem';
+/**
+ * Deny a transfer request for every item in the form
+ * @param {String} token: User's session token 
+ * @param {String} transferNo: Transfer number of interest 
+ * @param {Function} resultCB: Callback to be executed once fetching process is done 
+ */
+export function denyTransferDetails(token, transferNo, resultCB) {
+    let endpoint = '/api/v1/cbn/inventory/GetRejectTransfer';
 
     let header = {
         "Content-Type": "application/json",
@@ -290,11 +339,11 @@ export function getCheckTransferItem(token, transferNo, resultCB) {
             }
         ]
     };
-   
+
     return dispatch => {
         return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
             .then((json) => {
-                resultCB(json.data[0]['Origin Code'].trimRight(), json.data[0]['TargetCode'].trimRight())
+                resultCB('Transfer Denied Successfully');
             })
             .catch((error) => {
                 resultCB(error);

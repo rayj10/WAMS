@@ -60,6 +60,12 @@ class TransferDetails extends React.Component {
             this.setState({ fetchStatus: status });
     }
 
+    /**
+     * Callback sent to picker element, executed when user changes the picker value
+     * make a pairing of itemPieceNo and verification, then add it to state
+     * @param {*} itemPieceNo: piece number of the item to be confirmed
+     * @param {*} verification: verification status of the item 
+     */
     onPickerSelect(itemPieceNo, verification) {
         let temp = this.state.verifications,
             verID = 1;
@@ -77,11 +83,11 @@ class TransferDetails extends React.Component {
     }
 
     /**
-     * What to do when Request is approved
+     * On Transfer Confirm, add default values for item piece no that has not been updated with new picker value
+     * Then post the values to API
      */
     onConfirm() {
         let itemPieceNo = "", verification = "";
-        let { header, keys } = this.props;
 
         //set default verification to "Arrived" for the rest of the items
         this.props.details.forEach((element) => {
@@ -97,24 +103,30 @@ class TransferDetails extends React.Component {
             verification += element['verID'] + ",";
         });
 
+        //remove last comma
+        itemPieceNo = itemPieceNo.substr(0, itemPieceNo.length - 1);
+        verification = verification.substr(0, verification.length - 1);
+
         Alert.alert('Confirmation', "You are about to CONFIRM a transfer request.\n\nAre you sure you want to confirm this transfer?", [
-            { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+            { text: 'Cancel', onPress: () => console.log('Transfer Confirmation Cancelled'), style: 'cancel' },
             {
-                text: 'Confirm', onPress: () => {
-                    this.props.actionsWorkspace.confirmTransferDetails(this.props.token, header[keys['id']], this.state.origin, this.state.target, itemPieceNo.substr(0, itemPieceNo.length - 1), verification.substr(0, verification.length - 1), (msg) => Alert.alert(msg))
-                }
-            },
+                text: 'Confirm', onPress: () =>
+                    this.props.actionsWorkspace.confirmTransferDetails(this.props.token, this.props.header[this.props.keys['id']], this.state.origin, this.state.target, itemPieceNo, verification, (msg) => Alert.alert(msg))
+            }
         ]);
     }
 
     /**
-     * What to do when Request is declined
+     * On Transfer Deny, post the information to API
      */
     onDeny() {
         Alert.alert('Confirmation', "You are about to DECLINE an inventory request.\n\nAre you sure you want to decline this request?", [
-            { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-            { text: 'Decline', onPress: () => console.log('Decline Pressed') }, //call a function to interact with fetchAPI from actions.js
-        ], )
+            { text: 'Cancel', onPress: () => console.log('Transfer Deny Cancelled'), style: 'cancel' },
+            {
+                text: 'Deny', onPress: () =>
+                    this.props.actionsWorkspace.denyTransferDetails(this.props.token, this.props.header[this.props.keys['id']], (msg) => Alert.alert(msg))
+            }
+        ]);
     }
 
     /**

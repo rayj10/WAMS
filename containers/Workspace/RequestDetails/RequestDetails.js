@@ -79,6 +79,7 @@ class RequestDetails extends React.Component {
         this.setState({ forwardRequest: false });   //close modal
         let recipient = this.state.currentForwardItem;
 
+        //Timeout is workaround for react native modal problem
         setTimeout(() => {
             if (recipient !== null)     //Check if recipient has been picked before pressing forward
                 Alert.alert('Forward Confirmation', 'You are about to forward to ' + recipient + '\n\nProceed?', [

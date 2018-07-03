@@ -32,6 +32,7 @@ class PickerWrapper extends React.Component {
 
 PickerWrapper.propTypes = {
     items: PropTypes.array.isRequired,
+    onSelect: PropTypes.func.isRequired
 }
 
 export default PickerWrapper;

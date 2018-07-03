@@ -79,6 +79,11 @@ class Login extends React.Component {
         this.props.actionsAuth.login(data, (token) => this.onFinish(token, callback));
     }
 
+    /**
+     * Callback to be excuted once the login process is done
+     * @param {String} token: User's session token 
+     * @param {Function} callback: Callback to update login form's state 
+     */
     onFinish(token, callback) {
         if (token) {
             this.props.actionsMenu.getAvailableMenu(token, (error) => {

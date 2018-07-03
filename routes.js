@@ -68,7 +68,7 @@ class Routes extends React.Component {
     }
 
     /**
-     * Callback to be called when Android hardware back button pressed
+     * Callback to be executed when Android hardware back button pressed
      */
     handleBackButton() {
         if (Actions.currentScene === '_MyRequest'){

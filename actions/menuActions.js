@@ -4,7 +4,7 @@ import { ID } from '../utils/links';
 
 /**
  * Keeps track of current scene to be used by backhandler
- * @param {String} currentScene: current active scene on the stack 
+ * @param {String} currentScene: Current active scene on the stack 
  */
 export function updateMenu(currentScene) {
     return dispatch => {
