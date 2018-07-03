@@ -310,10 +310,10 @@ export function confirmTransferDetails(token, transferNo, origin, target, itemPi
     return dispatch => {
         return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
             .then((json) => {
-                resultCB('Transfer Confirmation Successful');
+                resultCB('Successful!', 'Transfer Confirmation Successful');
             })
             .catch((error) => {
-                resultCB(error);
+                resultCB(error, error.message);
             });
     }
 }
@@ -343,10 +343,10 @@ export function denyTransferDetails(token, transferNo, resultCB) {
     return dispatch => {
         return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
             .then((json) => {
-                resultCB('Transfer Denied Successfully');
+                resultCB('Successful', 'Transfer Denied Successfully');
             })
             .catch((error) => {
-                resultCB(error);
+                resultCB(error, error.message);
             });
     }
 }

@@ -134,7 +134,6 @@ class SummaryListPage extends React.Component {
                 content = this.renderSummary(list);
             }
             else if (status === 'Authenticated') {
-                if (list.length === 0) {
                     status = 'No Record Found';
                     message = 'This list is currently empty';
                     content = ([
@@ -143,7 +142,6 @@ class SummaryListPage extends React.Component {
                             <Text style={[styles.titleTextStyle, { textAlign: 'center', fontSize: 16 }]}>{message}</Text>
                         </View>
                     ]);
-                }
             }
             else if (status !== 'Authenticated') { //to make sure on cases where status is authenticated but list is empty
                 //determine message based on status

@@ -1,5 +1,5 @@
 Download latest published apk here:
-https://exp-shell-app-assets.s3-us-west-1.amazonaws.com/android%2F%40raywinarto%2FWAMS-136d5284-7e6d-11e8-ab5c-0a580a780213-signed.apk
+https://exp-shell-app-assets.s3-us-west-1.amazonaws.com/android%2F%40raywinarto%2FWAMS-8d90940b-7e84-11e8-9960-0a580a780411-signed.apk
 
 This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
 

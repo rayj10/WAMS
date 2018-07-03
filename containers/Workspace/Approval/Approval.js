@@ -151,7 +151,7 @@ class Approval extends React.Component {
         }
         else if (pageName === 'Transfers') {
             if (this.props.transferApprovalReceived)
-                return <SummaryListPage title={pageName} status={this.state.transfer} onRefresh={this.getLists} list={this.props.transferApprovalList} keys={keys} onShowDetails={(trfHead) => Actions.TransferDetails({ header: trfHead, caller: 'Approval', keys })} />
+                return <SummaryListPage title={pageName} status={this.state.transfer} onRefresh={this.getLists} list={this.props.transferApprovalList} keys={keys} onShowDetails={(trfHead) => Actions.TransferDetails({ header: trfHead, caller: 'Approval', keys, refresh: this.getLists })} />
             else
                 return <SummaryListPage title={pageName} status={this.state.transfer} onRefresh={this.getLists} />
         }

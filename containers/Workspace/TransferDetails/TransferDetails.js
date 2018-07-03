@@ -111,7 +111,19 @@ class TransferDetails extends React.Component {
             { text: 'Cancel', onPress: () => console.log('Transfer Confirmation Cancelled'), style: 'cancel' },
             {
                 text: 'Confirm', onPress: () =>
-                    this.props.actionsWorkspace.confirmTransferDetails(this.props.token, this.props.header[this.props.keys['id']], this.state.origin, this.state.target, itemPieceNo, verification, (msg) => Alert.alert(msg))
+                    this.props.actionsWorkspace.confirmTransferDetails(this.props.token,
+                        this.props.header[this.props.keys['id']],
+                        this.state.origin, this.state.target,
+                        itemPieceNo, verification, (title, msg) =>
+                            Alert.alert(title, msg, [
+                                {
+                                    text: 'OK', onPress: () => {
+                                        this.props.refresh();
+                                        setTimeout(() => Actions.pop(), 300);
+                                    }
+                                }
+                            ])
+                    )
             }
         ]);
     }
@@ -120,11 +132,22 @@ class TransferDetails extends React.Component {
      * On Transfer Deny, post the information to API
      */
     onDeny() {
-        Alert.alert('Confirmation', "You are about to DECLINE an inventory request.\n\nAre you sure you want to decline this request?", [
+        Alert.alert('Confirmation', "You are about to DENY an inventory transfer request.\n\nAre you sure you want to deny this transfer?", [
             { text: 'Cancel', onPress: () => console.log('Transfer Deny Cancelled'), style: 'cancel' },
             {
                 text: 'Deny', onPress: () =>
-                    this.props.actionsWorkspace.denyTransferDetails(this.props.token, this.props.header[this.props.keys['id']], (msg) => Alert.alert(msg))
+                    this.props.actionsWorkspace.denyTransferDetails(this.props.token,
+                        this.props.header[this.props.keys['id']],
+                        (title, msg) =>
+                            Alert.alert(title, msg, [
+                                {
+                                    text: 'OK', onPress: () => {
+                                        this.props.refresh();
+                                        setTimeout(() => Actions.pop(), 300);
+                                    }
+                                }
+                            ])
+                        )
             }
         ]);
     }
