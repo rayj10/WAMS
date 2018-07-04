@@ -29,7 +29,7 @@ class Link extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Scanner onRead={this.onBarcodeRead} />
+        <Scanner onRead={this.onBarcodeRead} torch={this.state.torchOn ? 'on' : 'off'} />
         <View style={styles.backButtonContainer}>
           <TouchableOpacity style={{ flex: 1 }} onPress={() => Actions.pop()}>
             <View style={styles.backButton}>
