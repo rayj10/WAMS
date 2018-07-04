@@ -13,6 +13,7 @@ import * as workspaceAction from '../../../actions/workspaceActions';
 import ForwardModal from '../../../components/ForwardModal';
 import IconWrapper from '../../../components/IconWrapper';
 import { color, normalize } from '../../../theme/baseTheme';
+import RequestDeclineModal from '../../../components/RequestDeclineModal';
 
 //Maps reducer's states to RequestDetails props
 export const mapStateToProps = state => ({
@@ -32,9 +33,11 @@ class RequestDetails extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            forwardRequest: false,
+            forwardModal: false,
             currentForwardItem: null,
-            fetchStatus: null
+            fetchStatus: null,
+            notes: "",
+            declineModal: false
         };
 
         this.onApprove = this.onApprove.bind(this);
@@ -43,8 +46,13 @@ class RequestDetails extends React.Component {
     }
 
     componentDidMount() {
+        this.mounted = true;
         this.props.actionsWorkspace.getRequestDetails(this.props.header[this.props.keys['id']], this.props.token, this.onFetchFinish);
         this.props.actionsWorkspace.getForwardList(this.props.token);
+    }
+
+    componentWillUnmount() {
+        this.mounted = false;
     }
 
     /**
@@ -54,8 +62,13 @@ class RequestDetails extends React.Component {
     onFetchFinish(status) {
         if (status === 'Authentication Denied')
             Actions.reset('Main')   //go back to workspace and workspace will logout
-        else
-            this.setState({ fetchStatus: status })
+        else if (this.mounted && status === "success")
+            this.setState({ fetchStatus: status });
+        else {                      //in case data was stale and need refreshing to sync with current DB
+            Alert.alert(status);
+            this.props.refresh();
+            setTimeout(() => Actions.pop(), 300);
+        }
     }
 
     /**
@@ -64,8 +77,8 @@ class RequestDetails extends React.Component {
     getForwardList() {
         if (this.props.forwardListReceived)
             return this.props.forwardList.map((item, key) =>
-                <TouchableOpacity key={key} onPress={() => this.setState({ currentForwardItem: item['Name'] })}>
-                    <View style={[styles.forwardListItem, this.state.currentForwardItem === item['Name'] ? styles.activeItem : {}]}>
+                <TouchableOpacity key={key} onPress={() => this.setState({ currentForwardItem: { name: item['Name'], Ucode: item['Id'] } })}>
+                    <View style={[styles.forwardListItem, this.state.currentForwardItem && this.state.currentForwardItem.name === item['Name'] ? styles.activeItem : {}]}>
                         <Text style={styles.forwardListText}>{item['Name']}</Text>
                     </View>
                 </TouchableOpacity>);
@@ -76,20 +89,43 @@ class RequestDetails extends React.Component {
      * What to do when forward button pressed
      */
     onForward() {
-        this.setState({ forwardRequest: false });   //close modal
+        this.setState({ forwardModal: false });   //close modal
         let recipient = this.state.currentForwardItem;
 
         //Timeout is workaround for react native modal problem
         setTimeout(() => {
-            if (recipient !== null)     //Check if recipient has been picked before pressing forward
-                Alert.alert('Forward Confirmation', 'You are about to forward to ' + recipient + '\n\nProceed?', [
+            //Check if recipient has been picked before pressing forward
+            if (recipient !== null) {
+                let { name, Ucode } = recipient;
+                Alert.alert('Forward Confirmation', 'You are about to forward to ' + name + '\n\nProceed?', [
                     { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-                    { text: 'Proceed', onPress: () => {/*this.props.actionsWorkspace.forwardRequest(currentForwardItem)*/ } }
+                    {
+                        text: 'Proceed', onPress: () => {
+                            this.props.actionsWorkspace.forwardRequest(this.props.token,
+                                this.props.header[this.props.keys['id']],
+                                Ucode,
+                                (status, title, msg) => {
+                                    if (status === 'success')
+                                        Alert.alert(title, msg + name, [
+                                            {
+                                                text: 'OK', onPress: () => {
+                                                    this.props.refresh();
+                                                    setTimeout(() => Actions.pop(), 300);
+                                                }
+                                            }
+                                        ]);
+                                    else
+                                        Alert.alert(status);
+                                }
+                            );
+                        }
+                    }
                 ]);
+            }
             else
                 Alert.alert('Oops!', 'You must pick a recipient before forwarding', [
                     { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-                    { text: 'Pick a Recipient', onPress: () => this.setState({ forwardRequest: true }) } //reopen modal
+                    { text: 'Pick a Recipient', onPress: () => this.setState({ forwardModal: true }) } //reopen modal
                 ])
         }, 1200);
 
@@ -100,21 +136,56 @@ class RequestDetails extends React.Component {
      * What to do when Request is approved
      */
     onApprove() {
-        Alert.alert('Confirmation', "You are about to APPROVE an inventory request.\n\nAre you sure you want to approve this request?", [
+        Alert.alert('Approve Request', "Are you sure to APPROVE this request?", [
             { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-            { text: 'Approve', onPress: () => console.log('Approve Pressed') }, //call a function to interact with fetchAPI from actions.js
-        ], )
+            {
+                text: 'Approve', onPress: () => {
+                    this.props.actionsWorkspace.verifyRequest(this.props.token,
+                        this.props.header[this.props.keys['id']],
+                        'A',
+                        (status, title, msg) => {
+                            if (status === 'success')
+                                Alert.alert(title, msg, [
+                                    {
+                                        text: 'OK', onPress: () => {
+                                            this.props.refresh();
+                                            setTimeout(() => Actions.pop(), 300);
+                                        }
+                                    }
+                                ]);
+                            else
+                                Alert.alert(status);
+                        }
+                    );
+                }
+            }]);
     }
 
     /**
      * What to do when Request is declined
      */
     onDecline() {
-        Alert.alert('Confirmation', "You are about to DECLINE an inventory request.\n\nAre you sure you want to decline this request?", [
-            { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-            { text: 'Decline', onPress: () => console.log('Decline Pressed') }, //call a function to interact with fetchAPI from actions.js
-        ], )
+        this.props.actionsWorkspace.verifyRequest(this.props.token,
+            this.props.header[this.props.keys['id']],
+            'R',
+            (status, title, msg) => {
+                if (status === 'success')
+                    Alert.alert(title, msg, [
+                        {
+                            text: 'OK', onPress: () => {
+                                this.props.refresh();
+                                setTimeout(() => Actions.pop(), 300);
+                            }
+                        }
+                    ]);
+                else
+                    Alert.alert(status);
+            },
+            this.state.notes
+        );
+        this.setState({ declineModal: false })
     }
+
 
     /**
      * Render complete request form with the help of renderItems to render individual panels for items
@@ -189,7 +260,7 @@ class RequestDetails extends React.Component {
                     <View style={styles.verticalSubPanel}>
                         <View style={styles.horizontalSubPanel}>
                             <Text style={styles.titleTextStyle}>{"Amount:"}</Text>
-                            <Text style={styles.textStyle}>{item[keys['amount']]}</Text>
+                            <Text style={styles.textStyle}>{item[keys['amount']] + " " + item[keys['unit']]}</Text>
                         </View>
                         <View style={styles.horizontalSubPanel}>
                             <Text style={styles.titleTextStyle}>{"Est. Price:"}</Text>
@@ -209,7 +280,7 @@ class RequestDetails extends React.Component {
                     <View style={styles.verticalSubPanel}>
                         <View style={styles.horizontalSubPanel}>
                             <Text style={styles.titleTextStyle}>{"Target Receive Date:"}</Text>
-                            <Text style={styles.textStyle}>{item[keys['targetDate']]}</Text>
+                            <Text style={styles.textStyle}>{item[keys['targetDate']].split("T")[0]}</Text>
                         </View>
                         <View style={styles.horizontalSubPanel}>
                             <Text style={styles.titleTextStyle}>{"Requested By:"}</Text>
@@ -234,6 +305,7 @@ class RequestDetails extends React.Component {
         let buttons = null;
         let forwardIcon = <View style={{ width: normalize(38) }} />;
         let forwardModal = null;
+        let declineModal = null;
 
         if (this.props.caller === 'Approval') {
             buttons = (
@@ -254,21 +326,29 @@ class RequestDetails extends React.Component {
                             title={'DECLINE'}
                             backgroundColor={color.red}
                             textStyle={styles.buttonText}
-                            onPress={this.onDecline} />
+                            onPress={() => this.setState({ declineModal: true })} />
                     </View>
                 </View>);
-            forwardIcon = (<IconWrapper name='paper-plane' type='font-awesome' style={[styles.icon, { marginRight: 15 }]} color='white' size={24} onPress={() => this.setState({ forwardRequest: true })} />);
+            forwardIcon = (<IconWrapper name='paper-plane' type='font-awesome' style={[styles.icon, { marginRight: 15 }]} color='white' size={24} onPress={() => this.setState({ forwardModal: true })} />);
             forwardModal = (
                 <ForwardModal
-                    visible={this.state.forwardRequest}
+                    visible={this.state.forwardModal}
                     forwardList={() => this.getForwardList()}
-                    close={() => this.setState({ forwardRequest: false, currentForwardItem: null })}
+                    close={() => this.setState({ forwardModal: false, currentForwardItem: null })}
                     forward={() => this.onForward()} />);
+            declineModal = (
+                <RequestDeclineModal
+                    visible={this.state.declineModal}
+                    onChangeText={(text) => this.setState({ notes: text })}
+                    value={this.state.notes}
+                    close={() => { this.setState({ declineModal: false }) }}
+                    decline={this.onDecline} />);
         }
 
         return (
             <View style={styles.container}>
                 {forwardModal}
+                {declineModal}
                 <Header
                     leftComponent={<IconWrapper name='chevron-left' type='font-awesome' color='white' size={28} style={styles.icon} onPress={() => Actions.pop()} />}
                     centerComponent={{ text: 'Request Details', style: styles.headerText }}

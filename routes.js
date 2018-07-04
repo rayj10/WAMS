@@ -13,7 +13,7 @@ import ScrollableTabBar from './components/ScrollableTabBar';
 //Import Containers
 import Login from './containers/Login';
 import { Approval, DOCustomer, MyConfirmation, MyRequest, ViewRequest, RequestDetails, TransferDetails } from './containers/Workspace';
-import QRScanner from './containers/QRScanner';
+import { QRScanner, Link, Information } from './containers/QRScanner';
 import { Help, UserManual, FAQ } from './containers/Help';
 import Setting from './containers/Setting';
 
@@ -71,7 +71,7 @@ class Routes extends React.Component {
      * Callback to be executed when Android hardware back button pressed
      */
     handleBackButton() {
-        if (Actions.currentScene === '_MyRequest'){
+        if (Actions.currentScene === '_MyRequest') {
             this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));
             Actions.reset("Auth");
         }
@@ -120,8 +120,10 @@ class Routes extends React.Component {
                                 </Scene>
                             </Scene>
                             <Scene key="QR Scanner" navBar={() => <PageHeader title='QR Scanner' />} title="QR" drawerLockMode={'locked-closed'}>
-                                <Scene>
+                                <Scene tabs={true} hideTabBar animationEnabled={false} swipeEnabled={false} lazy={true}>
                                     <Scene key="QR Scanner" hideNavBar component={QRScanner} title={"QR Scanner"} />
+                                    <Scene key="Link" hideNavBar component={Link} title={"Link"} />
+                                    <Scene key="Information" hideNavBar component={Information} title={"Information"} />
                                 </Scene>
                             </Scene>
                         </Scene>

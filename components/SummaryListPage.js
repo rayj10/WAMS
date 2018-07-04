@@ -58,6 +58,14 @@ class SummaryListPage extends React.Component {
         };
     }
 
+    componentDidMount(){
+        this.mounted = true;
+    }
+
+    componentWillUnmount(){
+        this.mounted = false;
+    }
+
     /**
      * Render out clickable summary (header) panels
      * @param {Array} headers: list of header information to be rendered
@@ -117,8 +125,9 @@ class SummaryListPage extends React.Component {
      * Fetch new data for the FlatList using callback supplied to onRefresh props
      */
     onRefresh() {
-        this.setState({ refreshing: true },
-            () => this.props.onRefresh(() => this.setState({ refreshing: false })));
+        if (this.mounted)
+            this.setState({ refreshing: true },
+                () => this.props.onRefresh(() => this.setState({ refreshing: false })));
     }
 
     render() {
@@ -134,14 +143,14 @@ class SummaryListPage extends React.Component {
                 content = this.renderSummary(list);
             }
             else if (status === 'Authenticated') {
-                    status = 'No Record Found';
-                    message = 'This list is currently empty';
-                    content = ([
-                        <View style={{ alignItems: 'center' }}>
-                            <Text style={[styles.titleTextStyle, { textAlign: 'center', fontSize: 20 }]}>{'\n\n' + status + '\n'}</Text>
-                            <Text style={[styles.titleTextStyle, { textAlign: 'center', fontSize: 16 }]}>{message}</Text>
-                        </View>
-                    ]);
+                status = 'No Record Found';
+                message = 'This list is currently empty';
+                content = ([
+                    <View style={{ alignItems: 'center' }}>
+                        <Text style={[styles.titleTextStyle, { textAlign: 'center', fontSize: 20 }]}>{'\n\n' + status + '\n'}</Text>
+                        <Text style={[styles.titleTextStyle, { textAlign: 'center', fontSize: 16 }]}>{message}</Text>
+                    </View>
+                ]);
             }
             else if (status !== 'Authenticated') { //to make sure on cases where status is authenticated but list is empty
                 //determine message based on status

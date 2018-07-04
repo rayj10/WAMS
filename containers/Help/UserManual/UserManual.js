@@ -3,13 +3,11 @@ import { View, ScrollView, Text, TouchableOpacity, Image } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
-import Carousel, { Pagination } from 'react-native-snap-carousel';
+import Carousel from 'react-native-snap-carousel';
 
 import Accordion from '../../../components/Accordion';
 import styles from './styles';
 import { windowWidth } from '../../../theme/baseTheme';
-import * as menuAction from '../../../actions/menuActions';
-import * as img from '../../../assets/images';
 import * as links from '../../../utils/links';
 
 //Maps store's state to Approval's props

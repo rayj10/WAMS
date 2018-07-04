@@ -43,10 +43,16 @@ class TransferDetails extends React.Component {
     }
 
     componentDidMount() {
-        this.props.actionsWorkspace.getCheckTransferItem(this.props.token, this.props.header[this.props.keys['id']], (origin, target) => {
-            this.setState({ origin, target })
+        this.mounted = true;
+        this.props.actionsWorkspace.getCheckTransferItem(this.props.token, this.props.header[this.props.keys['id']], (msg, origin, target) => {
+            if (this.mounted && msg === 'success')
+                this.setState({ origin, target });
         });
         this.props.actionsWorkspace.getTransferDetails(this.props.header[this.props.keys['id']], this.props.token, this.onFetchFinish);
+    }
+
+    componentWillUnmount() {
+        this.mounted = false;
     }
 
     /**
@@ -56,8 +62,13 @@ class TransferDetails extends React.Component {
     onFetchFinish(status) {
         if (status === 'Authentication Denied')
             Actions.reset('Main')   //go back to workspace and workspace will logout
-        else
+        else if (this.mounted && status === "success")
             this.setState({ fetchStatus: status });
+        else {                      //in case data was stale and need refreshing to sync with current DB
+            Alert.alert(status);
+            this.props.refresh();
+            setTimeout(() => Actions.pop(), 300);
+        }
     }
 
     /**
@@ -107,7 +118,7 @@ class TransferDetails extends React.Component {
         itemPieceNo = itemPieceNo.substr(0, itemPieceNo.length - 1);
         verification = verification.substr(0, verification.length - 1);
 
-        Alert.alert('Confirmation', "You are about to CONFIRM a transfer request.\n\nAre you sure you want to confirm this transfer?", [
+        Alert.alert('Confirm Transfer Request', "Are you sure you want to CONFIRM this transfer request?", [
             { text: 'Cancel', onPress: () => console.log('Transfer Confirmation Cancelled'), style: 'cancel' },
             {
                 text: 'Confirm', onPress: () =>
@@ -132,8 +143,8 @@ class TransferDetails extends React.Component {
      * On Transfer Deny, post the information to API
      */
     onDeny() {
-        Alert.alert('Confirmation', "You are about to DENY an inventory transfer request.\n\nAre you sure you want to deny this transfer?", [
-            { text: 'Cancel', onPress: () => console.log('Transfer Deny Cancelled'), style: 'cancel' },
+        Alert.alert('Deny Transfer Request', "Are you sure you want to DENY this transfer request?", [
+            { text: 'Cancel', onPress: () => console.log('Transfer Denial Cancelled'), style: 'cancel' },
             {
                 text: 'Deny', onPress: () =>
                     this.props.actionsWorkspace.denyTransferDetails(this.props.token,
@@ -147,7 +158,7 @@ class TransferDetails extends React.Component {
                                     }
                                 }
                             ])
-                        )
+                    )
             }
         ]);
     }
@@ -312,7 +323,7 @@ class TransferDetails extends React.Component {
 
         return (
             <View style={styles.container}>
-                <Header
+                < Header
                     leftComponent={<IconWrapper name='chevron-left' type='font-awesome' color='white' size={28} style={styles.icon} onPress={() => Actions.pop()} />}
                     centerComponent={{ text: 'Transfer Details', style: styles.headerText }}
                     rightComponent={<View style={{ width: normalize(38) }} />}

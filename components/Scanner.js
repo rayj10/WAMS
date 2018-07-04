@@ -50,8 +50,7 @@ export default class Scanner extends React.Component {
 
         this.state = {
             hasCameraPermission: null,
-            lastScan: null,
-            type: this.props.type
+            lastScan: null
         };
     }
     componentDidMount() {
@@ -114,7 +113,8 @@ export default class Scanner extends React.Component {
                                 onBarCodeRead={this.onSuccessRead.bind(this)}
                                 style={styles.scanArea}
                                 autoFocus={Camera.Constants.AutoFocus.on}
-                                focusDepth={1}>
+                                focusDepth={1}
+                                torchMode={this.props.torch}>
                                 
                                 <View style={styles.layerTop} />
                                 <View style={styles.layerCenter}>

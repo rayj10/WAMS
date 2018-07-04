@@ -1,5 +1,9 @@
 import * as img from '../assets/images';
 
+/**
+ * This file is the gateway between IDs and Names from API and Apps
+ */
+
 //Maps constants of internal names to ID from database for internal references
 export const ID = {
     ROOT: 7540,

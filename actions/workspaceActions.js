@@ -52,7 +52,6 @@ export function getRequestApproval(token, resultCB) {
     let body = {
         "RequestTransferInput": [
             {
-                "DepartmentCode": "PRC",
                 "Search": ""
             }
         ]
@@ -124,7 +123,6 @@ export function getRequestView(token, resultCB) {
     let body = {
         "RequestTransferInput": [
             {
-                "DepartmentCode": "PRC",
                 "Search": ""
             }
         ]
@@ -198,11 +196,72 @@ export function getRequestDetails(requestNo, token, resultCB) {
         return fetchAPI(endpoint, 'POST', header, null)
             .then((json) => {
                 dispatch({ type: types.RECEIVE_DETAILS, details: json.data });
-                resultCB('Success');
+                resultCB(json.message);
             })
             .catch((error) => {
                 dispatch({ type: types.EMPTY_DETAILS });
                 resultCB(error);
+            });
+    }
+}
+
+export function forwardRequest(token, requestNo, checker, resultCB) {
+    let endpoint = 'api/v1/cbn/inventory/GetUpdateForm';
+
+    let header = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+    };
+
+    let body = {
+        "ListUpdateForm": [
+            {
+                "RequestNo": requestNo,
+                "CheckerCode": checker
+            }
+        ]
+    };
+
+    return dispatch => {
+        return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
+            .then((json) => {
+                resultCB(json.message, 'Request Forwarded', 'This request has been successfully forwarded to ');
+            })
+            .catch((error) => {
+                resultCB(error.message);
+            });
+    }
+}
+
+export function verifyRequest(token, requestNo, status, resultCB, notes) {
+    let endpoint = 'api/v1/cbn/inventory/GetChangeStatus';
+
+    let header = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+    };
+
+    let body = {
+        "ListChangeStatus": [
+            {
+                "RequestNo": requestNo,
+                "FormStatus": status,
+                "ItemStatus": status,
+                "Notes": notes ? notes : ""
+            }
+        ]
+    };
+
+    return dispatch => {
+        return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
+            .then((json) => {
+                if (status === 'A')
+                    resultCB(json.message, 'Request Approved', 'Request APPROVAL has been successful');
+                else
+                    resultCB(json.message, 'Request Declined', 'Request DECLINE has been successful');
+            })
+            .catch((error) => {
+                resultCB(error.message);
             });
     }
 }
@@ -233,11 +292,11 @@ export function getTransferDetails(transferNo, token, resultCB) {
         return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
             .then((json) => {
                 dispatch({ type: types.RECEIVE_DETAILS, details: json.data });
-                resultCB('Success');
+                resultCB(json.message);
             })
             .catch((error) => {
                 dispatch({ type: types.EMPTY_DETAILS });
-                resultCB(error);
+                resultCB(error.message);
             });
     }
 }
@@ -267,10 +326,13 @@ export function getCheckTransferItem(token, transferNo, resultCB) {
     return dispatch => {
         return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
             .then((json) => {
-                resultCB(json.data[0]['Origin Code'].trimRight(), json.data[0]['TargetCode'].trimRight())
+                if (json.message === 'success')
+                    resultCB(json.message, json.data[0]['Origin Code'].trimRight(), json.data[0]['TargetCode'].trimRight())
+                else
+                    resultCB(json.message)
             })
             .catch((error) => {
-                resultCB(error);
+                resultCB(error.message);
             });
     }
 }
@@ -296,8 +358,6 @@ export function confirmTransferDetails(token, transferNo, origin, target, itemPi
     let body = {
         "InsertConfirm": [
             {
-                "Fullname": "",
-                "DepartmentCode": "",
                 "TransferNo": transferNo,
                 "OriginLocation": origin,
                 "TargetLocation": target,
@@ -343,7 +403,7 @@ export function denyTransferDetails(token, transferNo, resultCB) {
     return dispatch => {
         return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
             .then((json) => {
-                resultCB('Successful', 'Transfer Denied Successfully');
+                resultCB('Successful!', 'Transfer Denied Successfully');
             })
             .catch((error) => {
                 resultCB(error, error.message);

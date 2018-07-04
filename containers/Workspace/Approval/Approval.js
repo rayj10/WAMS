@@ -96,7 +96,7 @@ class Approval extends React.Component {
                 requestor: 'full_nm',
                 item: 'ItemName',
                 amount: 'AmountItem',
-                unit: 'UnitCode',
+                unit: 'UnitName',
                 price: 'EstimatedPrice',
                 from: 'Origin',
                 to: 'Target',
@@ -139,7 +139,7 @@ class Approval extends React.Component {
 
         if (pageName === 'Requests') {
             if (this.props.requestApprovalReceived)
-                return <SummaryListPage title={pageName} status={this.state.request} onRefresh={this.getLists} list={this.props.requestApprovalList} keys={keys} onShowDetails={(reqHead) => Actions.RequestDetails({ header: reqHead, caller: 'Approval', keys })} />
+                return <SummaryListPage title={pageName} status={this.state.request} onRefresh={this.getLists} list={this.props.requestApprovalList} keys={keys} onShowDetails={(reqHead) => Actions.RequestDetails({ header: reqHead, caller: 'Approval', keys, refresh: this.getLists })} />
             else
                 return <SummaryListPage title={pageName} status={this.state.request} onRefresh={this.getLists} />
         }

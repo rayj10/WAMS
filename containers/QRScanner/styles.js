@@ -45,26 +45,6 @@ const styles = StyleSheet.create({
     color: color.light_blue,
     fontFamily: fontFamily.medium,
     fontSize: fontSize.regular
-  },
-
-  backButtonContainer: {
-    position: 'absolute',
-    bottom: 0,    
-    height: normalize(60),
-    width: normalize(60),
-    backgroundColor: 'rgba(0, 0, 0, .2)',
-    borderTopEndRadius: normalize(10)
-  },
-
-  backButton: {
-    position: 'absolute',
-    bottom: 0, 
-    height: normalize(55),
-    width: normalize(55),
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, .3)',
-    borderTopEndRadius: normalize(5)
   }
 });
 
