@@ -7,14 +7,20 @@ import Scanner from '../../../components/Scanner';
 import styles from './styles';
 
 class Link extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
-      torchOn: false
+      torchOn: false,
+      scanOn: true
     }
 
     this.onBarcodeRead = this.onBarcodeRead.bind(this);
+  }
+
+  componentDidUpdate() {
+    if (this.state.scanOn !== this.props.scanOn)
+      this.setState({ scanOn: this.props.scanOn })
   }
 
   onBarcodeRead(type, data, onCancel) {
@@ -29,9 +35,14 @@ class Link extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Scanner onRead={this.onBarcodeRead} torch={this.state.torchOn ? 'on' : 'off'} />
+        {this.state.scanOn ?
+          <Scanner
+            onRead={this.onBarcodeRead}
+            torch={this.state.torchOn ? 'on' : 'off'} />
+          : null
+        }
         <View style={styles.backButtonContainer}>
-          <TouchableOpacity style={{ flex: 1 }} onPress={() => Actions.pop()}>
+          <TouchableOpacity style={{ flex: 1 }} onPress={() => { this.setState({ scanOn: false }); Actions.pop(); }}>
             <View style={styles.backButton}>
               <Icon name='action-undo' type='simple-line-icon' size={40} color='white' />
             </View>

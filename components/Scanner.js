@@ -49,7 +49,7 @@ export default class Scanner extends React.Component {
         super(props);
 
         this.state = {
-            hasCameraPermission: null,
+            hasCameraPermission: false,
             lastScan: null
         };
     }
@@ -57,6 +57,10 @@ export default class Scanner extends React.Component {
         this._requestCameraPermission();
     }
 
+    componentWillUnmount(){
+
+    }
+    
     _requestCameraPermission = async () => {
         const { status } = await Permissions.askAsync(Permissions.CAMERA);
         this.setState({
@@ -96,7 +100,7 @@ export default class Scanner extends React.Component {
                 case BarCodeScanner.Constants.BarCodeType.upc_ean: type = "Upc_ean"; break;
             }
 
-            this.props.onRead(type, data, ()=>{this.setState({lastScan:null})}); //callback, what to do with the data on success read
+            this.props.onRead(type, data, () => { this.setState({ lastScan: null }) }); //callback, what to do with the data on success read
         }
     }
 
@@ -115,7 +119,7 @@ export default class Scanner extends React.Component {
                                 autoFocus={Camera.Constants.AutoFocus.on}
                                 focusDepth={1}
                                 torchMode={this.props.torch}>
-                                
+
                                 <View style={styles.layerTop} />
                                 <View style={styles.layerCenter}>
                                     <View style={styles.layerLeft} />

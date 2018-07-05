@@ -16,6 +16,14 @@ export const mapStateToProps = state => ({
 class QRScanner extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      permission: false
+    }
+  }
+
+  onPermitted() {
+    this.setState({ permission: true });
   }
 
   render() {
@@ -26,10 +34,10 @@ class QRScanner extends React.Component {
         </Text>
         <View style={styles.body}>
           {
-            this.props.menuReceived ? this.props.menuList.find((item) => item['MenuID'] === links.ID.QRSCANNER )['Children'].map((item, key) => {
+            this.props.menuReceived ? this.props.menuList.find((item) => item['MenuID'] === links.ID.QRSCANNER)['Children'].map((item, key) => {
               return (
                 <View style={styles.buttonContainer} key={key}>
-                  <TouchableOpacity style={{ flex: 1 }} onPress={() => Actions[links.IDtoName(item['MenuID'])].call()}>
+                  <TouchableOpacity style={{ flex: 1 }} onPress={() => Actions.jump(links.IDtoName(item['MenuID']), { scanOn: true })}>
                     <View style={styles.button}>
                       <Image style={styles.image} source={links.IDtoIcon(item['MenuID'])} />
                       <Text style={styles.buttonText}> {links.IDtoName(item['MenuID'])} </Text>

@@ -7,16 +7,22 @@ import Scanner from '../../../components/Scanner';
 import styles from './styles';
 
 class Information extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
-      torchOn: false
+      torchOn: false,
+      scanOn: true
     }
 
     this.onBarcodeRead = this.onBarcodeRead.bind(this);
   }
 
+  componentDidUpdate() {
+    if (this.state.scanOn !== this.props.scanOn)
+      this.setState({ scanOn: this.props.scanOn })
+  }
+  
   onBarcodeRead(type, data, onCancel) {
     Alert.alert(
       'A ' + type + ' has been found',
@@ -28,26 +34,31 @@ class Information extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Scanner onRead={this.onBarcodeRead} torch={this.state.torchOn ? 'on' : 'off'} />
+        {this.state.scanOn ?
+          <Scanner
+            onRead={this.onBarcodeRead}
+            torch={this.state.torchOn ? 'on' : 'off'} />
+          : null
+        }
         <View style={styles.backButtonContainer}>
-          <TouchableOpacity style={{ flex: 1 }} onPress={() => Actions.pop()}>
+          <TouchableOpacity style={{ flex: 1 }} onPress={() => { this.setState({ scanOn: false }); Actions.pop(); }}>
             <View style={styles.backButton}>
               <Icon name='action-undo' type='simple-line-icon' size={40} color='white' />
             </View>
           </TouchableOpacity>
-          </View>
-          <View style={styles.torchButtonContainer}>
-            <TouchableOpacity style={{ flex: 1 }} onPress={() => this.setState({ torchOn: !this.state.torchOn })}>
-              <View style={styles.torchButton}>
-                {
-                  this.state.torchOn ? 
+        </View>
+        <View style={styles.torchButtonContainer}>
+          <TouchableOpacity style={{ flex: 1 }} onPress={() => this.setState({ torchOn: !this.state.torchOn })}>
+            <View style={styles.torchButton}>
+              {
+                this.state.torchOn ?
                   <Icon name='flashlight-off' type='material-community' size={40} color='white' />
                   :
                   <Icon name='flashlight' type='material-community' size={40} color='white' />
-                }
-              </View>
-            </TouchableOpacity>
-          </View>
+              }
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
