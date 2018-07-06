@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Alert, TouchableOpacity } from 'react-native';
+import { View, Alert, TouchableOpacity, Linking } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 
@@ -35,11 +35,12 @@ class Link extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        {this.state.scanOn ?
+        {//this.state.scanOn ?
           <Scanner
             onRead={this.onBarcodeRead}
-            torch={this.state.torchOn ? 'on' : 'off'} />
-          : null
+            torch={this.state.torchOn ? 'on' : 'off'} 
+            scanOn={this.state.scanOn}/>
+          //: null
         }
         <View style={styles.backButtonContainer}>
           <TouchableOpacity style={{ flex: 1 }} onPress={() => { this.setState({ scanOn: false }); Actions.pop(); }}>

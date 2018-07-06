@@ -56,10 +56,6 @@ export default class Scanner extends React.Component {
     componentDidMount() {
         this._requestCameraPermission();
     }
-
-    componentWillUnmount(){
-
-    }
     
     _requestCameraPermission = async () => {
         const { status } = await Permissions.askAsync(Permissions.CAMERA);
@@ -113,6 +109,7 @@ export default class Scanner extends React.Component {
                         this.state.hasCameraPermission === false ?
                             <Text style={{ color: '#fff' }}> Camera permission is not granted </Text> :
 
+                            this.props.scanOn?
                             <BarCodeScanner
                                 onBarCodeRead={this.onSuccessRead.bind(this)}
                                 style={styles.scanArea}
@@ -127,7 +124,7 @@ export default class Scanner extends React.Component {
                                     <View style={styles.layerRight} />
                                 </View>
                                 <View style={styles.layerBottom} />
-                            </BarCodeScanner>
+                            </BarCodeScanner>:null
                 }
             </View>
         );
