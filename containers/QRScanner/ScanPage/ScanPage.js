@@ -1,48 +1,66 @@
 import React from 'react';
-import { View, Alert, TouchableOpacity } from 'react-native';
+import { View, Alert, TouchableOpacity, Linking } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 
 import Scanner from '../../../components/Scanner';
+import DialogBoxModal from '../../../components/DialogBoxModal';
 import styles from './styles';
+import { ID } from '../../../utils/links';
 
-class Information extends React.Component {
+class ScanPage extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       torchOn: false,
-      scanOn: true
+      data: null,
+      dialog: false,
+      onCancel: null
     }
 
     this.onBarcodeRead = this.onBarcodeRead.bind(this);
   }
 
-  componentDidUpdate() {
-    if (this.state.scanOn !== this.props.scanOn)
-      this.setState({ scanOn: this.props.scanOn })
-  }
-  
   onBarcodeRead(type, data, onCancel) {
-    Alert.alert(
-      'A ' + type + ' has been found',
-      'Content:\n' + data,
-      [{ text: 'Got It!', onPress: onCancel() }]
-    );
+    if (this.props.type === ID.INFORMATION) {
+      Alert.alert(
+        'A ' + type + ' has been found',
+        'Content:\n' + data,
+        [{ text: 'Got It!', onPress: onCancel }]
+      );
+    }
+    else if (this.props.type === ID.LINK) {
+      this.setState({
+        data,
+        dialog: true,
+        onCancel
+      });
+    }
   }
 
   render() {
     return (
       <View style={styles.container}>
-        {//this.state.scanOn ?
-          <Scanner
-            onRead={this.onBarcodeRead}
-            torch={this.state.torchOn ? 'on' : 'off'} 
-            scanOn={this.state.scanOn}/>
-          //: null
+        {this.state.dialog ? <DialogBoxModal
+          visible={this.state.dialog}
+          title={"Click on a URL to open: "}
+          content={this.state.data}
+          buttons={[
+            {
+              text: "Scan another", onPress: () => {
+                this.setState({ dialog: false });
+                this.state.onCancel();
+              }
+            }
+          ]}
+        /> : null
         }
+        <Scanner
+          onRead={this.onBarcodeRead}
+          torch={this.state.torchOn ? 'on' : 'off'} />
         <View style={styles.backButtonContainer}>
-          <TouchableOpacity style={{ flex: 1 }} onPress={() => { this.setState({ scanOn: false }); Actions.pop(); }}>
+          <TouchableOpacity style={{ flex: 1 }} onPress={() => Actions.pop()}>
             <View style={styles.backButton}>
               <Icon name='action-undo' type='simple-line-icon' size={40} color='white' />
             </View>
@@ -65,4 +83,4 @@ class Information extends React.Component {
   }
 }
 
-export default Information;
+export default ScanPage;

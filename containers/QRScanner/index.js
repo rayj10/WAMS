@@ -1,5 +1,4 @@
 import QRScanner from './QRScanner';
-import Link from './Link';
-import Information from './Information';
+import ScanPage from './ScanPage';
 
-export { QRScanner, Link, Information};
+export { QRScanner, ScanPage};

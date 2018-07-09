@@ -5,6 +5,7 @@ import { Image } from 'react-native';
 
 import Router from './routes'
 import store from './redux/store';
+import * as img from './assets/images';
 
 function cacheFonts(fonts) {
     return fonts.map(function (font) { return Font.loadAsync(font) });
@@ -40,17 +41,21 @@ export default class App extends React.Component {
         ]);
 
         const imageAssets = cacheImages([
-             require('./assets/images/Logo.png'),
-             require('./assets/images/Approval.png'),
-             require('./assets/images/DOCustomer.png'),
-             require('./assets/images/MyConfirmation.png'),
-             require('./assets/images/MyRequest.png'),
-             require('./assets/images/ViewRequest.png'),
-             require('./assets/images/Test.png'),
-             require('./assets/images/UserManual.png'),
-             require('./assets/images/FAQ.png'), 
-             require('./assets/images/Link.png'),
-             require('./assets/images/Information.png')
+             img.Approval,
+             img.Avatar,
+             img.DOCustomer,
+             img.FAQ,
+             img.Information,
+             img.InformationWhite,
+             img.Link,
+             img.LinkWhite,
+             img.Logo,
+             img.MyConfirmation,
+             img.MyRequest,
+             img.Sidebar,
+             img.Test,
+             img.UserManual,
+             img.ViewRequest
         ]);
 
         await Promise.all([...imageAssets, ...fontAssets]);

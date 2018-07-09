@@ -6,7 +6,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'react-native-elements';
-import { View, StyleSheet, Text, ScrollView, Alert, TextInput } from 'react-native';
+import { View, StyleSheet, Text, Alert, TextInput } from 'react-native';
 import Modal from 'react-native-modal';
 
 import { color, fontFamily, fontSize, windowWidth, windowHeight, normalize } from '../theme/baseTheme';

@@ -39,7 +39,7 @@ class PageHeader extends React.Component {
                 <Header
                     leftComponent={<IconWrapper name='menu' color='white' size={33} style={styles.icon} onPress={() => Actions.drawerOpen()} />}
                     centerComponent={{ text: this.props.title, style: styles.headerText }}
-                    rightComponent={<View style={{ width: normalize(43) }} />}
+                    rightComponent={<IconWrapper name='message-text-outline' type='material-community' color='white' size={33} style={styles.icon} onPress={() => {}} />}
                     outerContainerStyles={styles.headerOuterContainer}
                 />
                 <OfflineNotice />

@@ -95,7 +95,7 @@ export default class Scanner extends React.Component {
                 case BarCodeScanner.Constants.BarCodeType.upc_e: type = "Upc_e"; break;
                 case BarCodeScanner.Constants.BarCodeType.upc_ean: type = "Upc_ean"; break;
             }
-
+           
             this.props.onRead(type, data, () => { this.setState({ lastScan: null }) }); //callback, what to do with the data on success read
         }
     }
@@ -109,7 +109,6 @@ export default class Scanner extends React.Component {
                         this.state.hasCameraPermission === false ?
                             <Text style={{ color: '#fff' }}> Camera permission is not granted </Text> :
 
-                            this.props.scanOn?
                             <BarCodeScanner
                                 onBarCodeRead={this.onSuccessRead.bind(this)}
                                 style={styles.scanArea}
@@ -124,7 +123,7 @@ export default class Scanner extends React.Component {
                                     <View style={styles.layerRight} />
                                 </View>
                                 <View style={styles.layerBottom} />
-                            </BarCodeScanner>:null
+                            </BarCodeScanner>
                 }
             </View>
         );
