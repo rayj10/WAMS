@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Alert, TouchableOpacity, Linking } from 'react-native';
+import { View, Alert, Text, TouchableOpacity, Linking } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 
@@ -7,6 +7,7 @@ import Scanner from '../../../components/Scanner';
 import DialogBoxModal from '../../../components/DialogBoxModal';
 import styles from './styles';
 import { ID } from '../../../utils/links';
+import { color } from '../../../theme/baseTheme';
 
 class ScanPage extends React.Component {
   constructor(props) {
@@ -22,17 +23,58 @@ class ScanPage extends React.Component {
     this.onBarcodeRead = this.onBarcodeRead.bind(this);
   }
 
+  formatString(input) {
+    let regex = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i;
+
+    let jsString = [];
+    let str = "";
+
+    input.split(" ").forEach((item, key) => {
+      if (regex.test(item)) {
+        let protocol = "http://";
+        if (item.split("://")[0] === "http" || item.split("://")[0] === "https")
+          protocol = "";
+
+        if (str !== "")
+          jsString.push(
+            <View key={key} style={{ flexDirection: 'row' }}>
+              <Text style={styles.textStyle}>{str} </Text>
+              <TouchableOpacity onPress={() => Linking.openURL(protocol + item)}>
+                <Text style={style = [styles.textStyle, { textDecorationLine: 'underline', color: color.light_blue }]}>{item}</Text>
+              </TouchableOpacity>
+            </View>
+          );
+        else
+          jsString.push(<TouchableOpacity key={key} onPress={() => Linking.openURL(protocol + item)}>
+            <Text style={style = [styles.textStyle, { textDecorationLine: 'underline', color: color.light_blue }]}>{item}</Text>
+          </TouchableOpacity>);
+        str = "";
+      }
+      else if (item === "\n" && str !== "") {
+        jsString.push(<Text key={key} style={styles.textStyle}>{str}</Text>);
+        str = "";
+      }
+      else if (item !== "\n" && item !== "")
+        str += item + " ";
+    });
+
+    if (str !== "")
+      jsString.push(<Text key={jsString.length} style={styles.textStyle}>{str}</Text>);
+
+    return jsString;
+  }
+
   onBarcodeRead(type, data, onCancel) {
     if (this.props.type === ID.INFORMATION) {
       Alert.alert(
         'A ' + type + ' has been found',
         'Content:\n' + data,
-        [{ text: 'Got It!', onPress: onCancel }]
+        [{ text: 'Scan another', onPress: onCancel }]
       );
     }
     else if (this.props.type === ID.LINK) {
       this.setState({
-        data,
+        data: this.formatString(data),
         dialog: true,
         onCancel
       });

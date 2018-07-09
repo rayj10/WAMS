@@ -3,12 +3,14 @@ import * as t from '../actions/actionTypes/workspaceTypes';
 let initialState = {
     requestApprovalReceived: false,
     requestViewReceived: false,
+    POApprovalReceived: false,
     transferApprovalReceived: false,
     transferViewReceived: false,
     detailsReceived: false,
     forwardListReceived: false,
     requestApprovalList: {},
     requestViewList: {},
+    POApprovalList: {},
     transferApprovalList: {},
     transferViewList: {},
     details: {},
@@ -30,6 +32,11 @@ export default function workspaceReducer(state = initialState, action) {
             return Object.assign({}, state, { requestViewReceived: true, requestViewList: action.requestViewList }); break;
         case t.EMPTY_REQUEST_VIEW:
             return Object.assign({}, state, { requestViewReceived: false, requestViewList: {} }); break;
+
+        case t.RECEIVE_PO_APPROVAL:
+            return Object.assign({}, state, { POApprovalReceived: true, POApprovalList: action.POApprovalList }); break;
+        case t.EMPTY_PO_APPROVAL:
+            return Object.assign({}, state, { POApprovalReceived: false, POApprovalList: {} }); break;
 
         case t.RECEIVE_TRANSFER_APPROVAL:
             return Object.assign({}, state, { transferApprovalReceived: true, transferApprovalList: action.transferApprovalList }); break;

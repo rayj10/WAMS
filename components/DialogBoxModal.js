@@ -24,8 +24,8 @@ const styles = StyleSheet.create({
         padding: normalize(15)
     },
     titleTextStyle: {
-        fontSize: fontSize.regular,
-        fontFamily: fontFamily.medium,
+        fontSize: fontSize.large,
+        fontFamily: fontFamily.bold,
         marginBottom: normalize(5),
     },
     textStyle: {
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         marginBottom: normalize(5),
     },
     inputContainer: {
-        flex: 1,
+        flex: 1.5,
         marginHorizontal: normalize(5),
         justifyContent: 'center'
     },
@@ -62,50 +62,14 @@ const styles = StyleSheet.create({
     }
 });
 
-function formatString(input) {
-    let regex = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i;
-
-    let jsString = [];
-    let str = "";
-
-    input.split(" ").forEach((item, key) => {
-        if (regex.test(item)) {
-            let protocol = "http://";
-            if (item.split("://")[0] === "http" || item.split("://")[0] === "https")
-                protocol = "";
-
-            if (str !== "")
-                jsString.push(
-                    <View key={key} style={{ flexDirection: 'row' }}>
-                        <Text style={styles.textStyle}>{str} </Text>
-                        <TouchableOpacity onPress={() => Linking.openURL(protocol + item)}>
-                            <Text style={style = [styles.textStyle, { textDecorationLine: 'underline', color: color.light_blue }]}>{item}</Text>
-                        </TouchableOpacity>
-                    </View>
-                );
-            else
-                jsString.push(<TouchableOpacity key={key} onPress={() => Linking.openURL(protocol + item)}>
-                    <Text style={style = [styles.textStyle, { textDecorationLine: 'underline', color: color.light_blue }]}>{item}</Text>
-                </TouchableOpacity>);
-            str = "";
-        }
-        else if (item === "\n" && str !== "") {
-            jsString.push(<Text key={key} style={styles.textStyle}>{str}</Text>);
-            str = "";
-        }
-        else if (item !== "\n" && item !== "")
-            str += item + " ";
-    });
-
-    if (str !== "")
-        jsString.push(<Text key={jsString.length} style={styles.textStyle}>{str}</Text>);
-
-    return jsString;
-}
-
 const DialogBoxModal = (props) => {
     let { buttons } = props;
-    let h = 0.067 * props.content.split("\n").length;
+    let h;
+
+    if (typeof props.content === 'string')
+        h = 0.067 * props.content.split("\n").length;
+    else
+        h = 0.067 * props.content.length;
 
     return (
         <Modal isVisible={props.visible} hideModalContentWhileAnimating={true} animationIn="zoomInDown" animationOut="zoomOutUp" animationInTiming={200} animationOutTiming={200} onBackButtonPress={buttons[buttons.length - 1].onPress} onBackdropPress={buttons[buttons.length - 1].onPress} >
@@ -115,12 +79,12 @@ const DialogBoxModal = (props) => {
                     <View style={styles.inputContainer}>
                         <View>
                             <ScrollView showVerticalScrollIndicator={false}>
-                                {formatString(props.content)}
+                                {props.content}
                             </ScrollView>
                         </View>
                     </View>
                 </View>
-                <View style={[styles.buttonContainer, buttons.length === 1 ? { flex: 0.5 } : null]}>
+                <View style={[styles.buttonContainer, buttons.length === 1 ? { height: normalize(45), flex: 0 } : null]}>
                     {
                         buttons.length > 1 ?
                             <View style={styles.innerButtonContainer}>
@@ -152,7 +116,7 @@ const DialogBoxModal = (props) => {
 
 DialogBoxModal.propTypes = {
     visible: PropTypes.bool.isRequired,
-    content: PropTypes.string.isRequired,
+    content: PropTypes.any.isRequired,
     buttons: PropTypes.array.isRequired
 }
 

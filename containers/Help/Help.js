@@ -14,7 +14,7 @@ class Help extends React.Component {
       <View style={styles.container}>
         <View style={styles.horizontalContainer}>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={{ flex: 1 }} onPress={() => Actions['User Manual'].call()}>
+            <TouchableOpacity style={{ flex: 1 }} onPress={() => Actions.jump('User Manual')}>
               <View style={styles.button}>
                 <Image style={styles.image} source={img.UserManual} />
                 <Text style={styles.buttonText}> User Manual </Text>
@@ -22,7 +22,7 @@ class Help extends React.Component {
             </TouchableOpacity>
           </View>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={{ flex: 1 }} onPress={() => Actions['FAQ'].call()}>
+            <TouchableOpacity style={{ flex: 1 }} onPress={() => Actions.jump('FAQ')}>
               <View style={styles.button}>
                 <Image style={styles.image} source={img.FAQ} />
                 <Text style={styles.buttonText}> FAQ </Text>

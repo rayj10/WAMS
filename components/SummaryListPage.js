@@ -58,11 +58,11 @@ class SummaryListPage extends React.Component {
         };
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.mounted = true;
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.mounted = false;
     }
 
@@ -73,13 +73,15 @@ class SummaryListPage extends React.Component {
     renderSummary(headers) {
         return headers.map((item, key) => {
             let info = this.buildPanel(item);
+            status = this.props.title === 'PO' ? info.slice(4) : info.slice(3);
+            info = this.props.title === 'PO' ? info.slice(0, 4) : info.slice(0, 3);
             return (<TouchableOpacity onPress={() => this.props.onShowDetails(item)} key={key}>
-                <View style={styles.outterPanel}>
+                <View style={[styles.outterPanel, this.props.title === 'PO' ? { height: normalize(90) } : null]}>
                     <View style={[styles.innerPanel, { flex: 3.5 }]}>
-                        {info.slice(0, 3)}
+                        {info}
                     </View>
                     <View style={styles.innerPanel}>
-                        {info.slice(3)}
+                        {status}
                     </View>
                 </View>
             </TouchableOpacity>)
@@ -97,10 +99,21 @@ class SummaryListPage extends React.Component {
         panel.push(<Text style={{ left: 15 }} key={'id'}>
             <Text style={styles.idNumber}>{item[keys['id']]}</Text>
         </Text>);
-        panel.push(<Text style={{ left: 15 }} key={'department'}>
-            <Text style={styles.titleTextStyle}>{"Department: "}</Text>
-            <Text style={styles.textStyle}>{item[keys['department']]}</Text>
-        </Text>);
+        if (this.props.title === 'PO') {
+            panel.push(<Text style={{ left: 15 }} key={'requestor'}>
+                <Text style={styles.titleTextStyle}>{"Created By: "}</Text>
+                <Text style={styles.textStyle}>{item[keys['requestor']]}</Text>
+            </Text>);
+            panel.push(<Text style={{ left: 15 }} key={'handler'}>
+                <Text style={styles.titleTextStyle}>{"Last Handled: "}</Text>
+                <Text style={styles.textStyle}>{item[keys['handler']]}</Text>
+            </Text>);
+        }
+        else
+            panel.push(<Text style={{ left: 15 }} key={'department'}>
+                <Text style={styles.titleTextStyle}>{"Department: "}</Text>
+                <Text style={styles.textStyle}>{item[keys['department']]}</Text>
+            </Text>);
         panel.push(<Text style={{ left: 15 }} key={'date'}>
             <Text style={styles.titleTextStyle}>{"Date: "}</Text>
             <Text style={styles.textStyle}>{item[keys['date']]}</Text>

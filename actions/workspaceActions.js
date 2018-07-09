@@ -16,7 +16,7 @@ export function successSignOut() {
  * @param {Function} errorCB: Callback in case fetch failed
  */
 export function getForwardList(token, errorCB) {
-    let endpoint = '/api/v1/cbn/inventory/GetListUserVerification';
+    let endpoint = 'api/v1/cbn/inventory/GetListUserVerification';
 
     let header = {
         "Content-Type": "application/json",
@@ -71,13 +71,43 @@ export function getRequestApproval(token, resultCB) {
     }
 }
 
+export function getPOApproval(token, resultCB) {
+    let endpoint = 'api/v1/cbn/inventory/GetFormPO';
+
+    let header = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+    }
+
+    let body = {
+        "GetFormPO": [
+            {
+                "Search": ""
+            }
+        ]
+    }
+
+    return dispatch => {
+
+        return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
+            .then((json) => {
+                dispatch({ type: types.RECEIVE_PO_APPROVAL, POApprovalList: json.data });
+                resultCB('PO', 'Authenticated');
+            })
+            .catch((error) => {
+                dispatch({ type: types.EMPTY_PO_APPROVAL });
+                resultCB('PO', error);
+            });
+    }
+}
+
 /**
  * Fetch the List of Transfers that needs Approval (still open)
  * @param {String} token: User's session token
  * @param {Function} resultCB: Callback to be executed once fetching is done 
  */
 export function getTransferApproval(token, resultCB) {
-    let endpoint = '/api/v1/cbn/inventory/GetFormTransfer';
+    let endpoint = 'api/v1/cbn/inventory/GetFormTransfer';
 
     let header = {
         "Content-Type": "application/json",
@@ -142,13 +172,43 @@ export function getRequestView(token, resultCB) {
     }
 }
 
+export function getPOView(token, resultCB) {
+    let endpoint = 'api/v1/cbn/inventory/GetFormPO';
+
+    let header = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+    }
+
+    let body = {
+        "GetFormPO": [
+            {
+                "Search": ""
+            }
+        ]
+    }
+
+    return dispatch => {
+
+        return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
+            .then((json) => {
+                dispatch({ type: types.RECEIVE_PO_APPROVAL, requestPOList: json.data });
+                resultCB('PO', 'Authenticated');
+            })
+            .catch((error) => {
+                dispatch({ type: types.EMPTY_PO_APPROVAL });
+                resultCB('PO', error);
+            });
+    }
+}
+
 /**
  * Fetch the whole List of Transfers
  * @param {String} token: User's session token
  * @param {Function} resultCB: Callback to be executed once fetching is done 
  */
 export function getTransferView(token, resultCB) {
-    let endpoint = '/api/v1/cbn/inventory/GetFormTransfer';
+    let endpoint = 'api/v1/cbn/inventory/GetFormTransfer';
 
     let header = {
         "Content-Type": "application/json",
@@ -266,6 +326,46 @@ export function verifyRequest(token, requestNo, status, resultCB, notes) {
     }
 }
 
+export function getPODetails(PONo, token, resultCB) {
+    let endpoint = 'api/v1/cbn/inventory/GetFormAppPO';
+
+    let header = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+    };
+
+    let body = {
+        "ListPONumber": [
+            {
+                "PONumber": PONo
+            }
+        ]
+    };
+
+    return dispatch => {
+        return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
+            .then((json) => {
+                let details = {};
+                if (json.message !== 'error') {
+                    details['form'] = json.dataPOForm[0];
+                    details['items'] = json.dataPOItem;
+                    details['vendor'] = json.dataVendor[0];
+                    details['sales'] = json.dataSales[0];
+                    dispatch({ type: types.RECEIVE_DETAILS, details });
+                    resultCB(json.message);
+                }
+                else{
+                    dispatch({ type: types.EMPTY_DETAILS });
+                    resultCB(json.data);
+                }
+            })
+            .catch((error) => {
+                dispatch({ type: types.EMPTY_DETAILS });
+                resultCB(error.message);
+            });
+    }
+}
+
 /**
  * Fetch the full details of a Transfer
  * @param {Object} transferNo: Transfer to be fetched 
@@ -273,7 +373,7 @@ export function verifyRequest(token, requestNo, status, resultCB, notes) {
  * @param {Function} resultCB: Callback to be executed once fetching is done 
  */
 export function getTransferDetails(transferNo, token, resultCB) {
-    let endpoint = '/api/v1/cbn/inventory/GetTransferItem';
+    let endpoint = 'api/v1/cbn/inventory/GetTransferItem';
 
     let header = {
         "Content-Type": "application/json",
@@ -308,7 +408,7 @@ export function getTransferDetails(transferNo, token, resultCB) {
  * @param {Function} resultCB: Callback to be executed once fetching process is done 
  */
 export function getCheckTransferItem(token, transferNo, resultCB) {
-    let endpoint = '/api/v1/cbn/inventory/GetCheckTransferItem';
+    let endpoint = 'api/v1/cbn/inventory/GetCheckTransferItem';
 
     let header = {
         "Content-Type": "application/json",
@@ -348,7 +448,7 @@ export function getCheckTransferItem(token, transferNo, resultCB) {
  * @param {Function} resultCB: Callback to be executed once the API fetch is done 
  */
 export function confirmTransferDetails(token, transferNo, origin, target, itemPieceNo, itemVerified, resultCB) {
-    let endpoint = '/api/v1/cbn/inventory/GetInsertConfirm';
+    let endpoint = 'api/v1/cbn/inventory/GetInsertConfirm';
 
     let header = {
         "Content-Type": "application/json",
@@ -385,7 +485,7 @@ export function confirmTransferDetails(token, transferNo, origin, target, itemPi
  * @param {Function} resultCB: Callback to be executed once fetching process is done 
  */
 export function denyTransferDetails(token, transferNo, resultCB) {
-    let endpoint = '/api/v1/cbn/inventory/GetRejectTransfer';
+    let endpoint = 'api/v1/cbn/inventory/GetRejectTransfer';
 
     let header = {
         "Content-Type": "application/json",

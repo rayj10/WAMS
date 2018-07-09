@@ -16,6 +16,8 @@ export const mapStateToProps = state => ({
     token: state.authReducer.token,
     requestApprovalList: state.workspaceReducer.requestApprovalList,
     requestApprovalReceived: state.workspaceReducer.requestApprovalReceived,
+    POApprovalList: state.workspaceReducer.POApprovalList,
+    POApprovalReceived: state.workspaceReducer.POApprovalReceived,
     transferApprovalList: state.workspaceReducer.transferApprovalList,
     transferApprovalReceived: state.workspaceReducer.transferApprovalReceived
 });
@@ -31,7 +33,7 @@ class Approval extends React.Component {
         super();
         this.state = {
             request: null,
-            PO: 'Access Denied',         //needs to be nulled
+            PO: null,         
             transfer: null,   
             carouselIndex: 0
         };
@@ -52,6 +54,7 @@ class Approval extends React.Component {
      */
     getLists(finishCB) {
         this.props.actionsWorkspace.getRequestApproval(this.props.token, (listName, status) => this.onFetchFinish(listName, status, finishCB && finishCB()));
+        this.props.actionsWorkspace.getPOApproval(this.props.token, (listName, status) => this.onFetchFinish(listName, status, finishCB && finishCB()));
         this.props.actionsWorkspace.getTransferApproval(this.props.token, (listName, status) => this.onFetchFinish(listName, status, finishCB && finishCB()));
     }
 
@@ -103,10 +106,40 @@ class Approval extends React.Component {
                 targetDate: 'TargetReceivedDate'
             },
             PO: {
-                id: 'RequestNo',
-                department: 'dept_nm',
-                date: 'RequestDate',
+                id: 'PONo',
+                requestor: 'full_nm',
+                handler: 'LastHandled',
+                date: 'PODate',
                 status: 'StatusName',
+                maxDate: 'MaxShipping',
+                vendor: 'VendorName',
+                vAdd1: 'Address1',
+                vAdd2: 'Address2',
+                vAdd3: 'Address3',
+                vFax: 'Fax',
+                vMail: 'Email',
+                vSite: 'WebSite',
+                sales: 'ContactName',
+                sPhone: 'Phone',
+                sExtention: 'ExtensionNo',
+                sMob1: 'Mobile 1',
+                sMob2: 'Mobile 2',
+                sMail1: 'Email 1',
+                sMail2: 'Email 2',
+                item: 'Item Name',
+                code: 'Item Code',
+                amount: 'Quantity',
+                unit: 'Unit',
+                uPrice: 'Unit Price',
+                uDisc: 'Unit Discount',
+                iNet: 'Net Amount',
+                desc: 'Description',
+                baseTotal: 'AmountTotalBase',
+                discTotal: 'AmountDiscount',
+                total: 'Total',
+                tax: 'AmountTax',
+                SnH: 'Shipping & Handling',
+                grand: 'Grand Total'
             },
             Transfers: {
                 id: 'Transfer No',
@@ -144,8 +177,8 @@ class Approval extends React.Component {
                 return <SummaryListPage title={pageName} status={this.state.request} onRefresh={this.getLists} />
         }
         else if (pageName === 'PO') {
-            if (false) //this.props.isPOListReceived
-                return <SummaryListPage title={pageName} status={this.state.PO} onRefresh={this.getLists} list={this.props.requestApprovalList} keys={keys} onShowDetails={() => { }} />
+            if (this.props.POApprovalReceived)
+                return <SummaryListPage title={pageName} status={this.state.PO} onRefresh={this.getLists} list={this.props.POApprovalList} keys={keys} onShowDetails={(POHead) => Actions.PODetails({ header: POHead, caller: 'Approval', keys, refresh: this.getLists })} />
             else
                 return <SummaryListPage title={pageName} status={this.state.PO} onRefresh={this.getLists} />
         }
