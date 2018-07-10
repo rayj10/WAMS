@@ -264,7 +264,7 @@ class RequestDetails extends React.Component {
                         </View>
                         <View style={styles.horizontalSubPanel}>
                             <Text style={styles.titleTextStyle}>{"Est. Price:"}</Text>
-                            <Text style={styles.textStyle}>{"Rp." + item[keys['price']]}</Text>
+                            <Text style={styles.textStyle}>{"Rp." + item[keys['price']].toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}</Text>
                         </View>
                     </View>
                     <View style={styles.verticalSubPanel}>

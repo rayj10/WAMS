@@ -116,6 +116,7 @@ class Approval extends React.Component {
                 vAdd1: 'Address1',
                 vAdd2: 'Address2',
                 vAdd3: 'Address3',
+                vPhone: 'Phone',
                 vFax: 'Fax',
                 vMail: 'Email',
                 vSite: 'WebSite',

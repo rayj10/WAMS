@@ -66,10 +66,14 @@ const DialogBoxModal = (props) => {
     let { buttons } = props;
     let h;
 
-    if (typeof props.content === 'string')
-        h = 0.067 * props.content.split("\n").length;
-    else
-        h = 0.067 * props.content.length;
+    if (props.height) 
+        h = props.height;
+    else {
+        if (typeof props.content === 'string')
+            h = 0.067 * props.content.split("\n").length;
+        else
+            h = 0.067 * props.content.length;
+    }
 
     return (
         <Modal isVisible={props.visible} hideModalContentWhileAnimating={true} animationIn="zoomInDown" animationOut="zoomOutUp" animationInTiming={200} animationOutTiming={200} onBackButtonPress={buttons[buttons.length - 1].onPress} onBackdropPress={buttons[buttons.length - 1].onPress} >

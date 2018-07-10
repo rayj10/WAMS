@@ -66,7 +66,7 @@ class Login extends React.Component {
      * Link to website to handle case of forgotten password
      */
     onForgotPassword() {
-        Linking.openURL("https://secure.cbn.net.id/frmForgetPassword");
+        
     }
 
     /**

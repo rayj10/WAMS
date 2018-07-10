@@ -5,7 +5,7 @@
     "description": "This is a test publish",
     "slug": "WAMS",
     "privacy": "public",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/AppIcon.png",
     "ios": {
