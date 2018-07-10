@@ -12,13 +12,12 @@ import { Button } from 'react-native-elements';
 
 import { isEmpty, validate } from '../utils/validate'
 import AuthTextInput from './AuthTextInput'
-import { color, padding, windowWidth, normalize, fontSize, fontFamily } from '../theme/baseTheme';
+import { color, padding, windowWidth, normalize, fontSize, fontFamily, windowHeight } from '../theme/baseTheme';
 import { Logo } from '../assets/images';
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
         backgroundColor: color.white
     },
 
@@ -36,7 +35,7 @@ const styles = StyleSheet.create({
     },
 
     wrapper: {
-        justifyContent: "center",
+        marginVertical: windowHeight/9.5,
         alignItems: "center"
     },
 
@@ -64,8 +63,8 @@ const styles = StyleSheet.create({
     forgotText: {
         textAlign: "center",
         color: color.black,
-        fontSize: fontSize.regular,
-        fontFamily: fontFamily.medium,
+        fontSize: fontSize.regular + 2,
+        fontFamily: fontFamily.bold,
     }
 });
 
@@ -192,7 +191,7 @@ class loginForm extends React.Component {
                     {
                         this.props.onForgotPassword !== null &&
                         <Text style={styles.forgotText} onPress={onForgotPassword}>
-                            Forgot password?</Text>
+                            Need Help?</Text>
                     }
 
                 </View>

@@ -9,7 +9,9 @@ import * as menuAction from '../../actions/menuActions';
 import * as workspaceAction from '../../actions/workspaceActions';
 import LoginForm from '../../components/loginForm'
 import OfflineNotice from '../../components/OfflineNotice';
+import Tooltip from '../../components/Tooltip';
 import styles from './styles';
+import { windowWidth, windowHeight, color } from '../../theme/baseTheme'
 
 //Maps store's reducer states to Login's props 
 export const mapStateToProps = state => ({
@@ -55,18 +57,20 @@ class Login extends React.Component {
     constructor() {
         super();
         this.state = {
-            error: error
+            error: error,
+            tooltip: false
         }
 
         this.onSubmit = this.onSubmit.bind(this);
         this.onFinish = this.onFinish.bind(this);
+        this.onForgotPassword = this.onForgotPassword.bind(this);
     }
 
     /**
      * Link to website to handle case of forgotten password
      */
     onForgotPassword() {
-        
+        this.setState({ tooltip: true });
     }
 
     /**
@@ -101,6 +105,15 @@ class Login extends React.Component {
     render() {
         return (
             <View style={{ flex: 1 }}>
+                <Tooltip
+                    visible={this.state.tooltip}
+                    content={"Login using your Blackpine account.\nPlease contact ESS to reset password."}
+                    boxStyle={{
+                        width: 0.8 * windowWidth, height: 50, borderRadius: 8, backgroundColor: "rgba(192,192,192,0.3)",
+                        borderWidth: 1, padding: 10, borderColor: color.light_grey
+                    }}
+                    x={0.1 * windowWidth} y={0.87 * windowHeight}
+                    close={() => this.setState({ tooltip: false })} />
                 <LoginForm fields={fields}
                     showLabel={false}
                     onSubmit={this.onSubmit}
