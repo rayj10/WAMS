@@ -1,8 +1,9 @@
 import React from 'react';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
-import { Linking, View, Keyboard, ActivityIndicator } from 'react-native';
+import { Linking, View, Keyboard, ActivityIndicator, Platform } from 'react-native';
 import { bindActionCreators } from 'redux';
+import { Icon } from 'react-native-elements';
 
 import * as authAction from '../../actions/authActions';
 import * as menuAction from '../../actions/menuActions';
@@ -11,7 +12,7 @@ import LoginForm from '../../components/loginForm'
 import OfflineNotice from '../../components/OfflineNotice';
 import Tooltip from '../../components/Tooltip';
 import styles from './styles';
-import { windowWidth, windowHeight, color } from '../../theme/baseTheme'
+import { windowWidth, windowHeight, color, normalize } from '../../theme/baseTheme'
 
 //Maps store's reducer states to Login's props 
 export const mapStateToProps = state => ({
@@ -103,16 +104,24 @@ class Login extends React.Component {
     }
 
     render() {
+        //because ios calculate view from the lowest point of view border while android calculate from the center
+        let yIndex;
+        if (Platform.OS === 'ios')
+            yIndex = normalize(70);
+        else
+            yIndex = normalize(100);
+
         return (
             <View style={{ flex: 1 }}>
                 <Tooltip
                     visible={this.state.tooltip}
                     content={"Login using your Blackpine account.\nPlease contact ESS to reset password."}
                     boxStyle={{
-                        width: 0.8 * windowWidth, height: 50, borderRadius: 8, backgroundColor: "rgba(192,192,192,0.3)",
-                        borderWidth: 1, padding: 10, borderColor: color.light_grey
+                        width: 0.8 * windowWidth, height: normalize(60), borderRadius: 8, backgroundColor: "rgba(192,192,192,0.2)",
+                        borderWidth: 1, padding: normalize(10), borderColor: color.light_grey
                     }}
-                    x={0.1 * windowWidth} y={0.87 * windowHeight}
+                    icon={<Icon name='info' color={color.light_grey} size={normalize(30)} />}
+                    x={0.1 * windowWidth} y={windowHeight - yIndex}
                     close={() => this.setState({ tooltip: false })} />
                 <LoginForm fields={fields}
                     showLabel={false}

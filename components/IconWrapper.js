@@ -7,11 +7,11 @@ import { normalize } from '../theme/baseTheme';
 
 const IconWrapper = (props) => {
     return (
-        <TouchableOpacity onPress={props.onPress} hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}>
-            <View style={props.style}>
+        <View style={props.style}>
+            <TouchableOpacity onPress={props.onPress} hitSlop={{ top: 15, left: 15, bottom: 15, right: 15 }}>
                 <Icon name={props.name} type={props.type} color={props.color} size={normalize(props.size)} />
-            </View>
-        </TouchableOpacity>
+            </TouchableOpacity>
+        </View>
     );
 }
 

@@ -71,6 +71,11 @@ export function getRequestApproval(token, resultCB) {
     }
 }
 
+/**
+ * Fetch the List of PO that needs Approval (still pending)
+ * @param {String} token: User's session token 
+ * @param {Function} resultCB: Callback to be executed once fetching is done 
+ */
 export function getPOApproval(token, resultCB) {
     let endpoint = 'api/v1/cbn/inventory/GetFormPO';
 
@@ -172,6 +177,11 @@ export function getRequestView(token, resultCB) {
     }
 }
 
+/**
+ * Fetch the whole List of PO
+ * @param {String} token: User's session token
+ * @param {Function} resultCB: Callback to be executed once fetching is done 
+ */
 export function getPOView(token, resultCB) {
     let endpoint = 'api/v1/cbn/inventory/GetFormPO';
 
@@ -240,7 +250,7 @@ export function getTransferView(token, resultCB) {
 
 /**
  * Fetch the full details of a Request
- * @param {Object} requestNo: Request to be fetched 
+ * @param {String} requestNo: Request to be fetched 
  * @param {String} token: User's session token 
  * @param {Function} resultCB: Callback to be executed once fetching is done 
  */
@@ -265,6 +275,13 @@ export function getRequestDetails(requestNo, token, resultCB) {
     }
 }
 
+/**
+ * Forward a request form to another account
+ * @param {String} token: User's session token 
+ * @param {String} requestNo: Request number to be forwarded 
+ * @param {String} checker: Recipient's user ID 
+ * @param {Function} resultCB: Callback to be executed once the process is done 
+ */
 export function forwardRequest(token, requestNo, checker, resultCB) {
     let endpoint = 'api/v1/cbn/inventory/GetUpdateForm';
 
@@ -293,6 +310,14 @@ export function forwardRequest(token, requestNo, checker, resultCB) {
     }
 }
 
+/**
+ * Approve/Reject a Request
+ * @param {String} token: User's session token  
+ * @param {String} requestNo: Request number of interest 
+ * @param {String} status: A for Approved and R for Decline 
+ * @param {Function} resultCB: Callback to be executed once the process is done 
+ * @param {String} notes: Additional note for reason of Declining a Request
+ */
 export function verifyRequest(token, requestNo, status, resultCB, notes) {
     let endpoint = 'api/v1/cbn/inventory/GetChangeStatus';
 
@@ -326,6 +351,12 @@ export function verifyRequest(token, requestNo, status, resultCB, notes) {
     }
 }
 
+/**
+ * Fetch the detailed information of a PO
+ * @param {String} PONo: PO number of interest 
+ * @param {String} token: User's session token  
+ * @param {Function} resultCB: Callback to be executed once the fetch is done 
+ */
 export function getPODetails(PONo, token, resultCB) {
     let endpoint = 'api/v1/cbn/inventory/GetFormAppPO';
 

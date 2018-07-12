@@ -1,8 +1,3 @@
-/**
- * Component that renders a Modal for forwarding requests
- * used by RequestDetails.js
- */
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Linking } from 'react-native';

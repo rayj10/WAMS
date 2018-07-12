@@ -1,8 +1,3 @@
-/**
- * Component that renders a Modal for forwarding requests
- * used by RequestDetails.js
- */
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'react-native-elements';

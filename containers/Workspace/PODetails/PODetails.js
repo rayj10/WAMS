@@ -68,19 +68,22 @@ class PODetails extends React.Component {
     }
 
     /**
-     * What to do when Request is approved
+     * What to do when PO is approved
      */
     onApprove() {
 
     }
 
     /**
-     * What to do when Request is declined
+     * What to do when PO is declined
      */
     onReject() {
 
     }
 
+    /**
+     * Returns an extracted information on a PO's price summary in the form of Array of formatted JSX objects
+     */
     getPriceSummary() {
         let { form } = this.props.details;
         let { keys } = this.props;
@@ -116,6 +119,9 @@ class PODetails extends React.Component {
         return summary;
     }
 
+    /**
+     * Returns an extracted information on a PO's vendor information in the form of Array of formatted JSX objects
+     */
     getVendorInfo() {
         let { vendor } = this.props.details;
         let { keys } = this.props;
@@ -161,6 +167,9 @@ class PODetails extends React.Component {
         return info;
     }
 
+    /**
+     * Returns an extracted information on a PO's sales information in the form of Array of formatted JSX objects
+     */
     getSalesInfo() {
         let { sales } = this.props.details;
         let { keys } = this.props;

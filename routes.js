@@ -9,6 +9,7 @@ import Splash from './components/Splash';
 import NavDrawer from './components/NavDrawer';
 import PageHeader from './components/Header';
 import ScrollableTabBar from './components/ScrollableTabBar';
+import CameraPage from './components/CameraPage';
 
 //Import Containers
 import Login from './containers/Login';
@@ -126,6 +127,7 @@ class Routes extends React.Component {
                                     <Scene key="ScanPage" hideNavBar component={ScanPage} title={"ScanPage"} />
                                 </Scene>
                             </Scene>
+                            <Scene key="CameraPage" hideNavBar component={CameraPage} title="Camera" drawerLockMode={'locked-closed'}/>
                         </Scene>
                     </Stack>
                 </Scene>

@@ -1,8 +1,3 @@
-/**
- * Component that renders a Modal for forwarding requests
- * used by RequestDetails.js
- */
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Linking } from 'react-native';
@@ -19,9 +14,10 @@ const styles = StyleSheet.create({
         left: 0,
     },
     box: {
+        flexDirection: 'row',
         width: 100,
         height: 50,
-        justifyContent: 'center',
+        justifyContent: 'space-around',
         alignItems: 'center'
     },
     textStyle: {
@@ -36,6 +32,7 @@ const Tooltip = (props) => {
         <Modal isVisible={props.visible} style={{ justifyContent: 'flex-start', margin: 0 }} backdropColor='transparent' hideModalContentWhileAnimating={true} animationInTiming={200} animationOutTiming={200} onBackButtonPress={props.close} onBackdropPress={props.close} >
             <View style={[styles.container, { left: props.x, top: props.y }]}>
                 <View style={[styles.box, props.boxStyle]}>
+                    {props.icon}
                     <Text style={styles.textStyle}>{props.content}</Text>
                 </View>
             </View>

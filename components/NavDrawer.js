@@ -92,6 +92,9 @@ class NavDrawer extends React.Component {
 
         this.goto = this.goto.bind(this);
         this.onSignOut = this.onSignOut.bind(this);
+        this.pictureTaken = this.pictureTaken.bind(this);
+        this.usePicture = this.usePicture.bind(this);
+        this.newPicture = this.newPicture.bind(this);
     }
 
     componentDidMount() {
@@ -108,7 +111,7 @@ class NavDrawer extends React.Component {
      */
     componentDidUpdate() {
         let tabs = this.props.menuList;
-        
+
         //Adjust highlighted tab position
         if (this.props.menuReceived && this.state.currentTab !== links.IDtoName(tabs[0]['MenuID']) && Actions.currentScene === '_' + this.state.initialPage)
             this.setState({ currentTab: links.IDtoName(tabs[0]['MenuID']) })
@@ -142,11 +145,27 @@ class NavDrawer extends React.Component {
         }
     }
 
+    pictureTaken(uri) {
+        Actions.Photo({ uri, usePicture: this.usePicture, newPicture: this.newPicture });
+    }
+
+    usePicture(uri){
+        //save to async and redux
+        //change avatar state
+    }
+
+    newPicture(){
+        Actions.pop();
+        Actions.CameraPage({ pictureTaken: this.pictureTaken });
+    }
+
     render() {
         return (
             <View>
                 <View style={styles.header}>
-                    <Image source={Avatar} style={styles.avatar} />
+                    <TouchableOpacity onPress={() => Actions.CameraPage({ pictureTaken: this.pictureTaken })}>
+                        <Image source={Avatar} style={styles.avatar} />
+                    </TouchableOpacity>
                     <Text style={styles.headerText}>{this.state.userName}</Text>
                 </View>
                 <View style={styles.itemContainer}>

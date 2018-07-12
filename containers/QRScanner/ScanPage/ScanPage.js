@@ -23,6 +23,10 @@ class ScanPage extends React.Component {
     this.onBarcodeRead = this.onBarcodeRead.bind(this);
   }
 
+  /**
+   * Add hyperlinlks to String and by making them into an array of touchable objects if they satify the regex
+   * @param {String} input: String to be formatted 
+   */
   formatString(input) {
     let regex = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i;
 
@@ -64,6 +68,12 @@ class ScanPage extends React.Component {
     return jsString;
   }
 
+  /**
+   * Callback to be executed once Scanner picks up something
+   * @param {String} type: Type of barcode read 
+   * @param {String} data: Content of the barcode 
+   * @param {Function} onCancel: Callback to be executed if user chooses to cancel on the reading  
+   */
   onBarcodeRead(type, data, onCancel) {
     if (this.props.type === ID.INFORMATION) {
       Alert.alert(
