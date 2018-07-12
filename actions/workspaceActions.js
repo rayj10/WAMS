@@ -385,7 +385,7 @@ export function getPODetails(PONo, token, resultCB) {
                     dispatch({ type: types.RECEIVE_DETAILS, details });
                     resultCB(json.message);
                 }
-                else{
+                else {
                     dispatch({ type: types.EMPTY_DETAILS });
                     resultCB(json.data);
                 }
@@ -393,6 +393,72 @@ export function getPODetails(PONo, token, resultCB) {
             .catch((error) => {
                 dispatch({ type: types.EMPTY_DETAILS });
                 resultCB(error.message);
+            });
+    }
+}
+
+/**
+ * Release the handler on a PO request
+ * @param {String} PONo: ID of a PO to be released 
+ * @param {String} token: User's Session Token 
+ * @param {Function} resultCB: Callback to be executed once the process is done 
+ */
+export function releasePOhandle(PONo, token, resultCB) {
+    let endpoint = 'api/v1/cbn/inventory/GetCancelForm';
+
+    let header = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+    };
+
+    let body = {
+        "ListPONumber": [
+            {
+                "PONumber": PONo
+            }
+        ]
+    };
+
+    return dispatch => {
+        return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
+            .then((json) => {
+                resultCB(json.message);
+            })
+            .catch((error) => {
+                resultCB(error.message);
+            });
+    }
+}
+
+/**
+ * Reject a PO request
+ * @param {String} PONo: ID of PO to be rejected 
+ * @param {String} token: User's session token 
+ * @param {Function} resultCB: Callback to be executed once the process is done 
+ */
+export function rejectPODetails(PONo, token, resultCB) {
+    let endpoint = 'api/v1/cbn/inventory/GetRejectPO';
+
+    let header = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+    };
+
+    let body = {
+        "ListPONumber": [
+            {
+                "PONumber": PONo
+            }
+        ]
+    };
+
+    return dispatch => {
+        return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
+            .then((json) => {
+                resultCB('Successful!', 'PO Rejected Successfully');
+            })
+            .catch((error) => {
+                resultCB(error, error.message);
             });
     }
 }

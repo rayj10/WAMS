@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import {
     View, Alert, Text,
     ScrollView, TouchableOpacity, ActivityIndicator,
-    Linking
+    Linking, BackHandler
 } from 'react-native';
 
 import styles from "./styles";
@@ -40,15 +40,18 @@ class PODetails extends React.Component {
         this.onApprove = this.onApprove.bind(this);
         this.onReject = this.onReject.bind(this);
         this.onFetchFinish = this.onFetchFinish.bind(this);
+        this.handleBackPress = this.handleBackPress.bind(this);
     }
 
     componentDidMount() {
         this.mounted = true;
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
         this.props.actionsWorkspace.getPODetails(this.props.header[this.props.keys['id']], this.props.token, this.onFetchFinish);
     }
 
     componentWillUnmount() {
         this.mounted = false;
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
     }
 
     /**
@@ -67,6 +70,17 @@ class PODetails extends React.Component {
         }
     }
 
+    handleBackPress() {
+        this.props.actionsWorkspace.releasePOhandle(this.props.header[this.props.keys['id']], this.props.token, (status) => {
+            if (status === 'Authentication Denied')
+                Actions.reset('Main')   //go back to workspace and workspace will logout
+            else if (this.mounted && status === "success") {
+                this.props.refresh();
+                setTimeout(() => Actions.pop(), 300);
+            }
+        });
+    }
+
     /**
      * What to do when PO is approved
      */
@@ -78,7 +92,24 @@ class PODetails extends React.Component {
      * What to do when PO is declined
      */
     onReject() {
-
+        Alert.alert('Reject PO Request', "Are you sure you want to Reject this PO request?", [
+            { text: 'Cancel', onPress: () => console.log('PO Rejection Cancelled'), style: 'cancel' },
+            {
+                text: 'Reject', onPress: () =>
+                    this.props.actionsWorkspace.rejectPODetails(this.props.header[this.props.keys['id']],
+                        this.props.token,
+                        (title, msg) =>
+                            Alert.alert(title, msg, [
+                                {
+                                    text: 'OK', onPress: () => {
+                                        this.props.refresh();
+                                        setTimeout(() => Actions.pop(), 300);
+                                    }
+                                }
+                            ])
+                    )
+            }
+        ]);
     }
 
     /**
@@ -382,7 +413,7 @@ class PODetails extends React.Component {
                 {vendorModal}
                 {salesModal}
                 <Header
-                    leftComponent={<IconWrapper name='chevron-left' type='font-awesome' color='white' size={28} style={styles.icon} onPress={() => Actions.pop()} />}
+                    leftComponent={<IconWrapper name='chevron-left' type='font-awesome' color='white' size={28} style={styles.icon} onPress={this.handleBackPress} />}
                     centerComponent={{ text: 'PO Details', style: styles.headerText }}
                     rightComponent={<IconWrapper name='dollar' type='font-awesome' color='white' size={28} style={styles.icon} onPress={() => this.setState({ priceSummary: true })} />}
                     outerContainerStyles={styles.headerOuterContainer} />

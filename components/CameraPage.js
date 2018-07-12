@@ -7,13 +7,9 @@ import { padding, color, fontSize, fontFamily, windowWidth, normalize } from '..
 import IconWrapper from './IconWrapper';
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#000',
-    },
     camera: {
         flex: 1,
-        justifyContent: 'space-between',
+        backgroundColor: '#000',
     },
     zoomContainer: {
         flex: 1,
@@ -162,10 +158,9 @@ class CameraPage extends React.Component {
         } else {
             console.log(this.camera)
             return (
-                <View style={styles.container}>
                     <Camera
                         ref={ref => { this.camera = ref }}
-                        style={{ flex: 1 }}
+                        style={styles.camera}
                         onCameraReady={this.collectPictureSizes}
                         type={this.state.type}
                         flashMode={Camera.Constants.FlashMode.auto}
@@ -183,7 +178,6 @@ class CameraPage extends React.Component {
                             {this.cameraModeButton()}
                         </View>
                     </Camera>
-                </View>
             );
         }
     }

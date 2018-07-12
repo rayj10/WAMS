@@ -13,6 +13,7 @@
       "bundleIdentifier": "com.CBN.WAMS"
     },
     "android": {
+      "versionCode": 2,
       "package": "com.CBN.WAMS"
     }
   }

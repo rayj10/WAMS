@@ -35,7 +35,8 @@ const styles = StyleSheet.create({
     },
 
     wrapper: {
-        marginVertical: windowHeight/9.5,
+        marginVertical:windowHeight/10,
+        justifyContent: "center",
         alignItems: "center"
     },
 

@@ -78,6 +78,8 @@ class Routes extends React.Component {
         }
         else if (Actions.currentScene === 'Login')
             BackHandler.exitApp();
+        else if (Actions.currentScene === 'PODetails')
+            {}//do nothing, handled with PODetails own listener
         else {
             Actions.pop()
             this.props.actionsMenu.updateMenu(Actions.currentScene)  //notify redux state about scene change so it could update menus
@@ -127,7 +129,7 @@ class Routes extends React.Component {
                                     <Scene key="ScanPage" hideNavBar component={ScanPage} title={"ScanPage"} />
                                 </Scene>
                             </Scene>
-                            <Scene key="CameraPage" hideNavBar component={CameraPage} title="Camera" drawerLockMode={'locked-closed'}/>
+                            <Scene key="CameraPage" hideNavBar component={CameraPage} title="Camera" drawerLockMode={'locked-closed'} />
                         </Scene>
                     </Stack>
                 </Scene>
