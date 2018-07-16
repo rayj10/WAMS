@@ -117,7 +117,7 @@ class TransferDetails extends React.Component {
         //remove last comma
         itemPieceNo = itemPieceNo.substr(0, itemPieceNo.length - 1);
         verification = verification.substr(0, verification.length - 1);
-
+        console.log(itemPieceNo, verification)
         Alert.alert('Confirm Transfer Request', "Are you sure you want to CONFIRM this transfer request?", [
             { text: 'Cancel', onPress: () => console.log('Transfer Confirmation Cancelled'), style: 'cancel' },
             {
@@ -238,7 +238,7 @@ class TransferDetails extends React.Component {
                 lastLine = (
                     <View style={styles.verticalSubPanel}>
                         <Text style={[styles.titleTextStyle, { textAlign: 'right', marginLeft: 0 }]}>{"Verification:"}</Text>
-                        <PickerWrapper items={['Arrived', 'Missed']} style={{ flex: 1.2, marginTop: normalize(3) }} onSelect={(verification) => this.onPickerSelect(item[keys['piece']], verification)} />
+                        <PickerWrapper items={['Arrived', 'Missed']} style={{ flex:1.2, marginTop: normalize(3) }} onSelect={(verification) => this.onPickerSelect(item[keys['piece']], verification)} />
                     </View>
                 );
             else if (this.props.caller === 'View')

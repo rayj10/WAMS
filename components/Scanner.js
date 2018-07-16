@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { BarCodeScanner, Permissions, Camera } from 'expo';
 
-import { windowWidth, windowHeight } from '../theme/baseTheme';
+import { windowWidth, windowHeight, normalize } from '../theme/baseTheme';
 
 const opacity = 'rgba(0, 0, 0, .6)';
 const styles = StyleSheet.create({
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     scanArea: {
-        height: windowHeight - 65,
+        height: windowHeight - normalize(65),
         width: windowWidth
     },
     layerTop: {

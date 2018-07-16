@@ -8,7 +8,7 @@ const color = {
     black: "#3B3031",
     light_black: "#252930",
     main: "rgb(99,139,250)",
-    white: "#ffffff",
+    white: "#fcfcfc",
     underlayColor: "#ddd",
     red: "#fc5e55",
     green: "#36f76a",
@@ -16,13 +16,14 @@ const color = {
     grey: "#4b5970",
     light_blue: "#0083e7",
     blue: "#0061ac",
-    dark_blue: "#004071"
+    dark_blue: "#004071",
+    background: "#f7f7f7"
 }
 
 const fontSize = {
-    small: normalize(12),
-    regular: normalize(14),
-    large: normalize(21)
+    small: normalize(13),
+    regular: normalize(15),
+    large: normalize(22)
 }
 
 const fontFamily = {

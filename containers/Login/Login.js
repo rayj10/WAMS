@@ -117,11 +117,11 @@ class Login extends React.Component {
                     visible={this.state.tooltip}
                     content={"Login using your Blackpine account.\nPlease contact ESS to reset password."}
                     boxStyle={{
-                        width: 0.8 * windowWidth, height: normalize(60), borderRadius: 8, backgroundColor: "rgba(192,192,192,0.2)",
+                        width: 0.9 * windowWidth, height: normalize(60), borderRadius: 8, backgroundColor: "rgba(192,192,192,0.2)",
                         borderWidth: 1, padding: normalize(10), borderColor: color.light_grey
                     }}
                     icon={<Icon name='info' color={color.light_grey} size={normalize(30)} />}
-                    x={0.1 * windowWidth} y={windowHeight - yIndex}
+                    x={0.05 * windowWidth} y={windowHeight - yIndex}
                     close={() => this.setState({ tooltip: false })} />
                 <LoginForm fields={fields}
                     showLabel={false}

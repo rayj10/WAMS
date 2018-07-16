@@ -186,7 +186,7 @@ class SummaryListPage extends React.Component {
         return (
             <View style={{ flex: 1 }}>
                 <Text style={styles.subHeader}>{this.props.title}</Text>
-                <View style={[styles.panelContainer, status === 'Authenticated' ? {} : { backgroundColor: '#f2f7fc' }]}>
+                <View style={[styles.panelContainer, status === 'Authenticated' ? {} : { backgroundColor: color.white }]}>
                     <FlatList
                         showsVerticalScrollIndicator={false}
                         progressViewOffset={-10}

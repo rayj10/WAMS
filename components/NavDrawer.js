@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
         fontSize: fontSize.large
     },
     itemContainer: {
+        backgroundColor: color.white,
         marginTop: 1
     },
     icon: {
@@ -149,19 +150,19 @@ class NavDrawer extends React.Component {
         Actions.Photo({ uri, usePicture: this.usePicture, newPicture: this.newPicture });
     }
 
-    usePicture(uri){
+    usePicture(uri) {
         //save to async and redux
         //change avatar state
     }
 
-    newPicture(){
+    newPicture() {
         Actions.pop();
         Actions.CameraPage({ pictureTaken: this.pictureTaken });
     }
 
     render() {
         return (
-            <View>
+            <View style={{ backgroundColor: color.white }}>
                 <View style={styles.header}>
                     <TouchableOpacity onPress={() => Actions.CameraPage({ pictureTaken: this.pictureTaken })}>
                         <Image source={Avatar} style={styles.avatar} />
@@ -187,7 +188,7 @@ class NavDrawer extends React.Component {
                         extraData={this.state.currentTab}
                         keyExtractor={(item) => item['MenuName']} />
                 </View>
-                <Button title="Logout" onPress={this.onSignOut} buttonStyle={styles.button} />
+                <Button title="Logout" onPress={this.onSignOut} buttonStyle={styles.button} textStyle={styles.navText} />
             </View>
         );
     }

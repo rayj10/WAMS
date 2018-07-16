@@ -36,7 +36,7 @@ export function login(user, finishCB) {
                 dispatch({ type: t.LOGGED_IN, token: json['access_token'], userName: username });
 
                 //firebase auth for Chat feature
-                var dummyEmail = username + '@cbn.co.id';
+                var dummyEmail = username.split(' ')[0] + '@cbn.co.id';
                 firebase.auth()
                     .signInWithEmailAndPassword(dummyEmail, password)
                     .catch((error) => {

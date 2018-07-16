@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 
   bodyContainer: {
     flex: 1,
-    backgroundColor: color.white,
+    backgroundColor: color.background,
     padding: normalize(3)
   },
 
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1.5,
     borderColor: color.light_grey,
     height: 0.12 * windowHeight,
-    backgroundColor: color.white
+    backgroundColor: color.background
   },
 
   button: {

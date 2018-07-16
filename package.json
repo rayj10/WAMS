@@ -19,7 +19,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
-    "@babel/core": "^7.0.0-beta.48",
+    "@babel/core": "^7.0.0-beta.53",
     "expo": "^28.0.0",
     "firebase": "^5.2.0",
     "lodash": "^4.17.10",
