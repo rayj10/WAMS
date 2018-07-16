@@ -81,11 +81,41 @@ class PODetails extends React.Component {
         });
     }
 
+    pictureTaken(img) {
+        var date = new Date().getDate();
+        var month = new Date().getMonth() + 1;
+        var year = new Date().getFullYear();
+
+        var fileName = 'IMG' + date + month + year;
+
+        this.props.actionsWorkspace.approvePODetails(this.props.header[this.props.keys['id']],
+            this.props.token,
+            img,
+            fileName,
+            (title, msg) => {
+                Alert.alert(title, msg, [
+                    {
+                        text: 'OK', onPress: () => {
+                            this.props.refresh();
+                            setTimeout(() => Actions.pop(), 300);
+                        }
+                    }
+                ], { cancelable: false });
+            })
+    }
+
     /**
      * What to do when PO is approved
      */
     onApprove() {
-
+        Alert.alert('Approve PO Request', 
+        "To proceed with this PO Approval you will need to upload a photo of the signed form \n\nWAMS will have to access your Phone's Camera and/or Gallery", 
+        [{ text: 'Cancel', onPress: () => console.log('PO Rejection Cancelled'), style: 'cancel' },
+            {
+                text: 'Upload', onPress: () =>
+                    Actions.TakePhoto({ pictureTaken: this.pictureTaken.bind(this) })
+            }
+        ]);
     }
 
     /**

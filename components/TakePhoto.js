@@ -165,6 +165,7 @@ export default class TakePhoto extends React.Component {
     let result = await ImagePicker.launchImageLibraryAsync({
       base64: true,
       allowsEditing: false,
+      quality: 0.4,
       mediaTypes: ImagePicker.MediaTypeOptions.Images
     });
 
@@ -177,6 +178,7 @@ export default class TakePhoto extends React.Component {
     const result = await ImagePicker.launchCameraAsync({
       allowsEditing: false,
       base64: true,
+      quality: 0.4
     });
 
     if (!result.cancelled) {

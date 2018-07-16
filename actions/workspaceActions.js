@@ -404,7 +404,7 @@ export function getPODetails(PONo, token, resultCB) {
  * @param {Function} resultCB: Callback to be executed once the process is done 
  */
 export function releasePOhandle(PONo, token, resultCB) {
-    let endpoint = 'api/v1/cbn/inventory/GetCancelForm';
+    let endpoint = 'api/v1/cbn/inventory/GetCancelPO';
 
     let header = {
         "Content-Type": "application/json",
@@ -426,6 +426,46 @@ export function releasePOhandle(PONo, token, resultCB) {
             })
             .catch((error) => {
                 resultCB(error.message);
+            });
+    }
+}
+
+/**
+ * Approve a PO request
+ * @param {String} PONo: ID of PO to be rejected 
+ * @param {String} token: User's session token 
+ * @param {String} img: Base64 encoded jpeg data of image to be uploaded 
+ * @param {String} name: File name the image should be uploaded as 
+ * @param {Function} resultCB: Callback to be executed once the process is done 
+ */
+export function approvePODetails(PONo, token, img, name, resultCB) {
+    let endpoint = 'api/v1/cbn/inventory/GetApprovePO';
+
+    let header = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+    };
+
+    let body = {
+        "ListApprovePO": [
+            {
+                "PONumber": PONo,
+                "FileName": name,
+                "Images": img
+            }
+        ]
+    };
+
+    return dispatch => {
+        return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
+            .then((json) => {
+                if (json.message === 'success')
+                    resultCB('Successful!', 'PO Approved Successfully');
+                else
+                    resultCB('Something went wrong', json.message);
+            })
+            .catch((error) => {
+                resultCB(error, error.message);
             });
     }
 }
