@@ -17,6 +17,9 @@ export const InformationWhite = require('./InformationWhite.png');
 export const Link = require('./Link.png');
 export const LinkWhite = require('./LinkWhite.png');
 
+export const TakePicture = require('./TakePicture.png');
+export const Gallery = require('./Gallery.png');
+
 export const Sidebar = require('./Sidebar.png');
 
 

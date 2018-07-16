@@ -1,7 +1,8 @@
 import React from 'react';
 import {
     View, Text, StyleSheet, TouchableOpacity,
-    ScrollView, Alert, Image, FlatList
+    ScrollView, Alert, Image, FlatList,
+    AsyncStorage
 } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
@@ -86,6 +87,7 @@ class NavDrawer extends React.Component {
 
         this.state = {
             tabs: null,
+            profilePic: Avatar,
             currentTab: null,                                                           //marks which drawer item to highlight based on active scene
             initialPage: null,
             userName: name ? name.charAt(0).toUpperCase() + name.slice(1) : null,       //user's name to be displayed on avatar
@@ -94,8 +96,6 @@ class NavDrawer extends React.Component {
         this.goto = this.goto.bind(this);
         this.onSignOut = this.onSignOut.bind(this);
         this.pictureTaken = this.pictureTaken.bind(this);
-        this.usePicture = this.usePicture.bind(this);
-        this.newPicture = this.newPicture.bind(this);
     }
 
     componentDidMount() {
@@ -146,26 +146,18 @@ class NavDrawer extends React.Component {
         }
     }
 
-    pictureTaken(uri) {
-        Actions.Photo({ uri, usePicture: this.usePicture, newPicture: this.newPicture });
-    }
-
-    usePicture(uri) {
-        //save to async and redux
-        //change avatar state
-    }
-
-    newPicture() {
+    pictureTaken(img) {
+        this.setState({ profilePic: { uri: 'data:image/jpg;base64,' + img } });
+        Alert.alert('Successful!', 'Profile Picture has been successfully updated');
         Actions.pop();
-        Actions.CameraPage({ pictureTaken: this.pictureTaken });
     }
 
     render() {
         return (
             <View style={{ backgroundColor: color.white }}>
                 <View style={styles.header}>
-                    <TouchableOpacity onPress={() => Actions.CameraPage({ pictureTaken: this.pictureTaken })}>
-                        <Image source={Avatar} style={styles.avatar} />
+                    <TouchableOpacity onPress={() => Actions.TakePhoto({ pictureTaken: this.pictureTaken })}>
+                        <Image source={this.state.profilePic} style={styles.avatar} />
                     </TouchableOpacity>
                     <Text style={styles.headerText}>{this.state.userName}</Text>
                 </View>

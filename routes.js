@@ -10,6 +10,7 @@ import NavDrawer from './components/NavDrawer';
 import PageHeader from './components/Header';
 import ScrollableTabBar from './components/ScrollableTabBar';
 import CameraPage from './components/CameraPage';
+import TakePhoto from './components/TakePhoto';
 
 //Import Containers
 import Login from './containers/Login';
@@ -46,26 +47,26 @@ class Routes extends React.Component {
     //load name and token from async and put it in redux's state
     componentDidMount() {
         AsyncStorage.getItem('username').then(name => {
-            AsyncStorage.getItem('token').then((data) => {
-                setTimeout(() => {
-                    if (data !== null) {
-                        this.props.actionsMenu.getAvailableMenu(data, (error) => {
-                            if (error === 'Authentication Denied' && this.props.token) {
-                                Alert.alert(error, 'Your session may have expired please re-enter your login credentials')
-                                this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));
-                                Actions.reset("Auth");
-                            }
-                        });
-                        store.dispatch({ type: aType.LOGGED_IN, token: data, userName: name });
-                        this.setState({ isReady: true, isLoggedIn: true });
-                    }
-                    else {
-                        store.dispatch({ type: aType.LOGGED_OUT });
-                        this.setState({ isReady: true, isLoggedIn: false })
-                    }
-                }, 3000)
+            AsyncStorage.getItem('token').then((token) => {
+                    setTimeout(() => {
+                        if (token !== null) {
+                            this.props.actionsMenu.getAvailableMenu(token, (error) => {
+                                if (error === 'Authentication Denied' && this.props.token) {
+                                    Alert.alert(error, 'Your session may have expired please re-enter your login credentials')
+                                    this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));
+                                    Actions.reset("Auth");
+                                }
+                            });
+                            store.dispatch({ type: aType.LOGGED_IN, token: token, userName: name });
+                            this.setState({ isReady: true, isLoggedIn: true });
+                        }
+                        else {
+                            store.dispatch({ type: aType.LOGGED_OUT });
+                            this.setState({ isReady: true, isLoggedIn: false })
+                        }
+                    }, 2000)
+                });
             });
-        });
     }
 
     /**
@@ -78,8 +79,7 @@ class Routes extends React.Component {
         }
         else if (Actions.currentScene === 'Login')
             BackHandler.exitApp();
-        else if (Actions.currentScene === 'PODetails')
-            {}//do nothing, handled with PODetails own listener
+        else if (Actions.currentScene === 'PODetails') { }//do nothing, handled with PODetails own listener
         else {
             Actions.pop()
             this.props.actionsMenu.updateMenu(Actions.currentScene)  //notify redux state about scene change so it could update menus
@@ -129,7 +129,8 @@ class Routes extends React.Component {
                                     <Scene key="ScanPage" hideNavBar component={ScanPage} title={"ScanPage"} />
                                 </Scene>
                             </Scene>
-                            <Scene key="CameraPage" hideNavBar component={CameraPage} title="Camera" drawerLockMode={'locked-closed'} />
+                            <Scene key="TakePhoto" hideNavBar component={TakePhoto} title="TakePhoto" drawerLockMode={'locked-closed'} />
+                            <Scene key="CameraPage" hideNavBar component={CameraPage} title="CameraPage" drawerLockMode={'locked-closed'} />
                         </Scene>
                     </Stack>
                 </Scene>
