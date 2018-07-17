@@ -156,7 +156,7 @@ class NavDrawer extends React.Component {
         return (
             <View style={{ backgroundColor: color.white }}>
                 <View style={styles.header}>
-                    <TouchableOpacity onPress={() => Actions.TakePhoto({ pictureTaken: this.pictureTaken })}>
+                    <TouchableOpacity onPress={() => Actions.TakePhoto({ pictureTaken: this.pictureTaken, useMsg: 'Set as Profile Picture' })}>
                         <Image source={this.state.profilePic} style={styles.avatar} />
                     </TouchableOpacity>
                     <Text style={styles.headerText}>{this.state.userName}</Text>

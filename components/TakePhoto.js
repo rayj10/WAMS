@@ -125,12 +125,12 @@ export default class TakePhoto extends React.Component {
               <View style={styles.previewButtonContainer}>
                 <TouchableOpacity style={{ flex: 1 }} onPress={() => this.props.pictureTaken(this.state.image)}>
                   <View style={styles.previewButton}>
-                    <Text style={styles.previewButtonText}> Use Picture </Text>
+                    <Text style={styles.previewButtonText}> {this.props.useMsg} </Text>
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity style={{ flex: 1 }} onPress={() => this.setState({ image: null })}>
                   <View style={styles.previewButton}>
-                    <Text style={styles.previewButtonText}> Pick Another </Text>
+                    <Text style={styles.previewButtonText}> Cancel </Text>
                   </View>
                 </TouchableOpacity>
               </View>

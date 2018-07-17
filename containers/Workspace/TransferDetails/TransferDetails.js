@@ -74,8 +74,8 @@ class TransferDetails extends React.Component {
     /**
      * Callback sent to picker element, executed when user changes the picker value
      * make a pairing of itemPieceNo and verification, then add it to state
-     * @param {*} itemPieceNo: piece number of the item to be confirmed
-     * @param {*} verification: verification status of the item 
+     * @param {String} itemPieceNo: piece number of the item to be confirmed
+     * @param {String} verification: verification status of the item 
      */
     onPickerSelect(itemPieceNo, verification) {
         let temp = this.state.verifications,

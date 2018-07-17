@@ -113,7 +113,7 @@ class PODetails extends React.Component {
         [{ text: 'Cancel', onPress: () => console.log('PO Approval Cancelled'), style: 'cancel' },
             {
                 text: 'Upload', onPress: () =>
-                    Actions.TakePhoto({ pictureTaken: this.pictureTaken.bind(this) })
+                    Actions.TakePhoto({ pictureTaken: this.pictureTaken.bind(this), useMsg: 'Upload Picture' })
             }
         ]);
     }
