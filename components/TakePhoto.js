@@ -142,7 +142,7 @@ export default class TakePhoto extends React.Component {
           </Text>
               <View style={styles.body}>
                 <View style={styles.buttonContainer}>
-                  <TouchableOpacity style={{ flex: 1 }} onPress={this._pickImage}>
+                  <TouchableOpacity style={{ flex: 1 }} onPress={this._pickImage} >
                     <View style={styles.button}>
                       <Image style={styles.image} source={Gallery} />
                       <Text style={styles.buttonText}> Gallery </Text>
@@ -150,7 +150,7 @@ export default class TakePhoto extends React.Component {
                   </TouchableOpacity>
                 </View>
                 <View style={styles.buttonContainer}>
-                  <TouchableOpacity style={{ flex: 1 }} onPress={this._takePhoto}>
+                  <TouchableOpacity style={{ flex: 1 }} onPress={this._takePhoto} >
                     <View style={styles.button}>
                       <Image style={styles.image} source={TakePicture} />
                       <Text style={styles.buttonText}> Camera </Text>

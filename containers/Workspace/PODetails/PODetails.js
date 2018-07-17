@@ -86,7 +86,7 @@ class PODetails extends React.Component {
         var month = new Date().getMonth() + 1;
         var year = new Date().getFullYear();
 
-        var fileName = 'IMG' + date + month + year;
+        var fileName = 'PO' + this.props.header[this.props.keys['id']] + " - " + date + month + year;
 
         this.props.actionsWorkspace.approvePODetails(this.props.header[this.props.keys['id']],
             this.props.token,
@@ -110,7 +110,7 @@ class PODetails extends React.Component {
     onApprove() {
         Alert.alert('Approve PO Request', 
         "To proceed with this PO Approval you will need to upload a photo of the signed form \n\nWAMS will have to access your Phone's Camera and/or Gallery", 
-        [{ text: 'Cancel', onPress: () => console.log('PO Rejection Cancelled'), style: 'cancel' },
+        [{ text: 'Cancel', onPress: () => console.log('PO Approval Cancelled'), style: 'cancel' },
             {
                 text: 'Upload', onPress: () =>
                     Actions.TakePhoto({ pictureTaken: this.pictureTaken.bind(this) })
