@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   },
 
   requestHead: {
-    height: normalize(150),
+    height: normalize(160),
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     borderColor: color.grey,

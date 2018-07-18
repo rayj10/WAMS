@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { ImagePicker, Permissions } from 'expo';
 import { Actions } from 'react-native-router-flux';
+import { Icon } from 'react-native-elements';
 
 import { TakePicture, Gallery } from '../assets/images';
 import { padding, color, fontSize, fontFamily, windowWidth, normalize, windowHeight } from '../theme/baseTheme';
@@ -9,6 +10,17 @@ import { padding, color, fontSize, fontFamily, windowWidth, normalize, windowHei
 const styles = StyleSheet.create({
   container: {
     flex: 1
+  },
+
+  infoContainer:{
+    flex: 1, 
+    justifyContent: 'center' 
+  },
+
+  infoText:{
+    fontFamily: fontFamily.bold,
+    fontSize: fontSize.large,
+    alignSelf:'center'
   },
 
   subheader: {
@@ -78,6 +90,26 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily.regular,
     fontSize: fontSize.regular,
     color: color.white
+  },
+
+  backButtonContainer: {
+    position: 'absolute',
+    bottom: 0,
+    height: normalize(60),
+    width: normalize(60),
+    backgroundColor: 'rgba(0, 0, 0, .4)',
+    borderTopEndRadius: normalize(10)
+  },
+
+  backButton: {
+    position: 'absolute',
+    bottom: 0,
+    height: normalize(57),
+    width: normalize(57),
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, .5)',
+    borderTopEndRadius: normalize(7)
   }
 });
 
@@ -89,21 +121,16 @@ export default class TakePhoto extends React.Component {
   };
 
   componentDidMount() {
-    this._requestCameraPermission();
-    this._requestGalleryPermission();
+    this._requestPermissions();
   }
 
-  _requestCameraPermission = async () => {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
-    this.setState({
-      hasCameraPermission: status === 'granted',
-    });
-  };
+  _requestPermissions = async () => {
+    const camera = await Permissions.askAsync(Permissions.CAMERA);
+    const gallery = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
-  _requestGalleryPermission = async () => {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     this.setState({
-      hasGalleryPermission: status === 'granted',
+      hasCameraPermission: camera.status === 'granted',
+      hasGalleryPermission: gallery.status === 'granted'
     });
   };
 
@@ -111,12 +138,34 @@ export default class TakePhoto extends React.Component {
     let { image } = this.state;
 
     return this.state.hasCameraPermission === null || this.state.hasGalleryPermission === null ?
-      <Text>Requesting for camera permission</Text> :
+      <View style={styles.infoContainer}>
+        <Text style={styles.infoText}>Requesting for camera permission</Text>
+      </View>
+      :
       this.state.hasCameraPermission === false ?
-        <Text style={{ color: '#fff' }}> Camera permission is not granted </Text> :
+        <View style={styles.infoContainer}>
+          <Text style={styles.infoText}> Camera permission is not granted </Text>
+          <View style={styles.backButtonContainer}>
+                <TouchableOpacity style={{ flex: 1 }} onPress={() => Actions.pop()}>
+                  <View style={styles.backButton}>
+                    <Icon name='action-undo' type='simple-line-icon' size={40} color='white' />
+                  </View>
+                </TouchableOpacity>
+              </View>
+        </View>
+        :
         this.state.hasGalleryPermission === false ?
-          <Text style={{ color: '#fff' }}> Gallery permission is not granted </Text> :
-
+          <View style={styles.infoContainer}>
+            <Text style={styles.infoText}> Gallery permission is not granted </Text>
+            <View style={styles.backButtonContainer}>
+                <TouchableOpacity style={{ flex: 1 }} onPress={() => Actions.pop()}>
+                  <View style={styles.backButton}>
+                    <Icon name='action-undo' type='simple-line-icon' size={40} color='white' />
+                  </View>
+                </TouchableOpacity>
+              </View>
+          </View>
+          :
           image ?
             <View style={{ flex: 1 }}>
               <View style={{ flex: 1 }}>
@@ -157,6 +206,13 @@ export default class TakePhoto extends React.Component {
                     </View>
                   </TouchableOpacity>
                 </View>
+              </View>
+              <View style={styles.backButtonContainer}>
+                <TouchableOpacity style={{ flex: 1 }} onPress={() => Actions.pop()}>
+                  <View style={styles.backButton}>
+                    <Icon name='action-undo' type='simple-line-icon' size={40} color='white' />
+                  </View>
+                </TouchableOpacity>
               </View>
             </View>
   }
