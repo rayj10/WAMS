@@ -37,25 +37,30 @@ export default class App extends React.Component {
             { RobotoBoldItalic: require('./assets/fonts/Roboto-BoldItalic.ttf') },
             { RobotoMedium: require('./assets/fonts/Roboto-Medium.ttf') },
             { RobotoRegular: require('./assets/fonts/Roboto-Regular.ttf') },
-            { RobotoLight: require('./assets/fonts/Roboto-Light.ttf') }
+            { RobotoLight: require('./assets/fonts/Roboto-Light.ttf') },
+            { "Material Icons": require('./node_modules/@expo/vector-icons/fonts/MaterialIcons.ttf') },
+            { "Material Design Icons": require('./node_modules/@expo/vector-icons/fonts/MaterialCommunityIcons.ttf') },
+            { "FontAwesome": require('./node_modules/@expo/vector-icons/fonts/FontAwesome.ttf') },
+            { "MaterialIcons": require('./node_modules/@expo/vector-icons/fonts/MaterialIcons.ttf') },
+            { "MaterialCommunityIcons": require('./node_modules/@expo/vector-icons/fonts/MaterialCommunityIcons.ttf') }
         ]);
 
         const imageAssets = cacheImages([
-             img.Approval,
-             img.Avatar,
-             img.DOCustomer,
-             img.FAQ,
-             img.Information,
-             img.InformationWhite,
-             img.Link,
-             img.LinkWhite,
-             img.Logo,
-             img.MyConfirmation,
-             img.MyRequest,
-             img.Sidebar,
-             img.Test,
-             img.UserManual,
-             img.ViewRequest
+            img.Approval,
+            img.Avatar,
+            img.DOCustomer,
+            img.FAQ,
+            img.Information,
+            img.InformationWhite,
+            img.Link,
+            img.LinkWhite,
+            img.Logo,
+            img.MyConfirmation,
+            img.MyRequest,
+            img.Sidebar,
+            img.Test,
+            img.UserManual,
+            img.ViewRequest
         ]);
 
         await Promise.all([...imageAssets, ...fontAssets]);
