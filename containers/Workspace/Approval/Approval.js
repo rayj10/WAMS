@@ -10,6 +10,8 @@ import SummaryListPage from '../../../components/SummaryListPage';
 import * as workspaceAction from '../../../actions/workspaceActions';
 import * as authAction from '../../../actions/authActions';
 import { color, windowWidth } from '../../../theme/baseTheme';
+import errors from '../../../json/errors.json';
+import DBkeys from '../../../json/DBkeys.json';
 
 //Maps store's state to Approval's props
 export const mapStateToProps = state => ({
@@ -65,7 +67,7 @@ class Approval extends React.Component {
      */
     onFetchFinish(listName, status) {
         if (status === 'Authentication Denied' && this.props.token) {
-            Alert.alert(status, 'Your session may have expired please re-enter your login credentials')
+            Alert.alert(status, errors[status])
             this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));
             Actions.reset("Auth");
         }
@@ -85,91 +87,11 @@ class Approval extends React.Component {
     }
 
     /**
-     * Map keys returned by API into internally uniform keys to be used by SummaryListPage
-     * Needed because of the different key names for each form returned in json by API
-     * @param {String} pageName: Name of page getting displayed 
-     */
-    getKeys(pageName) {
-        let keys = {
-            Requests: {
-                id: 'RequestNo',
-                department: 'dept_nm',
-                date: 'RequestDate',
-                status: 'StatusName',
-                requestor: 'full_nm',
-                item: 'ItemName',
-                amount: 'AmountItem',
-                unit: 'UnitName',
-                price: 'EstimatedPrice',
-                from: 'Origin',
-                to: 'Target',
-                targetDate: 'TargetReceivedDate'
-            },
-            PO: {
-                id: 'PONo',
-                requestor: 'full_nm',
-                handler: 'LastHandled',
-                date: 'PODate',
-                status: 'StatusName',
-                maxDate: 'MaxShipping',
-                vendor: 'VendorName',
-                vAdd1: 'Address1',
-                vAdd2: 'Address2',
-                vAdd3: 'Address3',
-                vPhone: 'Phone',
-                vFax: 'Fax',
-                vMail: 'Email',
-                vSite: 'WebSite',
-                sales: 'ContactName',
-                sPhone: 'Phone',
-                sExtention: 'ExtensionNo',
-                sMob1: 'Mobile 1',
-                sMob2: 'Mobile 2',
-                sMail1: 'Email 1',
-                sMail2: 'Email 2',
-                item: 'Item Name',
-                code: 'Item Code',
-                amount: 'Quantity',
-                unit: 'Unit',
-                uPrice: 'Unit Price',
-                uDisc: 'Unit Discount',
-                iNet: 'Net Amount',
-                desc: 'Description',
-                baseTotal: 'AmountTotalBase',
-                discTotal: 'AmountDiscount',
-                total: 'Total',
-                tax: 'AmountTax',
-                SnH: 'Shipping & Handling',
-                grand: 'Grand Total'
-            },
-            Transfers: {
-                id: 'Transfer No',
-                department: 'Department',
-                date: 'Request Date',
-                status: 'Status',
-                requestor: 'Transfer By',
-                from: 'Origin Location',
-                to: 'Target Location',
-                code: 'ItemCode',
-                piece: 'ItemPieceNo',
-                item: 'ItemName',
-                serial: 'SerialNumber',
-                mac: 'MacAddress',
-                amount: 'AmountPending',
-                unit: 'UnitCode',
-                sCode: 'StatusCode'
-            },
-        }
-
-        return keys[pageName];
-    }
-
-    /**
     * Page Template to render information based on pageName and availability of data
     * @param {String} pageName: Page to be rendered  
     */
     renderPage(pageName) {
-        let keys = this.getKeys(pageName);
+        let keys = DBkeys[pageName];
 
         if (pageName === 'Requests') {
             if (this.props.requestApprovalReceived)

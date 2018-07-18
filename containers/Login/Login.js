@@ -13,6 +13,7 @@ import OfflineNotice from '../../components/OfflineNotice';
 import Tooltip from '../../components/Tooltip';
 import styles from './styles';
 import { windowWidth, windowHeight, color, normalize } from '../../theme/baseTheme'
+import errors from '../../json/errors.json';
 
 //Maps store's reducer states to Login's props 
 export const mapStateToProps = state => ({
@@ -93,7 +94,7 @@ class Login extends React.Component {
         if (token) {
             this.props.actionsMenu.getAvailableMenu(token, (error) => {
                 if (error === 'Authentication Denied' && this.props.token) {
-                    Alert.alert(error, 'Your session may have expired please re-enter your login credentials')
+                    Alert.alert(error, errors[error])
                     this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));
                     Actions.reset("Auth");
                 }

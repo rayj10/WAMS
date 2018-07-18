@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, FlatList, TouchableOpacity, ActivityIndicator, 
 import { Actions } from 'react-native-router-flux';
 
 import { color, fontSize, fontFamily, normalize } from '../theme/baseTheme';
+import errors from '../json/errors.json';
 
 const styles = StyleSheet.create({
     subHeader: {
@@ -155,9 +156,9 @@ class SummaryListPage extends React.Component {
             if (status === 'Authenticated' && list) {
                 content = this.renderSummary(list);
             }
-            else if (status === 'Authenticated') {
+            else if (status === 'Authenticated') { //to let user know in case authenticated but list is empty
                 status = 'No Record Found';
-                message = 'This list is currently empty';
+                message = errors[status];
                 content = ([
                     <View style={{ alignItems: 'center' }}>
                         <Text style={[styles.titleTextStyle, { textAlign: 'center', fontSize: 20 }]}>{'\n\n' + status + '\n'}</Text>
@@ -165,15 +166,9 @@ class SummaryListPage extends React.Component {
                     </View>
                 ]);
             }
-            else if (status !== 'Authenticated') { //to make sure on cases where status is authenticated but list is empty
+            else if (status !== 'Authenticated') { 
                 //determine message based on status
-                let message = '';
-                if (status === 'Service Unavailable')
-                    message = 'Connection to the server is currently unavailable\nEither your internet connection is unstable or server is simply unavailable';
-                else if (status === 'Access Denied')
-                    message = 'Your account is not\nauthorized\nto see this information';
-                else if (status === 'Unknown Error')
-                    message = 'Sorry, but we are currently unable to diagnose the problem, please try again later';
+                let message = errors[status];
                 content = ([
                     <View style={{ alignItems: 'center' }}>
                         <Text style={[styles.titleTextStyle, { textAlign: 'center', fontSize: 20 }]}>{'\n\n' + status + '\n'}</Text>

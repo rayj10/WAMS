@@ -1,0 +1,7 @@
+{
+    "Authentication Denied" : "Your session may have expired please re-enter your login credentials",
+    "Service Unavailable" : "Connection to the server is currently unavailable\nEither your internet connection is unstable or server is simply unavailable",
+    "Access Denied" : "Your account is not\nauthorized\nto see this information",
+    "Unknown Error" : "Sorry, but we are currently unable to diagnose the problem, please try again later",
+    "No Record Found" : "This list is currently empty"
+}

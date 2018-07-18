@@ -31,13 +31,13 @@ const styles = StyleSheet.create({
         height: normalize(160),
         width: windowWidth - 35,
         marginBottom: normalize(15),
+        alignSelf: 'center',
         resizeMode: 'contain'
     },
 
     wrapper: {
         marginVertical:windowHeight/10,
         justifyContent: "center",
-        alignItems: "center"
     },
 
     errorText: {

@@ -10,6 +10,8 @@ import SummaryListPage from '../../../components/SummaryListPage';
 import * as workspaceAction from '../../../actions/workspaceActions';
 import * as authAction from '../../../actions/authActions';
 import { color, windowWidth } from '../../../theme/baseTheme';
+import errors from '../../../json/errors.json';
+import DBkeys from '../../../json/DBkeys.json';
 
 //Maps store's state to ViewRequest's props
 export const mapStateToProps = state => ({
@@ -62,7 +64,7 @@ class MyRequest extends React.Component {
    */
   onFetchFinish(listName, status) {
     if (status === 'Authentication Denied' && this.props.token) {
-      Alert.alert(status, 'Your session may have expired please re-enter your login credentials')
+      Alert.alert(status, errors[status])
       this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));
       Actions.reset("Auth");
     }
@@ -82,60 +84,11 @@ class MyRequest extends React.Component {
   }
 
   /**
-   * Map keys returned by API into internally uniform keys to be used by SummaryListPage
-   * Needed because of the different key names for each form returned in json by API
-   * @param {String} pageName: Name of page getting displayed 
-   */
-  getKeys(pageName) {
-    let keys = {
-      Requests: {
-        id: 'RequestNo',
-        department: 'dept_nm',
-        date: 'RequestDate',
-        status: 'StatusName',
-        requestor: 'full_nm',
-        item: 'ItemName',
-        amount: 'AmountItem',
-        unit: 'UnitCode',
-        price: 'EstimatedPrice',
-        from: 'Origin',
-        to: 'Target',
-        targetDate: 'TargetReceivedDate'
-      },
-      PO: {
-        id: 'RequestNo',
-        department: 'dept_nm',
-        date: 'RequestDate',
-        status: 'StatusName',
-      },
-      Transfers: {
-        id: 'Transfer No',
-        department: 'Department',
-        date: 'Request Date',
-        status: 'Status',
-        requestor: 'Transfer By',
-        from: 'Origin Location',
-        to: 'Target Location',
-        code: 'ItemCode',
-        piece: 'ItemPieceNo',
-        item: 'ItemName',
-        serial: 'SerialNumber',
-        mac: 'MacAddress',
-        amount: 'AmountPending',
-        unit: 'UnitCode',
-        sCode: 'StatusCode'
-      },
-    }
-
-    return keys[pageName];
-  }
-
-  /**
   * Page Template to render information based on pageName and availability of data
   * @param {String} pageName: Page to be rendered  
   */
   renderPage(pageName) {
-    let keys = this.getKeys(pageName);
+    let keys = DBkeys[pageName];
 
     if (pageName === 'Requests') {
       if (this.props.requestViewReceived)

@@ -26,6 +26,7 @@ import * as authAction from './actions/authActions';
 import * as workspaceAction from './actions/workspaceActions';
 import * as menuAction from './actions/menuActions';
 import { ID } from './utils/links';
+import errors from './json/errors.json';
 
 //Maps actions to NavDrawer's props
 export const mapDispatchToProps = (dispatch) => ({
@@ -52,7 +53,7 @@ class Routes extends React.Component {
                         if (token !== null) {
                             this.props.actionsMenu.getAvailableMenu(token, (error) => {
                                 if (error === 'Authentication Denied' && this.props.token) {
-                                    Alert.alert(error, 'Your session may have expired please re-enter your login credentials')
+                                    Alert.alert(error, errors[status])
                                     this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));
                                     Actions.reset("Auth");
                                 }

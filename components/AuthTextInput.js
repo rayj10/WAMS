@@ -4,7 +4,8 @@ import { View, StyleSheet } from 'react-native';
 import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements';
 
 import { isEmpty } from '../utils/validate';
-import { windowWidth, fontSize, fontFamily, normalize } from '../theme/baseTheme';
+import { windowWidth, fontSize, fontFamily, normalize, color } from '../theme/baseTheme';
+import IconWrapper from './IconWrapper';
 
 const styles = StyleSheet.create({
     container: {
@@ -16,13 +17,18 @@ const styles = StyleSheet.create({
         height: normalize(65),
         fontSize: fontSize.regular + 2,
         fontFamily: fontFamily.bold,
-        borderBottomColor: "#A5A7A9"
+        borderBottomColor: "#A5A7A9",
+        alignSelf: 'center'
     }
 });
 
 class AuthTextInput extends Component {
+    state = {
+        secureText: this.props.secureTextEntry
+    }
+
     render() {
-        const { showLabel, placeholder, autoFocus, onChangeText, secureTextEntry } = this.props;
+        const { showLabel, placeholder, autoFocus, onChangeText } = this.props;
 
         return (
             <View style={styles.container}>
@@ -30,17 +36,27 @@ class AuthTextInput extends Component {
                     (showLabel) &&
                     <FormLabel>{this.props.label}</FormLabel>
                 }
-                <FormInput
-                    autoCapitalize='none'
-                    clearButtonMode='while-editing'
-                    underlineColorAndroid={"#fff"}
-                    placeholder={placeholder}
-                    autoFocus={autoFocus}
-                    onChangeText={onChangeText}
-                    secureTextEntry={secureTextEntry}
-                    inputStyle={styles.inputContainer}
-
-                    value={this.props.value} />
+                <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+                    <FormInput
+                        autoCapitalize='none'
+                        clearButtonMode='while-editing'
+                        underlineColorAndroid={"#fff"}
+                        placeholder={placeholder}
+                        autoFocus={autoFocus}
+                        onChangeText={onChangeText}
+                        secureTextEntry={this.state.secureText}
+                        inputStyle={[styles.inputContainer, this.props.secureTextEntry ? { width: windowWidth - 90, alignSelf: 'flex-start' } : null]}
+                        value={this.props.value} />
+                    {
+                        this.props.secureTextEntry ?
+                            this.state.secureText ?
+                                <IconWrapper name="visibility" size={20} color={color.light_grey} style={{ justifyContent: 'center', paddingHorizontal: 5 }} onPress={() => this.setState({ secureText: false })} />
+                                :
+                                <IconWrapper name="visibility-off" size={20} color={color.light_grey} style={{ justifyContent: 'center', paddingHorizontal: 5 }} onPress={() => this.setState({ secureText: true })} />
+                            :
+                            null
+                    }
+                </View>
                 {
                     (!isEmpty(this.props.error)) &&
                     <FormValidationMessage>

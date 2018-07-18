@@ -10,7 +10,7 @@
     "icon": "./assets/images/AppIcon.png",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.CBN.WAMS"
+      "bundleIdentifier": "ios.com.CBN.WAMS"
     },
     "android": {
       "versionCode": 3,
