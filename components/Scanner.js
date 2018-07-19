@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     scanArea: {
-        height: windowHeight - normalize(65),
+        height: windowHeight-70,
         width: windowWidth
     },
     layerTop: {
@@ -56,7 +56,7 @@ export default class Scanner extends React.Component {
     componentDidMount() {
         this._requestCameraPermission();
     }
-    
+
     _requestCameraPermission = async () => {
         const { status } = await Permissions.askAsync(Permissions.CAMERA);
         this.setState({
@@ -95,7 +95,7 @@ export default class Scanner extends React.Component {
                 case BarCodeScanner.Constants.BarCodeType.upc_e: type = "Upc_e"; break;
                 case BarCodeScanner.Constants.BarCodeType.upc_ean: type = "Upc_ean"; break;
             }
-           
+
             this.props.onRead(type, data, () => { this.setState({ lastScan: null }) }); //callback, what to do with the data on success read
         }
     }

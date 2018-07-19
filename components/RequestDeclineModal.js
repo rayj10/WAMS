@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     dialogBox: {
         backgroundColor: color.white,
         width: 0.85 * windowWidth,
-        height: 0.45 * windowHeight,
+        height: 0.48 * windowHeight,
         borderRadius: normalize(2),
         alignSelf: 'center'
     },
@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
         fontSize: fontSize.regular,
         fontFamily: fontFamily.medium,
         marginBottom: normalize(5),
+        marginHorizontal: normalize(5)
     },
     inputContainer: {
         flex: 1,
@@ -68,8 +69,8 @@ const RequestDeclineModal = (props) => {
                     <Text style={styles.headerText}> Decline Request </Text>
                 </View>
                 <View style={styles.bodyContainer}>
-                    <Text style={[styles.textStyle, { fontFamily: fontFamily.regular }]}> Are you sure to DECLINE this transfer? </Text>
-                    <Text style={styles.textStyle}> Notes: </Text>
+                    <Text style={[styles.textStyle, { fontFamily: fontFamily.regular }]}>Are you sure to DECLINE this transfer?</Text>
+                    <Text style={styles.textStyle}>Notes:</Text>
                     <View style={styles.inputContainer}>
                         <TextInput
                             placeholder={"Reason for declining request... (optional)"}

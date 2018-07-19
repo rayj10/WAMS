@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     height: normalize(60),
     width: normalize(60),
     backgroundColor: 'rgba(0, 0, 0, .4)',
-    borderTopEndRadius: normalize(10)
+    borderTopEndRadius: 10
   },
 
   backButton: {
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(0, 0, 0, .5)',
-    borderTopEndRadius: normalize(7)
+    borderTopEndRadius: 7
   }
 });
 

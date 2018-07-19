@@ -14,10 +14,9 @@ const styles = StyleSheet.create({
 
     inputContainer: {
         width: windowWidth - 40,
-        height: normalize(65),
+        height: normalize(55),
         fontSize: fontSize.regular + 2,
         fontFamily: fontFamily.bold,
-        borderBottomColor: "#A5A7A9",
         alignSelf: 'center'
     }
 });
@@ -39,8 +38,8 @@ class AuthTextInput extends Component {
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                     <FormInput
                         autoCapitalize='none'
-                        clearButtonMode='while-editing'
-                        underlineColorAndroid={"#fff"}
+                        containerStyle={{borderBottomWidth:0}}
+                        underlineColorAndroid='#fff'
                         placeholder={placeholder}
                         autoFocus={autoFocus}
                         onChangeText={onChangeText}
@@ -48,11 +47,11 @@ class AuthTextInput extends Component {
                         inputStyle={[styles.inputContainer, this.props.secureTextEntry ? { width: windowWidth - 90, alignSelf: 'flex-start' } : null]}
                         value={this.props.value} />
                     {
-                        this.props.secureTextEntry ?
+                        this.props.secureTextEntry && this.props.value !== ''?
                             this.state.secureText ?
-                                <IconWrapper name="visibility" size={20} color={color.light_grey} style={{ justifyContent: 'center', paddingHorizontal: 5 }} onPress={() => this.setState({ secureText: false })} />
+                                <IconWrapper name="visibility" size={20} color={color.light_grey} style={{ justifyContent: 'center'}} onPress={() => this.setState({ secureText: false })} />
                                 :
-                                <IconWrapper name="visibility-off" size={20} color={color.light_grey} style={{ justifyContent: 'center', paddingHorizontal: 5 }} onPress={() => this.setState({ secureText: true })} />
+                                <IconWrapper name="visibility-off" size={20} color={color.light_grey} style={{ justifyContent: 'center'}} onPress={() => this.setState({ secureText: true })} />
                             :
                             null
                     }

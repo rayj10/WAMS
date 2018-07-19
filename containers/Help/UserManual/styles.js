@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
   manualHeader: {
     height: normalize(110),
     backgroundColor: color.light_blue,
-    borderTopRightRadius: normalize(20),
-    borderTopLeftRadius: normalize(20),
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
     alignItems: 'center'
   },
 
@@ -45,8 +45,8 @@ const styles = StyleSheet.create({
 
   manualBody: {
     flex: 3,
-    borderBottomRightRadius: normalize(20),
-    borderBottomLeftRadius: normalize(20),
+    borderBottomRightRadius: 20,
+    borderBottomLeftRadius: 20,
     backgroundColor: color.white
   },
 
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     height: normalize(60),
     width: normalize(60),
     backgroundColor: 'rgba(0, 0, 0, .4)',
-    borderTopEndRadius: normalize(10)
+    borderTopEndRadius: 10
   },
 
   backButton: {
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(0, 0, 0, .5)',
-    borderTopEndRadius: normalize(7)
+    borderTopEndRadius: 7
   }
 });
 

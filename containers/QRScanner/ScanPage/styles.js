@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     height: normalize(60),
     width: normalize(60),
     backgroundColor: 'rgba(0, 0, 0, .2)',
-    borderTopEndRadius: normalize(10)
+    borderTopEndRadius: 10
   },
 
   backButton: {
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(0, 0, 0, .3)',
-    borderTopEndRadius: normalize(5)
+    borderTopEndRadius: 5
   },
 
   torchButtonContainer: {
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     height: normalize(60),
     width: normalize(60),
     backgroundColor: 'rgba(0, 0, 0, .2)',
-    borderTopStartRadius: normalize(10)
+    borderTopStartRadius: 10
   },
 
   torchButton: {
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(0, 0, 0, .3)',
-    borderTopStartRadius: normalize(5)
+    borderTopStartRadius: 5
   }
 });
 
