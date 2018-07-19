@@ -14,7 +14,8 @@ import * as authAction from '../actions/authActions';
 import * as workspaceAction from '../actions/workspaceActions';
 import { color, fontFamily, fontSize, normalize } from '../theme/baseTheme';
 import { Avatar } from '../assets/images';
-import * as links from '../utils/links';
+import menuInfo from '../json/menuInfo.json';
+import * as img from '../assets/images';
 
 //Maps reducer's state to NavDrawer's props
 export const mapStateToProps = state => ({
@@ -102,8 +103,8 @@ class NavDrawer extends React.Component {
         //When menu is fetched and component mounted, initialize the tabs and default tab
         if (this.props.menuReceived && !this.state.tabs) {
             let tabs = this.props.menuList;
-            this.setState({ tabs, currentTab: links.IDtoName(tabs[0]['MenuID']), initialPage: links.IDtoName(tabs[0]['Children'][0]['MenuID']) });
-            this.goto(links.IDtoName(tabs[0]['MenuID']));
+            this.setState({ tabs, currentTab: menuInfo[tabs[0]['MenuID']].name, initialPage: menuInfo[tabs[0]['Children'][0]['MenuID']].name });
+            this.goto(menuInfo[tabs[0]['MenuID']].name);
         }
     }
 
@@ -114,13 +115,13 @@ class NavDrawer extends React.Component {
         let tabs = this.props.menuList;
 
         //Adjust highlighted tab position
-        if (this.props.menuReceived && this.state.currentTab !== links.IDtoName(tabs[0]['MenuID']) && Actions.currentScene === '_' + this.state.initialPage)
-            this.setState({ currentTab: links.IDtoName(tabs[0]['MenuID']) })
+        if (this.props.menuReceived && this.state.currentTab !== menuInfo[tabs[0]['MenuID']].name && Actions.currentScene === '_' + this.state.initialPage)
+            this.setState({ currentTab: menuInfo[tabs[0]['MenuID']].name })
 
         //When is fetched, initialize the tabs and default tabs
         if (this.props.menuReceived && !this.state.tabs) {
-            this.setState({ tabs, currentTab: links.IDtoName(tabs[0]['MenuID']), initialPage: links.IDtoName(tabs[0]['Children'][0]['MenuID']) });
-            this.goto(links.IDtoName(tabs[0]['MenuID']));
+            this.setState({ tabs, currentTab: menuInfo[tabs[0]['MenuID']].name, initialPage: menuInfo[tabs[0]['Children'][0]['MenuID']].name });
+            this.goto(menuInfo[tabs[0]['MenuID']].name);
         }
     }
 
@@ -165,8 +166,8 @@ class NavDrawer extends React.Component {
                     <FlatList showVerticalScrollIndicator={false}
                         data={this.state.tabs}
                         renderItem={({ item }) => {
-                            let source = links.IDtoIcon(item['MenuID']),
-                                name = links.IDtoName(item['MenuID']);
+                            let source = img.getIcon(item['MenuID']),
+                                name = menuInfo[item['MenuID']].name;
 
                             return (
                                 <TouchableOpacity onPress={() => this.goto(name)}>

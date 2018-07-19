@@ -25,7 +25,7 @@ import * as aType from './actions/actionTypes/authTypes';
 import * as authAction from './actions/authActions';
 import * as workspaceAction from './actions/workspaceActions';
 import * as menuAction from './actions/menuActions';
-import { ID } from './utils/links';
+import menuInfo from './json/menuInfo.json';
 import errors from './json/errors.json';
 
 //Maps actions to NavDrawer's props
@@ -101,7 +101,7 @@ class Routes extends React.Component {
                     <Stack key="Main" initial={this.state.isLoggedIn}>
                         <Scene drawer key="NavDrawer" hideNavBar contentComponent={NavDrawer} type={ActionConst.REPLACE} panHandlers={null}>
                             <Scene key="Workspace" navBar={() => <PageHeader title='Workspace' />} drawerLockMode={'locked-closed'}>
-                                <Scene tabs={true} tabBarComponent={() => <ScrollableTabBar tabID={ID.WORKSPACE} />} tabBarPosition='top' lazy={true} animationEnabled={false} swipeEnabled={false}>
+                                <Scene tabs={true} tabBarComponent={() => <ScrollableTabBar tabID={menuInfo.Constants.WORKSPACE} />} tabBarPosition='top' lazy={true} animationEnabled={false} swipeEnabled={false}>
                                     <Scene key="My Request" hideNavBar component={MyRequest} title={"My Request"} />
                                     <Scene key="Approval" hideNavBar component={Approval} title={"Approval"} />
                                     <Scene key="DO Customer" hideNavBar component={DOCustomer} title={"DO Customer"} />

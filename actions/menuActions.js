@@ -1,6 +1,6 @@
 import * as types from './actionTypes/menuTypes';
 import { fetchAPI } from '../utils/fetch';
-import { ID } from '../utils/links';
+import menuInfo from '../json/menuInfo.json';
 
 /**
  * Keeps track of current scene to be used by backhandler
@@ -32,7 +32,7 @@ export function getAvailableMenu(token, errorCB) {
                 let menu = [];
                 //find level 1 menu and sort them
                 json.data.map((item) => {
-                    if (item['ParentMenuID'] === ID.ROOT) {
+                    if (item['ParentMenuID'] === menuInfo.Constants.ROOT) {
                         menu.push(item);
                     }
                 });

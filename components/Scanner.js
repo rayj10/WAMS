@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     scanArea: {
-        height: windowHeight-70,
+        height: windowHeight - 70,
         width: windowWidth
     },
     layerTop: {

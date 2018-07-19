@@ -8,8 +8,8 @@ import Carousel from 'react-native-snap-carousel';
 import Accordion from '../../../components/Accordion';
 import styles from './styles';
 import { windowWidth } from '../../../theme/baseTheme';
-import * as links from '../../../utils/links';
-import manual from '../../../json/manual.json';
+import menuInfo from '../../../json/menuInfo.json';
+import * as img from '../../../assets/images';
 
 //Maps store's state to Approval's props
 export const mapStateToProps = state => ({
@@ -28,9 +28,9 @@ class UserManual extends React.Component {
    */
   mapTabsToManuals(list) {
     return list.map(item => {
-      let title = links.IDtoName(item['MenuID']);
-      let content = manual[title].text;
-      let image = links.IDtoIcon(item['MenuID'], 'white');
+      let title = menuInfo[item['MenuID']].name;
+      let content = menuInfo[item['MenuID']].manual;
+      let image = img.getIcon(item['MenuID'], 'white');
 
       return {
         image,
@@ -77,10 +77,10 @@ class UserManual extends React.Component {
           </View>
           {
             this.props.menuReceived ? this.props.menuList.map((item, key) => {
-              if (item['MenuID'] !== links.ID.HELP)
+              if (item['MenuID'] !== menuInfo.Constants.HELP)
                 return (
                   <View style={styles.accordionContainer} key={key}>
-                    <Accordion title={links.IDtoName(item['MenuID'])} body={this.getCarousel(item)} />
+                    <Accordion title={menuInfo[item['MenuID']].name} body={this.getCarousel(item)} />
                   </View>)
             }) : null
           }

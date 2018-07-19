@@ -6,8 +6,8 @@ import { Actions } from 'react-native-router-flux';
 import Scanner from '../../../components/Scanner';
 import DialogBoxModal from '../../../components/DialogBoxModal';
 import styles from './styles';
-import { ID } from '../../../utils/links';
 import { color } from '../../../theme/baseTheme';
+import menuInfo from '../../../json/menuInfo.json';
 
 class ScanPage extends React.Component {
   constructor(props) {
@@ -75,14 +75,14 @@ class ScanPage extends React.Component {
    * @param {Function} onCancel: Callback to be executed if user chooses to cancel on the reading  
    */
   onBarcodeRead(type, data, onCancel) {
-    if (this.props.type === ID.INFORMATION) {
+    if (this.props.type === menuInfo.Constants.INFORMATION) {
       Alert.alert(
         'A ' + type + ' has been found',
         'Content:\n' + data,
         [{ text: 'Scan another', onPress: onCancel }]
       );
     }
-    else if (this.props.type === ID.LINK) {
+    else if (this.props.type === menuInfo.Constants.LINK) {
       this.setState({
         data: this.formatString(data),
         dialog: true,

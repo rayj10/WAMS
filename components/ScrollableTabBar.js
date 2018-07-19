@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 import { color, fontFamily, fontSize, normalize } from '../theme/baseTheme';
 import * as menuAction from '../actions/menuActions';
 import * as img from '../assets/images';
-import * as links from '../utils/links';
+import menuInfo from '../json/menuInfo.json';
 
 const styles = StyleSheet.create({
     container: {
@@ -65,8 +65,8 @@ class ScrollableTabBar extends React.Component {
         //When menu is fetched and component mounted, initialize the tabs and default tab
         if (this.props.menuReceived && !this.state.tabs) {
             let tabs = this.props.menuList.find((item) => item['MenuID'] === this.props.tabID)['Children'];
-            this.setState({ tabs, currentTab: links.IDtoName(tabs[0]['MenuID']) });
-            this.goto(links.IDtoName(tabs[0]['MenuID']));
+            this.setState({ tabs, currentTab: menuInfo[tabs[0]['MenuID']].name });
+            this.goto(menuInfo[tabs[0]['MenuID']].name);
         }
     }
 
@@ -76,14 +76,14 @@ class ScrollableTabBar extends React.Component {
     componentDidUpdate() {
         //Adjust highlighted tab position
         let tabs = this.state.tabs;
-        if (tabs && this.state.currentTab !== links.IDtoName(tabs[0]['MenuID']) && Actions.currentScene === '_' + links.IDtoName(tabs[0]['MenuID']))
-            this.setState({ currentTab: links.IDtoName(tabs[0]['MenuID']) });
+        if (tabs && this.state.currentTab !== menuInfo[tabs[0]['MenuID']].name && Actions.currentScene === '_' + menuInfo[tabs[0]['MenuID']].name)
+            this.setState({ currentTab: menuInfo[tabs[0]['MenuID']].name });
 
         //When menu is fetched, initialize the tabs and default tab
         if (this.props.menuReceived && !this.state.tabs) {
             tabs = this.props.menuList.find((item) => item['MenuID'] === this.props.tabID)['Children'];
-            this.setState({ tabs, currentTab: links.IDtoName(tabs[0]['MenuID']) });
-            this.goto(links.IDtoName(tabs[0]['MenuID']));
+            this.setState({ tabs, currentTab: menuInfo[tabs[0]['MenuID']].name });
+            this.goto(menuInfo[tabs[0]['MenuID']].name);
         }
     }
 
@@ -105,8 +105,8 @@ class ScrollableTabBar extends React.Component {
                     contentContainerStyle={styles.overlay}
                     data={this.state.tabs}
                     renderItem={({ item }) => {
-                        let source = links.IDtoIcon(item['MenuID']), 
-                            name = links.IDtoName(item['MenuID']);
+                        let source = img.getIcon(item['MenuID']), 
+                            name = menuInfo[item['MenuID']].name;
 
                         return (
                             <TouchableOpacity onPress={() => this.goto(name)}>

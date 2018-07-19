@@ -4,8 +4,8 @@ import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 
 import styles from './styles';
-import { Link, Information } from '../../assets/images';
-import * as links from '../../utils/links';
+import { getIcon } from '../../assets/images';
+import menuInfo from '../../json/menuInfo.json';
 
 //Maps store's state to Approval's props
 export const mapStateToProps = state => ({
@@ -26,13 +26,13 @@ class QRScanner extends React.Component {
         </Text>
         <View style={styles.body}>
           {
-            this.props.menuReceived ? this.props.menuList.find((item) => item['MenuID'] === links.ID.QRSCANNER)['Children'].map((item, key) => {
+            this.props.menuReceived ? this.props.menuList.find((item) => item['MenuID'] === menuInfo.Constants.QRSCANNER)['Children'].map((item, key) => {
               return (
                 <View style={styles.buttonContainer} key={key}>
                   <TouchableOpacity style={{ flex: 1 }} onPress={() => Actions.jump("ScanPage", { type: item['MenuID'] })}>
                     <View style={styles.button}>
-                      <Image style={styles.image} source={links.IDtoIcon(item['MenuID'])} />
-                      <Text style={styles.buttonText}> {links.IDtoName(item['MenuID'])} </Text>
+                      <Image style={styles.image} source={getIcon(item['MenuID'])} />
+                      <Text style={styles.buttonText}> {menuInfo[item['MenuID']].name} </Text>
                     </View>
                   </TouchableOpacity>
                 </View>);
