@@ -3,14 +3,12 @@ import { padding, color, fontSize, fontFamily, windowWidth, normalize } from '..
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: color.background,
-    paddingVertical: normalize(10)
+    flex: 1
   },
-
-  pageIndicator: {
-    paddingBottom: normalize(10),
-    paddingTop: 0
+  content: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });
 

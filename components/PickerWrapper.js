@@ -49,7 +49,7 @@ class PickerWrapper extends React.Component {
                 <View style={this.props.style} >
                     <Picker
                         selectedValue={this.state.verification}
-                        style={{ height: normalize(20), width: normalize(100) }}
+                        style={{ height: normalize(20), width: normalize(150) }}
                         onValueChange={(itemValue, itemIndex) => {
                             this.setState({ verification: itemValue });
                             this.props.onSelect(itemValue);

@@ -97,8 +97,8 @@ class SummaryListPage extends React.Component {
         let panel = [];
         let { keys } = this.props;
 
-        panel.push(<Text style={{ left: 15 }} key={'id'}>
-            <Text style={styles.idNumber}>{item[keys['id']]}</Text>
+        panel.push(<Text style={{ left: 15 }} key={'no'}>
+            <Text style={styles.idNumber}>{item[keys['no']]}</Text>
         </Text>);
         if (this.props.title === 'PO') {
             panel.push(<Text style={{ left: 15 }} key={'requestor'}>
@@ -161,8 +161,8 @@ class SummaryListPage extends React.Component {
                 message = errors[status];
                 content = ([
                     <View style={{ alignItems: 'center' }}>
-                        <Text style={[styles.titleTextStyle, { textAlign: 'center', fontSize: 20 }]}>{'\n\n' + status + '\n'}</Text>
-                        <Text style={[styles.titleTextStyle, { textAlign: 'center', fontSize: 16 }]}>{message}</Text>
+                        <Text style={[styles.titleTextStyle, { textAlign: 'center', fontSize: normalize(20) }]}>{'\n\n' + status + '\n'}</Text>
+                        <Text style={[styles.titleTextStyle, { textAlign: 'center', fontSize: normalize(16) }]}>{message}</Text>
                     </View>
                 ]);
             }

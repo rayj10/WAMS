@@ -48,7 +48,7 @@ export function getAvailableMenu(token, errorCB) {
                     });
                     item['Children'] = subMenu;
                 });
-    
+
                 dispatch({ type: types.RECEIVE_MENU, menu: menu });
             })
             .catch((error) => {

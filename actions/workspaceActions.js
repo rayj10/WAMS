@@ -147,7 +147,7 @@ export function getTransferApproval(token, resultCB) {
  * @param {Function} resultCB: Callback to be executed once fetching is done 
  */
 export function getRequestView(token, resultCB) {
-    let endpoint = 'api/v1/cbn/inventory/GetRequestVerification';
+    let endpoint = 'api/v1/cbn/inventory/GetViewRequest';
 
     let header = {
         "Content-Type": "application/json",
@@ -155,9 +155,9 @@ export function getRequestView(token, resultCB) {
     }
 
     let body = {
-        "RequestTransferInput": [
+        "ListViewRequest": [
             {
-                "Search": ""
+                "Request": "1"
             }
         ]
     };
@@ -201,11 +201,11 @@ export function getPOView(token, resultCB) {
 
         return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
             .then((json) => {
-                dispatch({ type: types.RECEIVE_PO_APPROVAL, requestPOList: json.data });
+                dispatch({ type: types.RECEIVE_PO_VIEW, POViewList: json.data });
                 resultCB('PO', 'Authenticated');
             })
             .catch((error) => {
-                dispatch({ type: types.EMPTY_PO_APPROVAL });
+                dispatch({ type: types.EMPTY_PO_VIEW });
                 resultCB('PO', error);
             });
     }
@@ -254,15 +254,24 @@ export function getTransferView(token, resultCB) {
  * @param {Function} resultCB: Callback to be executed once fetching is done 
  */
 export function getRequestDetails(requestNo, token, resultCB) {
-    let endpoint = 'api/v1/cbn/inventory/GetDetailRequest?RequestNo=' + requestNo;
+    let endpoint = 'api/v1/cbn/inventory/GetDetailRequest';
 
     let header = {
-        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Type": "application/json",
         "Authorization": "Bearer " + token
     }
 
+
+    let body = {
+        "ListRequestNo": [
+            {
+                "RequestNo": requestNo
+            }
+        ]
+    };
+
     return dispatch => {
-        return fetchAPI(endpoint, 'POST', header, null)
+        return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
             .then((json) => {
                 dispatch({ type: types.RECEIVE_DETAILS, details: json.data });
                 resultCB(json.message);
@@ -640,6 +649,143 @@ export function denyTransferDetails(token, transferNo, resultCB) {
         return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
             .then((json) => {
                 resultCB('Successful!', 'Transfer Denied Successfully');
+            })
+            .catch((error) => {
+                resultCB(error, error.message);
+            });
+    }
+}
+
+/**
+ * Get list of request forms ready to be confirmed
+ * @param {String} token: User's session token 
+ * @param {Function} resultCB: Callback to be executed once fetching process is done  
+ */
+export function getRequestConfirmation(token, resultCB) {
+    let endpoint = 'api/v1/cbn/inventory/GetConfirmRequest';
+
+    let header = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+    }
+
+    return dispatch => {
+        return fetchAPI(endpoint, 'POST', header, null)
+            .then((json) => {
+                dispatch({ type: types.RECEIVE_REQUEST_CONFIRMATION, requestConfirmationList: json.data });
+                resultCB('Authenticated');
+            })
+            .catch((error) => {
+                dispatch({ type: types.EMPTY_REQUEST_CONFIRMATION });
+                resultCB(error);
+            });
+    }
+}
+
+/**
+ * Get DO number of request delivery to be confirmed by person receiving
+ * @param {Number} requestID: requestID received from fetching request details (not request number!)
+ * @param {String} token: User's session token 
+ * @param {Function} resultCB: Callback to be executed once fetching is done  
+ */
+export function getRequestDOnumber(requestID, token, resultCB) {
+    let endpoint = 'api/v1/cbn/inventory/GetCheckItemRequest';
+
+    let header = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+    }
+
+
+    let body = {
+        "ListRequestId": [
+            {
+                "RequestId": requestID
+            }
+        ]
+    };
+
+    return dispatch => {
+        return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
+            .then((json) => {
+                if (json.message === 'success')
+                    resultCB('DONo', json.dataDONo[0].DONo.split(','));
+                else
+                    resultCB(json.message);
+            })
+            .catch((error) => {
+                resultCB(error);
+            });
+    }
+}
+
+/**
+ * Get list of items of a particular DO number
+ * @param {String} DONo: DO number of interest 
+ * @param {String} token: User's session token 
+ * @param {Function} resultCB: Callback to be executed once fetching is done 
+ */
+export function getRequestDODetails(DONo, token, resultCB) {
+    let endpoint = 'api/v1/cbn/inventory/GetItemDO';
+
+    let header = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+    }
+
+    let body = {
+        "ListDONo": [
+            {
+                "DONo": DONo
+            }
+        ]
+    };
+
+    return dispatch => {
+        return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
+            .then((json) => {
+                dispatch({ type: types.RECEIVE_DETAILS, details: json.data });
+                resultCB(json.message);
+            })
+            .catch((error) => {
+                dispatch({ type: types.EMPTY_DETAILS });
+                resultCB(error);
+            });
+    }
+}
+
+/**
+ * Confirm if the delivered items match the DO form from vendor
+ * @param {String} token: User's session token  
+ * @param {Number} requestID: requestID received from fetching request details (not request number!)
+ * @param {String} DONo: DO number of form to be confirmed 
+ * @param {String} ItemPieceNo List (in the form of concat string) of item piece numbers from that particular Request's DO Number 
+ * @param {String} ItemCode: List (in the form of concat string) of corresponding item code for each item piece number 
+ * @param {Function} resultCB: Callback to be executed once fetching is done   
+ */
+export function confirmRequestDO(token, requestID, DONo, ItemPieceNo, ItemCode, resultCB) {
+    let endpoint = 'api/v1/cbn/inventory/GetInsertConfirmRequest';
+
+    let header = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+    };
+
+    let body = {
+        "ListInsertConfirm": [
+            {
+                "RequestId": requestID,
+                "DONo": DONo,
+                "ItemPieceNo": ItemPieceNo,
+                "ItemCode": ItemCode
+            }
+        ]
+    };
+
+    return dispatch => {
+        return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
+            .then((json) => {
+                resultCB('Successful!', 'Request Confirmation Successful');
             })
             .catch((error) => {
                 resultCB(error, error.message);

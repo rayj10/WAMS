@@ -46,7 +46,7 @@ class PODetails extends React.Component {
     componentDidMount() {
         this.mounted = true;
         BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-        this.props.actionsWorkspace.getPODetails(this.props.header[this.props.keys['id']], this.props.token, this.onFetchFinish);
+        this.props.actionsWorkspace.getPODetails(this.props.header[this.props.keys['no']], this.props.token, this.onFetchFinish);
     }
 
     componentWillUnmount() {
@@ -71,7 +71,7 @@ class PODetails extends React.Component {
     }
 
     handleBackPress() {
-        this.props.actionsWorkspace.releasePOhandle(this.props.header[this.props.keys['id']], this.props.token, (status) => {
+        this.props.actionsWorkspace.releasePOhandle(this.props.header[this.props.keys['no']], this.props.token, (status) => {
             if (status === 'Authentication Denied')
                 Actions.reset('Main')   //go back to workspace and workspace will logout
             else if (this.mounted && status === "success") {
@@ -86,9 +86,9 @@ class PODetails extends React.Component {
         var month = new Date().getMonth() + 1;
         var year = new Date().getFullYear();
 
-        var fileName = 'PO' + this.props.header[this.props.keys['id']] + " - " + date + month + year;
+        var fileName = 'PO' + this.props.header[this.props.keys['no']] + " - " + date + month + year;
 
-        this.props.actionsWorkspace.approvePODetails(this.props.header[this.props.keys['id']],
+        this.props.actionsWorkspace.approvePODetails(this.props.header[this.props.keys['no']],
             this.props.token,
             img,
             fileName,
@@ -126,7 +126,7 @@ class PODetails extends React.Component {
             { text: 'Cancel', onPress: () => console.log('PO Rejection Cancelled'), style: 'cancel' },
             {
                 text: 'Reject', onPress: () =>
-                    this.props.actionsWorkspace.rejectPODetails(this.props.header[this.props.keys['id']],
+                    this.props.actionsWorkspace.rejectPODetails(this.props.header[this.props.keys['no']],
                         this.props.token,
                         (title, msg) =>
                             Alert.alert(title, msg, [
@@ -293,7 +293,7 @@ class PODetails extends React.Component {
                         <View style={styles.requestHead}>
                             <View style={styles.subRequestHead}>
                                 <Text style={styles.titleTextStyle}>{"PO No.:"}</Text>
-                                <Text style={styles.textStyle}>{header[keys['id']]}</Text>
+                                <Text style={styles.textStyle}>{header[keys['no']]}</Text>
                                 <Text style={styles.titleTextStyle}>{"PO Date:"}</Text>
                                 <Text style={styles.textStyle}>{header[keys['date']]}</Text>
                                 <Text style={styles.titleTextStyle}>{"Vendor:"}</Text>

@@ -47,8 +47,9 @@ class RequestDetails extends React.Component {
 
     componentDidMount() {
         this.mounted = true;
-        this.props.actionsWorkspace.getRequestDetails(this.props.header[this.props.keys['id']], this.props.token, this.onFetchFinish);
-        this.props.actionsWorkspace.getForwardList(this.props.token);
+        this.props.actionsWorkspace.getRequestDetails(this.props.header[this.props.keys['no']], this.props.token, this.onFetchFinish);
+        if (this.props.caller === 'Approval')
+            this.props.actionsWorkspace.getForwardList(this.props.token);
     }
 
     componentWillUnmount() {
@@ -102,7 +103,7 @@ class RequestDetails extends React.Component {
                     {
                         text: 'Proceed', onPress: () => {
                             this.props.actionsWorkspace.forwardRequest(this.props.token,
-                                this.props.header[this.props.keys['id']],
+                                this.props.header[this.props.keys['no']],
                                 Ucode,
                                 (status, title, msg) => {
                                     if (status === 'success')
@@ -141,7 +142,7 @@ class RequestDetails extends React.Component {
             {
                 text: 'Approve', onPress: () => {
                     this.props.actionsWorkspace.verifyRequest(this.props.token,
-                        this.props.header[this.props.keys['id']],
+                        this.props.header[this.props.keys['no']],
                         'A',
                         (status, title, msg) => {
                             if (status === 'success')
@@ -166,7 +167,7 @@ class RequestDetails extends React.Component {
      */
     onDecline() {
         this.props.actionsWorkspace.verifyRequest(this.props.token,
-            this.props.header[this.props.keys['id']],
+            this.props.header[this.props.keys['no']],
             'R',
             (status, title, msg) => {
                 if (status === 'success')
@@ -205,7 +206,7 @@ class RequestDetails extends React.Component {
                         <View style={styles.requestHead}>
                             <View style={styles.subRequestHead}>
                                 <Text style={styles.titleTextStyle}>{"Request No.:"}</Text>
-                                <Text style={styles.textStyle}>{header[keys['id']]}</Text>
+                                <Text style={styles.textStyle}>{header[keys['no']]}</Text>
                                 <Text style={styles.titleTextStyle}>{"Request Date:"}</Text>
                                 <Text style={styles.textStyle}>{header[keys['date']]}</Text>
                             </View>
@@ -251,7 +252,7 @@ class RequestDetails extends React.Component {
         let { keys } = this.props;
 
         return requestItems.map((item, key) => {
-            let status = item[keys['status']];
+            let status = item[keys['itemStatus']];
             return (
                 <View style={styles.itemPanel} key={key}>
                     <View style={styles.verticalSubPanel}>

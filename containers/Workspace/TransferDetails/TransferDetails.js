@@ -44,11 +44,11 @@ class TransferDetails extends React.Component {
 
     componentDidMount() {
         this.mounted = true;
-        this.props.actionsWorkspace.getCheckTransferItem(this.props.token, this.props.header[this.props.keys['id']], (msg, origin, target) => {
+        this.props.actionsWorkspace.getCheckTransferItem(this.props.token, this.props.header[this.props.keys['no']], (msg, origin, target) => {
             if (this.mounted && msg === 'success')
                 this.setState({ origin, target });
         });
-        this.props.actionsWorkspace.getTransferDetails(this.props.header[this.props.keys['id']], this.props.token, this.onFetchFinish);
+        this.props.actionsWorkspace.getTransferDetails(this.props.header[this.props.keys['no']], this.props.token, this.onFetchFinish);
     }
 
     componentWillUnmount() {
@@ -117,13 +117,13 @@ class TransferDetails extends React.Component {
         //remove last comma
         itemPieceNo = itemPieceNo.substr(0, itemPieceNo.length - 1);
         verification = verification.substr(0, verification.length - 1);
-        console.log(itemPieceNo, verification)
+    
         Alert.alert('Confirm Transfer Request', "Are you sure you want to CONFIRM this transfer request?", [
             { text: 'Cancel', onPress: () => console.log('Transfer Confirmation Cancelled'), style: 'cancel' },
             {
                 text: 'Confirm', onPress: () =>
                     this.props.actionsWorkspace.confirmTransferDetails(this.props.token,
-                        this.props.header[this.props.keys['id']],
+                        this.props.header[this.props.keys['no']],
                         this.state.origin, this.state.target,
                         itemPieceNo, verification, (title, msg) =>
                             Alert.alert(title, msg, [
@@ -148,7 +148,7 @@ class TransferDetails extends React.Component {
             {
                 text: 'Deny', onPress: () =>
                     this.props.actionsWorkspace.denyTransferDetails(this.props.token,
-                        this.props.header[this.props.keys['id']],
+                        this.props.header[this.props.keys['no']],
                         (title, msg) =>
                             Alert.alert(title, msg, [
                                 {
@@ -181,7 +181,7 @@ class TransferDetails extends React.Component {
                         <View style={styles.requestHead}>
                             <View style={styles.subRequestHead}>
                                 <Text style={styles.titleTextStyle}>{"Transfer No.:"}</Text>
-                                <Text style={styles.textStyle}>{header[keys['id']]}</Text>
+                                <Text style={styles.textStyle}>{header[keys['no']]}</Text>
                                 <Text style={styles.titleTextStyle}>{"Request Date:"}</Text>
                                 <Text style={styles.textStyle}>{header[keys['date']]}</Text>
                                 <Text style={styles.titleTextStyle}>{"Origin Location:"}</Text>

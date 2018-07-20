@@ -2,13 +2,14 @@ import menuInfo from '../../json/menuInfo.json';
 
 export const Avatar = require('./Avatar.png');
 export const AppIcon = require('./AppIcon.png');
-export const Logo = require('./Logo.png');
+export const Logo = require('./AppLogo.png');
 
 export const Approval = require('./Approval.png');
 export const DOCustomer = require('./DOCustomer.png');
-export const ViewRequest = require('./ViewRequest.png');
+export const Report = require('./Report.png');
 export const MyConfirmation = require('./MyConfirmation.png');
 export const MyRequest = require('./MyRequest.png');
+export const View = require('./View.png');
 
 export const UserManual = require('./UserManual.png');
 export const FAQ = require('./FAQ.png');
@@ -36,7 +37,8 @@ export function getIcon(id, type) {
         case menuInfo.Constants.APPROVAL: return Approval;
         case menuInfo.Constants.DOCUSTOMER: return DOCustomer;
         case menuInfo.Constants.MYCONFIRMATION: return MyConfirmation
-        case menuInfo.Constants.VIEW: return ViewRequest;
+        case menuInfo.Constants.REPORT: return Report;
+        case menuInfo.Constants.VIEW: return View;
         case menuInfo.Constants.HELP: return { name: 'help-circle', type: 'material-community' };
         case menuInfo.Constants.SETTING: return { name: 'gears', type: 'font-awesome' };
         case menuInfo.Constants.QRSCANNER: return { name: 'qrcode', type: 'material-community' };

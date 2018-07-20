@@ -14,7 +14,7 @@ import TakePhoto from './components/TakePhoto';
 
 //Import Containers
 import Login from './containers/Login';
-import { Approval, DOCustomer, MyConfirmation, MyRequest, ViewRequest, RequestDetails, PODetails, TransferDetails } from './containers/Workspace';
+import { Approval, DOCustomer, MyConfirmation, MyRequest, ViewPage, Report, RequestDetails, PODetails, TransferDetails, RequestConfirm } from './containers/Workspace';
 import { QRScanner, ScanPage } from './containers/QRScanner';
 import { Help, UserManual, FAQ } from './containers/Help';
 import Setting from './containers/Setting';
@@ -106,11 +106,13 @@ class Routes extends React.Component {
                                     <Scene key="Approval" hideNavBar component={Approval} title={"Approval"} />
                                     <Scene key="DO Customer" hideNavBar component={DOCustomer} title={"DO Customer"} />
                                     <Scene key="My Confirmation" hideNavBar component={MyConfirmation} title={"My Confirmation"} />
-                                    <Scene key="View" hideNavBar component={ViewRequest} title={"View"} />
+                                    <Scene key="View" hideNavBar component={ViewPage} title={"View"} />
+                                    <Scene key="Report" hideNavBar component={Report} title={"Report"} />
                                 </Scene>
                                 <Scene key="RequestDetails" hideNavBar component={RequestDetails} title="Request Details" />
                                 <Scene key="PODetails" hideNavBar component={PODetails} title="PO Details" />
                                 <Scene key="TransferDetails" hideNavBar component={TransferDetails} title="Transfer Details" />
+                                <Scene key="RequestConfirm" hideNavBar component={RequestConfirm} title="Request Confirm" />
                             </Scene>
                             <Scene key="Help" navBar={() => <PageHeader title='Help' />} title="Help" drawerLockMode={'locked-closed'}>
                                 <Scene tabs={true} hideTabBar animationEnabled={false} swipeEnabled={false} lazy={true}>

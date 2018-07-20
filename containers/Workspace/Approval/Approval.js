@@ -91,7 +91,7 @@ class Approval extends React.Component {
     * @param {String} pageName: Page to be rendered  
     */
     renderPage(pageName) {
-        let keys = DBkeys[pageName];
+        let keys = DBkeys[pageName].Approval;
 
         if (pageName === 'Requests') {
             if (this.props.requestApprovalReceived)

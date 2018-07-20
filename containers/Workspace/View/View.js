@@ -2,7 +2,7 @@ import React from 'react';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { View, Text, Alert, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Alert } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 
 import styles from "./styles";
@@ -18,8 +18,8 @@ export const mapStateToProps = state => ({
   token: state.authReducer.token,
   requestViewList: state.workspaceReducer.requestViewList,
   requestViewReceived: state.workspaceReducer.requestViewReceived,
-  transferViewList: state.workspaceReducer.transferViewList,
-  transferViewReceived: state.workspaceReducer.transferViewReceived,
+  POViewList: state.workspaceReducer.POViewList,
+  POViewReceived: state.workspaceReducer.POViewReceived,
 });
 
 //Maps imported actions to ViewRequest's props
@@ -28,13 +28,12 @@ export const mapDispatchToProps = (dispatch) => ({
   actionsAuth: bindActionCreators(authAction, dispatch)
 });
 
-class MyRequest extends React.Component {
+class ViewPage extends React.Component {
   constructor() {
     super();
     this.state = {
       request: null,
-      PO: 'Access Denied',         //needs to be nulled
-      transfer: null,
+      PO: null,         //needs to be nulled
       carouselIndex: 0
     };
 
@@ -54,7 +53,7 @@ class MyRequest extends React.Component {
    */
   getLists(finishCB) {
     this.props.actionsWorkspace.getRequestView(this.props.token, (listName, status) => this.onFetchFinish(listName, status, finishCB && finishCB()));
-    this.props.actionsWorkspace.getTransferView(this.props.token, (listName, status) => this.onFetchFinish(listName, status, finishCB && finishCB()));
+    this.props.actionsWorkspace.getPOView(this.props.token, (listName, status) => this.onFetchFinish(listName, status, finishCB && finishCB()));
   }
 
   /**
@@ -73,8 +72,6 @@ class MyRequest extends React.Component {
         this.setState({ request: status })
       else if (listName === 'PO')
         this.setState({ PO: status })
-      else if (listName === 'Transfers')
-        this.setState({ transfer: status })
     }
   }
 
@@ -97,24 +94,17 @@ class MyRequest extends React.Component {
         return <SummaryListPage title={pageName} status={this.state.request} onRefresh={this.getLists} />
     }
     else if (pageName === 'PO') {
-      if (false) //this.props.isPOListReceived
-        return <SummaryListPage title={pageName} status={this.state.PO} onRefresh={this.getLists} list={this.props.requestViewList} keys={keys} onShowDetails={() => { }} />
+      if (this.props.POViewReceived)
+        return <SummaryListPage title={pageName} status={this.state.PO} onRefresh={this.getLists} list={this.props.POViewList} keys={keys} onShowDetails={(POHead) => Actions.PODetails({ header: POHead, caller: 'View', keys, refresh: this.getLists})} />
       else
         return <SummaryListPage title={pageName} status={this.state.PO} onRefresh={this.getLists} />
-    }
-    else if (pageName === 'Transfers') {
-      if (this.props.transferViewReceived)
-        return <SummaryListPage title={pageName} status={this.state.transfer} onRefresh={this.getLists} list={this.props.transferViewList} keys={keys} onShowDetails={(trfHead) => Actions.TransferDetails({ header: trfHead, caller: 'View', keys })} />
-      else
-        return <SummaryListPage title={pageName} status={this.state.transfer} onRefresh={this.getLists} />
     }
   }
 
   render() {
     let pages = [
       this.renderPage('Requests'),
-      this.renderPage('PO'),
-      this.renderPage('Transfers')
+      this.renderPage('PO')
     ];
 
     return (
@@ -144,4 +134,4 @@ class MyRequest extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyRequest);
+export default connect(mapStateToProps, mapDispatchToProps)(ViewPage);

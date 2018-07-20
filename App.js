@@ -60,7 +60,7 @@ export default class App extends React.Component {
             img.Sidebar,
             img.Test,
             img.UserManual,
-            img.ViewRequest
+            img.Report
         ]);
 
         await Promise.all([...imageAssets, ...fontAssets]);
