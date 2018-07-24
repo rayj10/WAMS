@@ -66,8 +66,8 @@ class Approval extends React.Component {
      * @param {String} status: Fetch status response (directly related to HTTP status code response) 
      */
     onFetchFinish(listName, status) {
-        if (status === 'Authentication Denied' && this.props.token) {
-            Alert.alert(status, errors[status])
+        if (status === 401 && this.props.token) {
+            Alert.alert(errors[status].name, errors[status].message)
             this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));
             Actions.reset("Auth");
         }

@@ -14,8 +14,8 @@ import DBkeys from '../../../json/DBkeys.json';
 //Maps store's state to ViewRequest's props
 export const mapStateToProps = state => ({
   token: state.authReducer.token,
-  requestConfirmationList: state.workspaceReducer.requestConfirmationList,
-  requestConfirmationReceived: state.workspaceReducer.requestConfirmationReceived,
+  taskList: state.workspaceReducer.taskList,
+  taskListReceived: state.workspaceReducer.taskListReceived
 });
 
 //Maps imported actions to ViewRequest's props
@@ -24,7 +24,7 @@ export const mapDispatchToProps = (dispatch) => ({
   actionsAuth: bindActionCreators(authAction, dispatch)
 });
 
-class MyConfirmation extends React.Component {
+class TaskList extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -37,7 +37,7 @@ class MyConfirmation extends React.Component {
   //fetch data to be displayed as soon as the component is mounted
   componentDidMount() {
     this.mounted = true;
-    this.props.actionsWorkspace.getRequestConfirmation(this.props.token, this.onFetchFinish)
+    this.props.actionsWorkspace.getListDOCustomer(this.props.token, this.onFetchFinish, 2)
   }
 
   /**
@@ -45,7 +45,6 @@ class MyConfirmation extends React.Component {
    * @param {String} status: Fetch status response (directly related to HTTP status code response) 
    */
   onFetchFinish(status) {
-    console.log(status)
     if (status === 401 && this.props.token) {
       Alert.alert(errors[status].name, errors[status].message)
       this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));
@@ -65,11 +64,11 @@ class MyConfirmation extends React.Component {
   * @param {String} pageName: Page to be rendered  
   */
   renderPage(pageName) {
-    let keys = DBkeys[pageName].Confirmation;
-    let refresh = (finishRefresh) => this.props.actionsWorkspace.getRequestConfirmation(this.props.token, (status) => this.onFetchFinish(status, finishRefresh && finishRefresh()));
+    let keys = DBkeys[pageName];
+    let refresh = (finishRefresh) => this.props.actionsWorkspace.getListDOCustomer(this.props.token, (status) => this.onFetchFinish(status, finishRefresh && finishRefresh()), 2);
 
-    if (this.props.requestConfirmationReceived)
-      return <SummaryListPage title={pageName} status={this.state.fetchStatus} onRefresh={refresh} list={this.props.requestConfirmationList} keys={keys} onShowDetails={(reqHead) => Actions.RequestConfirm({ header: reqHead, keys, refresh })} />
+    if (this.props.taskListReceived)
+      return <SummaryListPage title={pageName} status={this.state.fetchStatus} onRefresh={refresh} list={this.props.taskList} keys={keys} onShowDetails={(reqHead) => Actions.DODetails({ header: reqHead, user: 'Installer', keys, refresh })} />
     else
       return <SummaryListPage title={pageName} status={this.state.fetchStatus} onRefresh={refresh} />
   }
@@ -77,10 +76,10 @@ class MyConfirmation extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        {this.renderPage('Requests')}
+          {this.renderPage('DO Customer')}
       </View>
     );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyConfirmation);
+export default connect(mapStateToProps, mapDispatchToProps)(TaskList);

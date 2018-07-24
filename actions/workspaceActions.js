@@ -61,7 +61,7 @@ export function getRequestApproval(token, resultCB) {
         return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
             .then((json) => {
                 dispatch({ type: types.RECEIVE_REQUEST_APPROVAL, requestApprovalList: json.data });
-                resultCB('Requests', 'Authenticated');
+                resultCB('Requests', json.message);
             })
             .catch((error) => {
                 dispatch({ type: types.EMPTY_REQUEST_APPROVAL });
@@ -96,7 +96,7 @@ export function getPOApproval(token, resultCB) {
         return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
             .then((json) => {
                 dispatch({ type: types.RECEIVE_PO_APPROVAL, POApprovalList: json.data });
-                resultCB('PO', 'Authenticated');
+                resultCB('PO', json.message);
             })
             .catch((error) => {
                 dispatch({ type: types.EMPTY_PO_APPROVAL });
@@ -132,7 +132,7 @@ export function getTransferApproval(token, resultCB) {
         return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
             .then((json) => {
                 dispatch({ type: types.RECEIVE_TRANSFER_APPROVAL, transferApprovalList: json.data });
-                resultCB('Transfers', 'Authenticated');
+                resultCB('Transfers', json.message);
             })
             .catch((error) => {
                 dispatch({ type: types.EMPTY_TRANSFER_APPROVAL });
@@ -167,7 +167,7 @@ export function getRequestView(token, resultCB) {
         return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
             .then((json) => {
                 dispatch({ type: types.RECEIVE_REQUEST_VIEW, requestViewList: json.data });
-                resultCB('Requests', 'Authenticated');
+                resultCB('Requests', json.message);
             })
             .catch((error) => {
                 dispatch({ type: types.EMPTY_REQUEST_VIEW });
@@ -202,7 +202,7 @@ export function getPOView(token, resultCB) {
         return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
             .then((json) => {
                 dispatch({ type: types.RECEIVE_PO_VIEW, POViewList: json.data });
-                resultCB('PO', 'Authenticated');
+                resultCB('PO', json.message);
             })
             .catch((error) => {
                 dispatch({ type: types.EMPTY_PO_VIEW });
@@ -238,7 +238,7 @@ export function getTransferView(token, resultCB) {
         return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
             .then((json) => {
                 dispatch({ type: types.RECEIVE_TRANSFER_VIEW, transferViewList: json.data });
-                resultCB('Transfers', 'Authenticated');
+                resultCB('Transfers', json.message);
             })
             .catch((error) => {
                 dispatch({ type: types.EMPTY_TRANSFER_VIEW });
@@ -313,7 +313,7 @@ export function forwardRequest(token, requestNo, checker, resultCB) {
                 resultCB(json.message, 'Request Forwarded', 'This request has been successfully forwarded to ');
             })
             .catch((error) => {
-                resultCB(error.message);
+                resultCB(error);
             });
     }
 }
@@ -354,7 +354,7 @@ export function verifyRequest(token, requestNo, status, resultCB, notes) {
                     resultCB(json.message, 'Request Declined', 'Request DECLINE has been successful');
             })
             .catch((error) => {
-                resultCB(error.message);
+                resultCB(error);
             });
     }
 }
@@ -400,7 +400,7 @@ export function getPODetails(PONo, token, resultCB) {
             })
             .catch((error) => {
                 dispatch({ type: types.EMPTY_DETAILS });
-                resultCB(error.message);
+                resultCB(error);
             });
     }
 }
@@ -433,7 +433,7 @@ export function releasePOhandle(PONo, token, resultCB) {
                 resultCB(json.message);
             })
             .catch((error) => {
-                resultCB(error.message);
+                resultCB(error);
             });
     }
 }
@@ -541,7 +541,7 @@ export function getTransferDetails(transferNo, token, resultCB) {
             })
             .catch((error) => {
                 dispatch({ type: types.EMPTY_DETAILS });
-                resultCB(error.message);
+                resultCB(error);
             });
     }
 }
@@ -577,7 +577,7 @@ export function getCheckTransferItem(token, transferNo, resultCB) {
                     resultCB(json.message)
             })
             .catch((error) => {
-                resultCB(error.message);
+                resultCB(error);
             });
     }
 }
@@ -673,7 +673,7 @@ export function getRequestConfirmation(token, resultCB) {
         return fetchAPI(endpoint, 'POST', header, null)
             .then((json) => {
                 dispatch({ type: types.RECEIVE_REQUEST_CONFIRMATION, requestConfirmationList: json.data });
-                resultCB('Authenticated');
+                resultCB(json.message);
             })
             .catch((error) => {
                 dispatch({ type: types.EMPTY_REQUEST_CONFIRMATION });
@@ -786,6 +786,211 @@ export function confirmRequestDO(token, requestID, DONo, ItemPieceNo, ItemCode, 
         return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
             .then((json) => {
                 resultCB('Successful!', 'Request Confirmation Successful');
+            })
+            .catch((error) => {
+                resultCB(error, error.message);
+            });
+    }
+}
+
+/**
+ * Get List of items user has requested
+ * @param {String} token: User's session token 
+ * @param {Function} resultCB: Callback to be executed once fetching process is done 
+ */
+export function getItemRequestBy(token, resultCB) {
+    let endpoint = 'api/v1/cbn/inventory/GetDetailRequestBy';
+
+    let header = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+    }
+
+    return dispatch => {
+        return fetchAPI(endpoint, 'POST', header, null)
+            .then((json) => {
+                dispatch({ type: types.RECEIVE_MYREQ_LIST, myRequestList: json.data });
+                resultCB(json.message);
+            })
+            .catch((error) => {
+                dispatch({ type: types.EMPTY_MYREQ_LIST });
+                resultCB(error);
+            });
+    }
+}
+
+export function getListDOCustomer(token, resultCB, options) {
+    let endpoint = 'api/v1/cbn/inventory/GetListDOCust';
+
+    let header = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+    }
+
+    let body = {
+        "ListValue": [
+            {
+                "Value": options
+            }
+        ]
+    };
+
+    return dispatch => {
+
+        return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
+            .then((json) => {
+                if (options === 1)
+                    dispatch({ type: types.RECEIVE_DOCUST, DOCustList: json.data });
+                else
+                    dispatch({ type: types.RECEIVE_TASKLIST, taskList: json.data });
+
+                resultCB(json.message);
+            })
+            .catch((error) => {
+                if (options === 1)
+                dispatch({ type: types.EMPTY_DOCUST });
+                else
+                dispatch({ type: types.EMPTY_TASKLIST });
+                
+                resultCB(error);
+            });
+    }
+}
+
+/**
+ * Get details of a particular DO number
+ * @param {String} DONo: DO number of interest 
+ * @param {String} token: User's session token 
+ * @param {Function} resultCB: Callback to be executed once fetching is done 
+ */
+export function getDOCustDetails(DONo, token, resultCB) {
+    let endpoint = 'api/v1/cbn/inventory/GetCheckViewDOCustomer';
+
+    let header = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+    }
+
+    let body = {
+        "ListDONo": [
+            {
+                "DONo": DONo
+            }
+        ]
+    };
+
+    return dispatch => {
+        return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
+            .then((json) => {
+                let details = {};
+                details['Customer'] = json.dataCustomer[0];
+                details['Items'] = json.dataItem;
+
+                dispatch({ type: types.RECEIVE_DETAILS, details });
+                resultCB(json.message);
+            })
+            .catch((error) => {
+                dispatch({ type: types.EMPTY_DETAILS });
+                resultCB(error);
+            });
+    }
+}
+
+/**
+ * Get List of Installers available to be assigned
+ * @param {String} token: User's session token 
+ * @param {Function} resultCB: Callback to be executed once fetching process is done 
+ */
+export function getInstallerList(token, resultCB) {
+    let endpoint = 'api/v1/cbn/inventory/GetListInstaller';
+
+    let header = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+    }
+
+    return dispatch => {
+        return fetchAPI(endpoint, 'POST', header, null)
+            .then((json) => {
+                dispatch({ type: types.RECEIVE_INSTALLERS, installerList: json.data });
+                resultCB(json.message);
+            })
+            .catch((error) => {
+                dispatch({ type: types.EMPTY_INSTALLERS });
+                resultCB(error);
+            });
+    }
+}
+
+/**
+ * Edit the installer assigned to a DO Customer request
+ * @param {String} token: User's session token 
+ * @param {String} DONo: ID of DO form to be updated 
+ * @param {String} installer: New intaller's ID 
+ * @param {Function} resultCB: Callback to be executed once fetching process is done
+ */
+export function updateInstaller(token, DONo, installer, resultCB) {
+    let endpoint = 'api/v1/cbn/inventory/GetUpdateDOInstaller';
+
+    let header = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+    };
+
+    let body = {
+        "ListUpdateDOInstaller": [
+            {
+                "DONo": DONo,
+                "SetInstaller": installer
+            }
+        ]
+    };
+
+    return dispatch => {
+        return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
+            .then((json) => {
+                resultCB(json.message, 'Installer Updated', 'Installer has been updated to ');
+            })
+            .catch((error) => {
+                resultCB(error);
+            });
+    }
+}
+
+/**
+ * Confirm if the delivered items match the DO form from vendor
+ * @param {String} token: User's session token  
+ * @param {String} DONo: DO number of form to be confirmed 
+ * @param {String} ItemPieceNo List (in the form of concat string) of item piece numbers from that particular Request's DO Number 
+ * @param {String} ItemCode: List (in the form of concat string) of corresponding item code for each item piece number 
+ * @param {Function} status: Status of the DO form
+ * @param {Function} statusItem: Status of each item
+ * @param {Function} resultCB: Callback to be executed once fetching is done   
+ */
+export function confirmDOCustomer(token, DONo, ItemPieceNo, ItemCode, status, statusItem, resultCB) {
+    let endpoint = 'api/v1/cbn/inventory/GetInsertConfirmDOCustomer';
+
+    let header = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+    };
+
+    let body = {
+        "ListInsertConfirmDOCustomer": [
+            {
+                "DONo": DONo,
+                "ItemPieceNo": ItemPieceNo,
+                "ItemCode": ItemCode,
+                "status": status,
+                "statusItem": statusItem
+            }
+        ]
+    };
+
+    return dispatch => {
+        return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
+            .then((json) => {
+                resultCB('Successful!', 'DO Customer has been successfully confirmed');
             })
             .catch((error) => {
                 resultCB(error, error.message);

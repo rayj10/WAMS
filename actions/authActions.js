@@ -5,6 +5,7 @@ var stringify = require('qs-stringify');
 
 import * as t from './actionTypes/authTypes';
 import { fetchAPI } from '../utils/fetch';
+import errors from '../json/errors.json';
 
 /**
  * Fetch token to API based on user login credentials, 
@@ -32,18 +33,42 @@ export function login(user, finishCB) {
         return fetchAPI(endpoint, 'POST', header, stringify(body))
             .then((json) => {
                 AsyncStorage.setItem('token', json['access_token']);
-                AsyncStorage.setItem('username', username);
-                dispatch({ type: t.LOGGED_IN, token: json['access_token'], userName: username });
+                dispatch({ type: t.LOGGED_IN, token: json['access_token'] });
+                finishCB(json['access_token']);
+            })
+            .catch((error) => {
+                if (errors[error] === undefined)
+                    Alert.alert(errors['Unknown Error'].name, errors['Unknown Error'].message);
+                else if (errors[error].login !== undefined)
+                    Alert.alert(errors[error].login[0], errors[error].login[1]);
+                else
+                    Alert.alert(errors[error].name, errors[error].message);
+                finishCB(null);
+            })
+    }
+}
+
+export function getUserProfile(token, resultCB) {
+    var endpoint = "api/v1/user/profile";
+
+    let header = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+    };
+
+    return dispatch => {
+        return fetchAPI(endpoint, 'GET', header, null)
+            .then((json) => {
 
                 //firebase auth for Chat feature
-                var dummyEmail = username.split(' ')[0] + '@cbn.co.id';
+                var email = json.data[0]['Email'];
                 firebase.auth()
-                    .signInWithEmailAndPassword(dummyEmail, password)
+                    .signInWithEmailAndPassword(email, 'testpass123')
                     .catch((error) => {
                         //if sign in fails because it's new user, sign the user up straightaway
                         if (error.code === 'auth/user-not-found') {
                             firebase.auth()
-                                .createUserWithEmailAndPassword(dummyEmail, password)
+                                .createUserWithEmailAndPassword(email, 'testpass123')
                                 .catch((error) => {
                                     console.log(error, error.message);
                                 });
@@ -52,15 +77,12 @@ export function login(user, finishCB) {
                             console.log(error, error.message);
                         }
                     });
-
-                finishCB(json['access_token']);
+                dispatch({ type: t.RECEIVE_USER_DETAILS, userDetails: json.data[0] });
+                resultCB(json.message)
             })
             .catch((error) => {
-                if (error === 'Bad request')
-                    Alert.alert('Invalid Login', 'Username and Password did not match');
-                else
-                    Alert.alert(error, 'Please check your connection or try again later');
-                finishCB(null);
+                dispatch({ type: t.EMPTY_USER_DETAILS });
+                resultCB(error)
             })
     }
 }

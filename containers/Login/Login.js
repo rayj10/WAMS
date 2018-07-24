@@ -93,8 +93,15 @@ class Login extends React.Component {
     onFinish(token, callback) {
         if (token) {
             this.props.actionsMenu.getAvailableMenu(token, (error) => {
-                if (error === 'Authentication Denied' && this.props.token) {
-                    Alert.alert(error, errors[error])
+                if (error === 401 && this.props.token) {
+                    Alert.alert(errors[error].name, errors[error].message)
+                    this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));
+                    Actions.reset("Auth");
+                }
+            });
+            this.props.actionsAuth.getUserProfile(token, (error) => {
+                if (error === 401 && this.props.token) {
+                    Alert.alert(errors[error].name, errors[status].message)
                     this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));
                     Actions.reset("Auth");
                 }

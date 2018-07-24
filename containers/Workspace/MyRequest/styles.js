@@ -8,9 +8,47 @@ const styles = StyleSheet.create({
     paddingVertical: normalize(10)
   },
 
-  pageIndicator: {
-    paddingBottom: normalize(10),
-    paddingTop: 0
+  subHeader: {
+    fontSize: fontSize.large,
+    fontFamily: fontFamily.bold,
+    color: color.light_black,
+    marginHorizontal: normalize(15)
+  },
+
+  panelContainer: {
+    flex: 1,
+    marginBottom: normalize(30),
+    marginTop: normalize(5),
+    marginHorizontal: normalize(15)
+  },
+
+  outterPanel: {
+    height: normalize(170),
+    flexDirection: 'row',
+    borderColor: color.light_grey,
+    borderRadius: 3,
+    borderWidth: 1.5,
+    marginVertical: 2
+  },
+
+  innerPanel: {
+    flex: 1,
+    justifyContent: 'space-evenly'
+  },
+
+  itemName: {
+    fontSize: fontSize.regular,
+    fontFamily: fontFamily.boldItalic,
+  },
+
+  titleTextStyle: {
+    fontSize: fontSize.small + 1,
+    fontFamily: fontFamily.bold,
+  },
+
+  textStyle: {
+    fontSize: fontSize.small + 1,
+    fontFamily: fontFamily.light,
   }
 });
 

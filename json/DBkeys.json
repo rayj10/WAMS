@@ -30,7 +30,7 @@
             "targetDate": "TargetReceivedDate",
             "itemStatus": "StatusName"
         },
-        "Confirmation":{
+        "Confirmation": {
             "id": "Request Id",
             "no": "Request No",
             "department": "Department",
@@ -44,6 +44,15 @@
             "mac": "MacAddress",
             "amount": "Quantity",
             "unit": "UnitName"
+        },
+        "MyRequest": {
+            "item": "ItemName",
+            "code": "ItemCode",
+            "amount": "AmountItem",
+            "inWarehouse": "AmountInWarehouse",
+            "unit": "UnitName",
+            "date": "TargetReceivedDate",
+            "status": "StatusName"
         }
     },
     "PO": {
@@ -139,23 +148,52 @@
             "amount": "AmountPending",
             "unit": "UnitCode",
             "sCode": "StatusCode"
+        }
+    },
+    "DO Customer": {
+        "no": "DONo",
+        "giver": "Giver",
+        "installer": "Installer",
+        "ticket": "No Tiket",
+        "date": "Request Date",
+        "status": "Status",
+        "custID": "CustomerId",
+        "uName": "Username",
+        "cust": "Fullname",
+        "service": "Service",
+        "add1": "Address1",
+        "add2": "Address2",
+        "add3": "Address3",
+        "city": "City",
+        "country": "Country",
+        "zip": "Zip",
+        "tel1": "Telp1",
+        "tel2": "Telp2",
+        "item": "ItemName",
+        "code": "ItemCode",
+        "piece": "ItemPieceNo",
+        "serial": "SerialNumber",
+        "amount": "Amount",
+        "itemStatus": "Status",
+        "statusCode": {
+            "B": "Broken",
+            "C": "On Service",
+            "D": "Dismantle",
+            "E": "Entry",
+            "H": "Exchanged",
+            "N": "Rent",
+            "O": "Stock",
+            "R": "Repair",
+            "S": "Sold",
+            "T": "Transfer Item",
+            "U": "Use",
+            "X": "Discarded"
         },
-        "View": {
-            "no": "Transfer No",
-            "department": "Department",
-            "date": "Request Date",
-            "status": "Status",
-            "requestor": "Transfer By",
-            "from": "Origin Location",
-            "to": "Target Location",
-            "code": "ItemCode",
-            "piece": "ItemPieceNo",
-            "item": "ItemName",
-            "serial": "SerialNumber",
-            "mac": "MacAddress",
-            "amount": "AmountPending",
-            "unit": "UnitCode",
-            "sCode": "StatusCode"
+        "actions": {
+            "list" : ["Installed", "Cancelled By Customer", "Non-Compatible"],
+            "Installed" : 1,
+            "Cancelled By Customer": 2,
+            "Non-Compatible": 3
         }
     }
 }

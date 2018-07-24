@@ -10,6 +10,7 @@ export const Report = require('./Report.png');
 export const MyConfirmation = require('./MyConfirmation.png');
 export const MyRequest = require('./MyRequest.png');
 export const View = require('./View.png');
+export const TaskList = require('./TaskList.png');
 
 export const UserManual = require('./UserManual.png');
 export const FAQ = require('./FAQ.png');
@@ -39,6 +40,7 @@ export function getIcon(id, type) {
         case menuInfo.Constants.MYCONFIRMATION: return MyConfirmation
         case menuInfo.Constants.REPORT: return Report;
         case menuInfo.Constants.VIEW: return View;
+        case menuInfo.Constants.TASKLIST: return TaskList;
         case menuInfo.Constants.HELP: return { name: 'help-circle', type: 'material-community' };
         case menuInfo.Constants.SETTING: return { name: 'gears', type: 'font-awesome' };
         case menuInfo.Constants.QRSCANNER: return { name: 'qrcode', type: 'material-community' };

@@ -20,7 +20,8 @@ import * as img from '../assets/images';
 //Maps reducer's state to NavDrawer's props
 export const mapStateToProps = state => ({
     token: state.authReducer.token,
-    username: state.authReducer.userName,
+    userDetails: state.authReducer.userDetails,
+    userDetailsReceived: state.authReducer.userDetailsReceived,
     menuList: state.menuReducer.menuList,
     menuReceived: state.menuReducer.menuReceived,
     currentScene: state.menuReducer.currentScene
@@ -84,14 +85,12 @@ class NavDrawer extends React.Component {
     constructor(props) {
         super(props);
 
-        let name = this.props.username;
-
         this.state = {
             tabs: null,
             profilePic: Avatar,
             currentTab: null,                                                           //marks which drawer item to highlight based on active scene
             initialPage: null,
-            userName: name ? name.charAt(0).toUpperCase() + name.slice(1) : null,       //user's name to be displayed on avatar
+            userName: null,
         }
 
         this.goto = this.goto.bind(this);
@@ -106,6 +105,9 @@ class NavDrawer extends React.Component {
             this.setState({ tabs, currentTab: menuInfo[tabs[0]['MenuID']].name, initialPage: menuInfo[tabs[0]['Children'][0]['MenuID']].name });
             this.goto(menuInfo[tabs[0]['MenuID']].name);
         }
+
+        if (this.props.userDetailsReceived)
+            this.setState({ userName: this.props.userDetails['DisplayName'] });
     }
 
     /**
@@ -113,6 +115,10 @@ class NavDrawer extends React.Component {
      */
     componentDidUpdate() {
         let tabs = this.props.menuList;
+        
+        //display user's name
+        if (this.props.userDetailsReceived && this.state.userName === null)
+            this.setState({ userName: this.props.userDetails['DisplayName'] });
 
         //Adjust highlighted tab position
         if (this.props.menuReceived && this.state.currentTab !== menuInfo[tabs[0]['MenuID']].name && Actions.currentScene === '_' + this.state.initialPage)

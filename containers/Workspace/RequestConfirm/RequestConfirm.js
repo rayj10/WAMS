@@ -55,7 +55,7 @@ class RequestConfirm extends React.Component {
      * @param {String} status: Fetch status response (directly related to HTTP status code response)
      */
     onFetchFinish(status, data) {
-        if (status === 'Authentication Denied')
+        if (status === 401)
             Actions.reset('Main')   //go back to workspace and workspace will logout
         else if (status === 'DONo') {
             data.unshift(' - - - ');

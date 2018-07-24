@@ -60,7 +60,7 @@ class TransferDetails extends React.Component {
      * @param {String} status: Fetch status response (directly related to HTTP status code response)
      */
     onFetchFinish(status) {
-        if (status === 'Authentication Denied')
+        if (status === 401)
             Actions.reset('Main')   //go back to workspace and workspace will logout
         else if (this.mounted && status === "success")
             this.setState({ fetchStatus: status });
@@ -202,19 +202,14 @@ class TransferDetails extends React.Component {
                     </ScrollView>);
             }
             else {
-                let message = '';
-                if (status === 'Service Unavailable')
-                    message = 'Connection to the server is currently unavailable\nEither your internet connection is unstable or server is simply unavailable';
-                else if (status === 'Access Denied')
-                    message = 'Your account is not\nauthorized\nto see this information';
-                else if (status === 'Unknown Error')
-                    message = 'Sorry, but we are currently unable to diagnose the problem, please try again later';
+                if (errors[status] === undefined)
+                    status = 'Unknown Error';
 
                 content = (
                     <View style={{ alignItems: 'center' }}>
-                        <Text style={[styles.titleTextStyle, { textAlign: 'center', fontSize: 20 }]}>{'\n\n' + status + '\n'}</Text>
+                        <Text style={[styles.titleTextStyle, { textAlign: 'center', fontSize: 20 }]}>{'\n\n' + errors[status].name + '\n'}</Text>
                         <Text style={[styles.titleTextStyle, { textAlign: 'center', fontSize: 16 }]}>
-                            {message}
+                            {errors[status].message}
                         </Text>
                     </View>
                 );

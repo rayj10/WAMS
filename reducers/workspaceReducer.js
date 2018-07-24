@@ -13,6 +13,10 @@ let initialState = {
 
     detailsReceived: false,
     forwardListReceived: false,
+    myRequestListReceived: false,
+    DOCustListReceived: false,
+    taskListReceived: false,
+    installerListReceived: false,
 
     requestApprovalList: {},
     requestViewList: {},
@@ -25,7 +29,11 @@ let initialState = {
     transferViewList: {},
 
     details: {},
-    forwardList: {}
+    forwardList: {},
+    myRequestList: {},
+    DOCustList: {},
+    taskList: {},
+    installerList: {}
 };
 
 /**
@@ -66,6 +74,19 @@ export default function workspaceReducer(state = initialState, action) {
         case t.EMPTY_TRANSFER_VIEW:
             return Object.assign({}, state, { transferViewReceived: false, transferViewList: {} }); break;
 
+        case t.RECEIVE_DOCUST:
+            return Object.assign({}, state, { DOCustListReceived: true, DOCustList: action.DOCustList }); break;
+        case t.EMPTY_DOCUST:
+            return Object.assign({}, state, { DOCustListReceived: false, DOCustList: {} }); break;
+        case t.RECEIVE_TASKLIST:
+            return Object.assign({}, state, { taskListReceived: true, taskList: action.taskList }); break;
+        case t.EMPTY_TASKLIST:
+            return Object.assign({}, state, { taskListReceived: false, taskList: {} }); break;
+        case t.RECEIVE_INSTALLERS:
+            return Object.assign({}, state, { installerListReceived: true, installerList: action.installerList }); break;
+        case t.EMPTY_INSTALLERS:
+            return Object.assign({}, state, { installerListReceived: false, installerList: {} }); break;
+
         case t.RECEIVE_FORWARD_LIST:
             return Object.assign({}, state, { forwardListReceived: true, forwardList: action.forwardList }); break;
         case t.EMPTY_FORWARD_LIST:
@@ -75,6 +96,12 @@ export default function workspaceReducer(state = initialState, action) {
             return Object.assign({}, state, { detailsReceived: true, details: action.details }); break;
         case t.EMPTY_DETAILS:
             return Object.assign({}, state, { detailsReceived: false, details: {} }); break;
+
+        case t.RECEIVE_MYREQ_LIST:
+            return Object.assign({}, state, { myRequestListReceived: true, myRequestList: action.myRequestList }); break;
+        case t.EMPTY_MYREQ_LIST:
+            return Object.assign({}, state, { myRequestListReceived: false, myRequestList: {} }); break;
+
         case t.SIGNED_OUT:
             return Object.assign({}, state, initialState); break;
         default:

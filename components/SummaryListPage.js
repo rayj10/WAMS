@@ -74,10 +74,10 @@ class SummaryListPage extends React.Component {
     renderSummary(headers) {
         return headers.map((item, key) => {
             let info = this.buildPanel(item);
-            status = this.props.title === 'PO' ? info.slice(4) : info.slice(3);
-            info = this.props.title === 'PO' ? info.slice(0, 4) : info.slice(0, 3);
+            status = this.props.title === 'PO' ||  this.props.title === 'DO Customer' ? info.slice(4) : info.slice(3);
+            info = this.props.title === 'PO' || this.props.title === 'DO Customer' ? info.slice(0, 4) : info.slice(0, 3);
             return (<TouchableOpacity onPress={() => this.props.onShowDetails(item)} key={key}>
-                <View style={[styles.outterPanel, this.props.title === 'PO' ? { height: normalize(90) } : null]}>
+                <View style={[styles.outterPanel, this.props.title === 'PO' || this.props.title === 'DO Customer' ? { height: normalize(90) } : null]}>
                     <View style={[styles.innerPanel, { flex: 3.5 }]}>
                         {info}
                     </View>
@@ -108,6 +108,16 @@ class SummaryListPage extends React.Component {
             panel.push(<Text style={{ left: 15 }} key={'handler'}>
                 <Text style={styles.titleTextStyle}>{"Last Handled: "}</Text>
                 <Text style={styles.textStyle}>{item[keys['handler']]}</Text>
+            </Text>);
+        }
+        else if (this.props.title === 'DO Customer') {
+            panel.push(<Text style={{ left: 15 }} key={'giver'}>
+                <Text style={styles.titleTextStyle}>{"Giver: "}</Text>
+                <Text style={styles.textStyle}>{item[keys['giver']]}</Text>
+            </Text>);
+            panel.push(<Text style={{ left: 15 }} key={'installer'}>
+                <Text style={styles.titleTextStyle}>{"Installer: "}</Text>
+                <Text style={styles.textStyle}>{item[keys['installer']]}</Text>
             </Text>);
         }
         else
@@ -153,26 +163,16 @@ class SummaryListPage extends React.Component {
             </View>]);
 
         if (status !== null) {
-            if (status === 'Authenticated' && list) {
+            if (status === 'success' && list) {
                 content = this.renderSummary(list);
             }
-            else if (status === 'Authenticated') { //to let user know in case authenticated but list is empty
-                status = 'No Record Found';
-                message = errors[status];
+            else{
+                if (!errors[status])
+                    status = 'Unknown Error';
                 content = ([
                     <View style={{ alignItems: 'center' }}>
-                        <Text style={[styles.titleTextStyle, { textAlign: 'center', fontSize: normalize(20) }]}>{'\n\n' + status + '\n'}</Text>
-                        <Text style={[styles.titleTextStyle, { textAlign: 'center', fontSize: normalize(16) }]}>{message}</Text>
-                    </View>
-                ]);
-            }
-            else if (status !== 'Authenticated') { 
-                //determine message based on status
-                let message = errors[status];
-                content = ([
-                    <View style={{ alignItems: 'center' }}>
-                        <Text style={[styles.titleTextStyle, { textAlign: 'center', fontSize: 20 }]}>{'\n\n' + status + '\n'}</Text>
-                        <Text style={[styles.titleTextStyle, { textAlign: 'center', fontSize: 16 }]}>{message}</Text>
+                        <Text style={[styles.titleTextStyle, { textAlign: 'center', fontSize: 20 }]}>{'\n\n' + errors[status].name + '\n'}</Text>
+                        <Text style={[styles.titleTextStyle, { textAlign: 'center', fontSize: 16 }]}>{errors[status].message}</Text>
                     </View>
                 ]);
             }
@@ -181,7 +181,7 @@ class SummaryListPage extends React.Component {
         return (
             <View style={{ flex: 1 }}>
                 <Text style={styles.subHeader}>{this.props.title}</Text>
-                <View style={[styles.panelContainer, status === 'Authenticated' ? {} : { backgroundColor: color.white }]}>
+                <View style={[styles.panelContainer, status === 'success' ? {} : { backgroundColor: color.white }]}>
                     <FlatList
                         showsVerticalScrollIndicator={false}
                         progressViewOffset={-10}

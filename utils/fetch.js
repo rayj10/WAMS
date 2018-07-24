@@ -8,48 +8,28 @@ import _ from 'lodash';
  * @param {Object} data: Typically contains Parameters for the request 
  */
 export function fetchAPI(endpoint, method, header, data) {
-    let url = 'http://10.64.2.149:8082/' + endpoint;  
+    let url = 'http://10.64.2.149:8082/' + endpoint;
 
     let options = {
-            method: method,
-            headers: header,
-            body: data
-          };
+        method: method,
+        headers: header,
+        body: data
+    };
 
     return fetch(url, options)
         .then(response => {
             return response.json()
                 .then((json) => {
-                    if (response.status === 200 || response.status === 201) {
+                    if (response.status === 200 || response.status === 201)
                         return json;
-                    } else if (response.status === 408) {
-                        throw ('Request Timeout');
-                    }
-                    else if (response.status === 400) {
-                        throw ('Bad request');
-                    }
-                    else if (response.status === 401){
-                        throw ('Authentication Denied')
-                    }
-                    else if (response.status === 403){
-                        throw ('Access Denied')
-                    }
-                    else if (response.status === 503){
-                        throw ('Service Unavailable')
-                    }
-                    else {
-                        if (json.errors) {
-                            throw (json.errors);
-                        } else {
-                            throw 'Error ' + response.status; //just return raw status
-                        }
-                    }
+                    else
+                        throw response.status
                 })
         })
         .catch(error => {
             if (typeof error.message !== 'undefined')
                 throw (error.message);
-            else if (typeof error === 'string')
+            else if (typeof error === 'number' || typeof error === 'string')
                 throw (error);
             else if (Object.keys(error)) {
                 let errStr = '';
@@ -59,7 +39,7 @@ export function fetchAPI(endpoint, method, header, data) {
                     errStr += value + '.\n';
                 });
                 throw (errStr);
-            } 
+            }
             else
                 throw ('Unknown Error');
         });

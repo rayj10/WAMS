@@ -8,5 +8,7 @@ import RequestDetails from './RequestDetails';
 import PODetails from './PODetails';
 import TransferDetails from './TransferDetails';
 import RequestConfirm from './RequestConfirm';
+import DODetails from './DODetails';
+import TaskList from './TaskList';
 
-export { Approval, DOCustomer, MyConfirmation, MyRequest, ViewPage, Report, RequestDetails, PODetails, TransferDetails, RequestConfirm };
+export { Approval, DOCustomer, MyConfirmation, MyRequest, ViewPage, Report, RequestDetails, PODetails, TransferDetails, RequestConfirm, DODetails, TaskList };

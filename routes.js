@@ -14,7 +14,12 @@ import TakePhoto from './components/TakePhoto';
 
 //Import Containers
 import Login from './containers/Login';
-import { Approval, DOCustomer, MyConfirmation, MyRequest, ViewPage, Report, RequestDetails, PODetails, TransferDetails, RequestConfirm } from './containers/Workspace';
+import {
+    Approval, DOCustomer, MyConfirmation,
+    MyRequest, ViewPage, Report, RequestDetails,
+    PODetails, TransferDetails, RequestConfirm,
+    DODetails, TaskList
+} from './containers/Workspace';
 import { QRScanner, ScanPage } from './containers/QRScanner';
 import { Help, UserManual, FAQ } from './containers/Help';
 import Setting from './containers/Setting';
@@ -47,27 +52,32 @@ class Routes extends React.Component {
 
     //load name and token from async and put it in redux's state
     componentDidMount() {
-        AsyncStorage.getItem('username').then(name => {
-            AsyncStorage.getItem('token').then((token) => {
-                    setTimeout(() => {
-                        if (token !== null) {
-                            this.props.actionsMenu.getAvailableMenu(token, (error) => {
-                                if (error === 'Authentication Denied' && this.props.token) {
-                                    Alert.alert(error, errors[status])
-                                    this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));
-                                    Actions.reset("Auth");
-                                }
-                            });
-                            store.dispatch({ type: aType.LOGGED_IN, token: token, userName: name });
-                            this.setState({ isReady: true, isLoggedIn: true });
+        AsyncStorage.getItem('token').then((token) => {
+            setTimeout(() => {
+                if (token !== null) {
+                    this.props.actionsMenu.getAvailableMenu(token, (error) => {
+                        if (error === 401 && this.props.token) {
+                            Alert.alert(errors[error].name, errors[errror].message)
+                            this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));
+                            Actions.reset("Auth");
                         }
-                        else {
-                            store.dispatch({ type: aType.LOGGED_OUT });
-                            this.setState({ isReady: true, isLoggedIn: false })
+                    });
+                    this.props.actionsAuth.getUserProfile(token, (error) => {
+                        if (error === 401 && this.props.token) {
+                            Alert.alert(errors[error].name, errors[error].message)
+                            this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));
+                            Actions.reset("Auth");
                         }
-                    }, 2000)
-                });
-            });
+                    });
+                    store.dispatch({ type: aType.LOGGED_IN, token: token });
+                    this.setState({ isReady: true, isLoggedIn: true });
+                }
+                else {
+                    store.dispatch({ type: aType.LOGGED_OUT });
+                    this.setState({ isReady: true, isLoggedIn: false })
+                }
+            }, 2000)
+        });
     }
 
     /**
@@ -108,11 +118,13 @@ class Routes extends React.Component {
                                     <Scene key="My Confirmation" hideNavBar component={MyConfirmation} title={"My Confirmation"} />
                                     <Scene key="View" hideNavBar component={ViewPage} title={"View"} />
                                     <Scene key="Report" hideNavBar component={Report} title={"Report"} />
+                                    <Scene key="Task List" hideNavBar component={TaskList} title="Task List" />
                                 </Scene>
                                 <Scene key="RequestDetails" hideNavBar component={RequestDetails} title="Request Details" />
                                 <Scene key="PODetails" hideNavBar component={PODetails} title="PO Details" />
                                 <Scene key="TransferDetails" hideNavBar component={TransferDetails} title="Transfer Details" />
                                 <Scene key="RequestConfirm" hideNavBar component={RequestConfirm} title="Request Confirm" />
+                                <Scene key="DODetails" hideNavBar component={DODetails} title="DO Details" />
                             </Scene>
                             <Scene key="Help" navBar={() => <PageHeader title='Help' />} title="Help" drawerLockMode={'locked-closed'}>
                                 <Scene tabs={true} hideTabBar animationEnabled={false} swipeEnabled={false} lazy={true}>

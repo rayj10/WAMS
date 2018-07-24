@@ -1,7 +1,34 @@
 {
-    "Authentication Denied" : "Your session may have expired please re-enter your login credentials",
-    "Service Unavailable" : "Connection to the server is currently unavailable\nEither your internet connection is unstable or server is simply unavailable",
-    "Access Denied" : "Your account is not\nauthorized\nto see this information",
-    "Unknown Error" : "Sorry, but we are currently unable to diagnose the problem, please try again later",
-    "No Record Found" : "This list is currently empty"
+    "401": {
+        "name": "Authentication Denied",
+        "message": "Your session may have expired please re-enter your login credentials"
+    },
+    "503": {
+        "name": "Service Unavailable",
+        "message": "Connection to the server is currently unavailable\nEither your internet connection is unstable or server is simply unavailable"
+    },
+    "403": {
+        "name": "Access Denied",
+        "message": "Your account is not\nauthorized\nto see this information"
+    },
+    "400": {
+        "name": "Bad Request",
+        "message": "Request parameters may be invalid",
+        "login": [
+            "Invalid Login",
+            "Username and Password did not match"
+        ]   
+    },
+    "408": {
+        "name": "Request Timeout",
+        "message": "Server waited too long for a request"
+    },
+    "no record found": {
+        "name": "No Record Found",
+        "message": "This list is currently empty"
+    },
+    "Unknown Error": {
+        "name": "Unknown Error",
+        "message": "Sorry, but we are currently unable to diagnose the problem, please try again later"
+    }
 }
