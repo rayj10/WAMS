@@ -1,8 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { padding, color, fontSize, fontFamily, windowWidth, windowHeight, normalize } from '../../../theme/baseTheme';
-
-
-const resizeMode = 'contain';
+import { color, fontSize, fontFamily, windowHeight, normalize } from '../../../theme/baseTheme';
 
 const styles = StyleSheet.create({
   container: {
@@ -115,25 +112,6 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: fontSize.regular + 2,
     fontFamily: fontFamily.medium
-  },
-
-  forwardListItem: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: color.light_grey,
-    borderRadius: normalize(2),
-    justifyContent: 'center',
-    height: normalize(35)
-  },
-
-  forwardListText: {
-    fontSize: fontSize.small,
-    fontFamily: fontFamily.medium,
-    marginLeft: normalize(10)
-  },
-
-  activeItem: {
-    backgroundColor: 'rgba(0,102,178,0.2)'   //color.blue with opacity adjusted,
   }
 });
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Linking } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
 
 import { color, fontFamily, fontSize, windowWidth, windowHeight, normalize } from '../theme/baseTheme';

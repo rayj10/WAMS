@@ -1,7 +1,7 @@
 /**
  * Declare our font sizes, colors, font family, etc for the app to refer to
  */
-import { Dimensions, Platform } from 'react-native';
+import { Dimensions } from 'react-native';
 import { moderateScale as normalize } from 'react-native-size-matters'; //adjusts sizes based on device
 
 const color = {

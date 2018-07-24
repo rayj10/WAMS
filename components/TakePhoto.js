@@ -5,7 +5,7 @@ import { Actions } from 'react-native-router-flux';
 import { Icon } from 'react-native-elements';
 
 import { TakePicture, Gallery } from '../assets/images';
-import { padding, color, fontSize, fontFamily, windowWidth, normalize, windowHeight } from '../theme/baseTheme';
+import { color, fontSize, fontFamily, windowWidth, normalize, windowHeight } from '../theme/baseTheme';
 
 const styles = StyleSheet.create({
   container: {

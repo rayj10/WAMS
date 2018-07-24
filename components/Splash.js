@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, ActivityIndicator, Image, StyleSheet } from 'react-native';
+import { View, ActivityIndicator, Image, StyleSheet } from 'react-native';
 
-import { color, fontFamily, padding, fontSize, windowWidth, windowHeight, normalize } from "../theme/baseTheme";
+import { color, windowWidth, normalize } from "../theme/baseTheme";
 import { Logo } from '../assets/images';
 
 const styles = StyleSheet.create({

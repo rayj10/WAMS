@@ -12,7 +12,7 @@ import { Button } from 'react-native-elements';
 
 import { isEmpty, validate } from '../utils/validate'
 import AuthTextInput from './AuthTextInput'
-import { color, padding, windowWidth, normalize, fontSize, fontFamily, windowHeight } from '../theme/baseTheme';
+import { color, windowWidth, normalize, fontSize, fontFamily, windowHeight } from '../theme/baseTheme';
 import { Logo } from '../assets/images';
 
 const styles = StyleSheet.create({

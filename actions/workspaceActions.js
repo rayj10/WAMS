@@ -11,9 +11,8 @@ export function successSignOut() {
 }
 
 /**
- * Fetch the List of Users to forward the Approval form to
+ * Fetch the List of Users to forward the Request form Approval to
  * @param {String} token: User's session token
- * @param {Function} errorCB: Callback in case fetch failed
  */
 export function getForwardList(token) {
     let endpoint = 'api/v1/cbn/inventory/GetListUserVerification';
@@ -36,7 +35,7 @@ export function getForwardList(token) {
 }
 
 /**
- * Fetch the List of Requests that needs Approval (still open)
+ * Fetch the List of Requests that needs Approval (status Open)
  * @param {String} token: User's session token
  * @param {Function} resultCB: Callback to be executed once fetching is done 
  */
@@ -71,7 +70,7 @@ export function getRequestApproval(token, resultCB) {
 }
 
 /**
- * Fetch the List of PO that needs Approval (still pending)
+ * Fetch the List of PO that needs Approval (status Open)
  * @param {String} token: User's session token 
  * @param {Function} resultCB: Callback to be executed once fetching is done 
  */
@@ -106,7 +105,7 @@ export function getPOApproval(token, resultCB) {
 }
 
 /**
- * Fetch the List of Transfers that needs Approval (still open)
+ * Fetch the List of Transfers that needs Approval (status Open)
  * @param {String} token: User's session token
  * @param {Function} resultCB: Callback to be executed once fetching is done 
  */
@@ -142,7 +141,7 @@ export function getTransferApproval(token, resultCB) {
 }
 
 /**
- * Fetch the whole List of Requests
+ * Fetch the whole List of Requests for user's department
  * @param {String} token: User's session token
  * @param {Function} resultCB: Callback to be executed once fetching is done 
  */
@@ -177,7 +176,7 @@ export function getRequestView(token, resultCB) {
 }
 
 /**
- * Fetch the whole List of PO
+ * Fetch the whole List of PO for user's department
  * @param {String} token: User's session token
  * @param {Function} resultCB: Callback to be executed once fetching is done 
  */
@@ -212,7 +211,7 @@ export function getPOView(token, resultCB) {
 }
 
 /**
- * Fetch the whole List of Transfers
+ * Fetch the whole List of Transfers for user's department
  * @param {String} token: User's session token
  * @param {Function} resultCB: Callback to be executed once fetching is done 
  */
@@ -284,7 +283,7 @@ export function getRequestDetails(requestNo, token, resultCB) {
 }
 
 /**
- * Forward a request form to another account
+ * Forward a request form to be reviewed by another account
  * @param {String} token: User's session token 
  * @param {String} requestNo: Request number to be forwarded 
  * @param {String} checker: Recipient's user ID 
@@ -657,7 +656,7 @@ export function denyTransferDetails(token, transferNo, resultCB) {
 }
 
 /**
- * Get list of request forms ready to be confirmed
+ * Get list of request forms ready to be confirmed (whether the item received is the same as the ones detailed in the DO form)
  * @param {String} token: User's session token 
  * @param {Function} resultCB: Callback to be executed once fetching process is done  
  */
@@ -794,7 +793,7 @@ export function confirmRequestDO(token, requestID, DONo, ItemPieceNo, ItemCode, 
 }
 
 /**
- * Get List of items user has requested
+ * Get List of items user has requested (Request By === user's name)
  * @param {String} token: User's session token 
  * @param {Function} resultCB: Callback to be executed once fetching process is done 
  */
@@ -819,6 +818,12 @@ export function getItemRequestBy(token, resultCB) {
     }
 }
 
+/**
+ * Get list of DO Customers
+* @param {String} token: User's session token 
+ * @param {Function} resultCB: Callback to be executed once fetching process is done 
+ * @param {Number} options: 1 = Admin's DO list, 2 = Installer's task list 
+ */
 export function getListDOCustomer(token, resultCB, options) {
     let endpoint = 'api/v1/cbn/inventory/GetListDOCust';
 
@@ -958,7 +963,7 @@ export function updateInstaller(token, DONo, installer, resultCB) {
 }
 
 /**
- * Confirm if the delivered items match the DO form from vendor
+ * Confirm the statuses of each item installed for or returned from a particular customer
  * @param {String} token: User's session token  
  * @param {String} DONo: DO number of form to be confirmed 
  * @param {String} ItemPieceNo List (in the form of concat string) of item piece numbers from that particular Request's DO Number 

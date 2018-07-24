@@ -13,7 +13,7 @@ import { color, windowWidth } from '../../../theme/baseTheme';
 import errors from '../../../json/errors.json';
 import DBkeys from '../../../json/DBkeys.json';
 
-//Maps store's state to ViewRequest's props
+//Maps store's state to ViewPage's props
 export const mapStateToProps = state => ({
   token: state.authReducer.token,
   requestViewList: state.workspaceReducer.requestViewList,
@@ -22,7 +22,7 @@ export const mapStateToProps = state => ({
   POViewReceived: state.workspaceReducer.POViewReceived,
 });
 
-//Maps imported actions to ViewRequest's props
+//Maps imported actions to ViewPage's props
 export const mapDispatchToProps = (dispatch) => ({
   actionsWorkspace: bindActionCreators(workspaceAction, dispatch),
   actionsAuth: bindActionCreators(authAction, dispatch)

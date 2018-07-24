@@ -18,7 +18,7 @@ import EditInstallerModal from '../../../components/EditInstallerModal';
 import { color, normalize, fontSize } from '../../../theme/baseTheme';
 import errors from '../../../json/errors.json';
 
-//Maps reducer's states to RequestDetails props
+//Maps reducer's states to DODetails props
 export const mapStateToProps = state => ({
     token: state.authReducer.token,
     detailsReceived: state.workspaceReducer.detailsReceived,
@@ -27,7 +27,7 @@ export const mapStateToProps = state => ({
     installerList: state.workspaceReducer.installerList
 });
 
-//Maps actions to RequestDetails props
+//Maps actions to DODetails props
 export const mapDispatchToProps = (dispatch) => ({
     actionsWorkspace: bindActionCreators(workspaceAction, dispatch),
 });
@@ -77,6 +77,13 @@ class DODetails extends React.Component {
         }
     }
 
+    /**
+     * When user picks an item from the drop down boxes
+     * @param {String} itemPieceNo: Affected item's piece number 
+     * @param {String} itemCode: Affected item's code 
+     * @param {String} status: Affected item's status (one of the statusCodes in DBkeys.json) 
+     * @param {String} action: picked action on this item (one of the actions in DBkeys.json) 
+     */
     onPickerSelect(itemPieceNo, itemCode, status, action) {
         let temp = this.state.itemActions,
             statusItem = this.props.keys.actions[action];
@@ -90,6 +97,9 @@ class DODetails extends React.Component {
         this.setState({ itemActions: temp });
     }
 
+    /**
+     * Save the recorded selected actions on the items in the list
+     */
     onSave() {
         let itemPieceNo = "", itemCode = "", status = "", statusItem = "";
 
@@ -138,6 +148,9 @@ class DODetails extends React.Component {
         ]);
     }
 
+    /**
+     * Build list of installers to be assigned with the list fetched from API
+     */
     getInstallerList() {
         if (this.props.installerListReceived)
             return this.props.installerList.map((item, key) =>
@@ -149,6 +162,9 @@ class DODetails extends React.Component {
         return [];
     }
 
+    /**
+     * Update the installer assigned to this DO Customer job
+     */
     changeInstaller() {
         this.setState({ editInstaller: false });   //close modal
         let installer = this.state.selectedInstaller;
@@ -193,6 +209,9 @@ class DODetails extends React.Component {
         this.setState({ selectedInstaller: null }); //un-highlight the last choice
     }
 
+    /**
+     * Build customer information modal content
+     */
     getCustomerInfo() {
         let { Customer } = this.props.details;
         let { keys } = this.props;

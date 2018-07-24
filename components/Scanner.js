@@ -1,14 +1,12 @@
 import React from 'react';
 import {
-    Alert,
-    Linking,
     Text,
     View,
     StyleSheet
 } from 'react-native';
 import { BarCodeScanner, Permissions, Camera } from 'expo';
 
-import { windowWidth, windowHeight, normalize } from '../theme/baseTheme';
+import { windowWidth, windowHeight } from '../theme/baseTheme';
 
 const opacity = 'rgba(0, 0, 0, .6)';
 const styles = StyleSheet.create({

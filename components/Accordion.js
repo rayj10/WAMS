@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
 import Expand from 'react-native-simple-expand';
 
-import { padding, color, fontSize, fontFamily, windowWidth, normalize } from '../theme/baseTheme';
+import { color, fontSize, fontFamily, normalize } from '../theme/baseTheme';
 
 const styles = StyleSheet.create({
     container: {

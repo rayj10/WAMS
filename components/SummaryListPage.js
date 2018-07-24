@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, FlatList, TouchableOpacity, ActivityIndicator, RefreshControl } from 'react-native';
-import { Actions } from 'react-native-router-flux';
+import { View, StyleSheet, Text, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 
 import { color, fontSize, fontFamily, normalize } from '../theme/baseTheme';
 import errors from '../json/errors.json';

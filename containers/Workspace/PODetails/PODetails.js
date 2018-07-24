@@ -5,25 +5,25 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
     View, Alert, Text,
-    ScrollView, TouchableOpacity, ActivityIndicator,
+    ScrollView, ActivityIndicator,
     Linking, BackHandler
 } from 'react-native';
 
 import styles from "./styles";
 import * as workspaceAction from '../../../actions/workspaceActions';
 import IconWrapper from '../../../components/IconWrapper';
-import { color, normalize, fontSize } from '../../../theme/baseTheme';
+import { color, fontSize } from '../../../theme/baseTheme';
 import DialogBoxModal from '../../../components/DialogBoxModal';
 import errors from '../../../json/errors.json';
 
-//Maps reducer's states to RequestDetails props
+//Maps reducer's states to PODetails props
 export const mapStateToProps = state => ({
     token: state.authReducer.token,
     detailsReceived: state.workspaceReducer.detailsReceived,
     details: state.workspaceReducer.details
 });
 
-//Maps actions to RequestDetails props
+//Maps actions to PODetails props
 export const mapDispatchToProps = (dispatch) => ({
     actionsWorkspace: bindActionCreators(workspaceAction, dispatch),
 });
@@ -71,6 +71,9 @@ class PODetails extends React.Component {
         }
     }
 
+    /**
+     * Override top layer's hardware backpress so that this page could release the handler on PO form
+     */
     handleBackPress() {
         this.props.actionsWorkspace.releasePOhandle(this.props.header[this.props.keys['no']], this.props.token, (status) => {
             if (status === 401)
@@ -82,6 +85,10 @@ class PODetails extends React.Component {
         });
     }
 
+    /**
+     * Callback to be executed once the picture has been taken using phone's camera
+     * @param {String} img: Base64 encoded string representation of the jpeg taken
+     */
     pictureTaken(img) {
         var date = new Date().getDate();
         var month = new Date().getMonth() + 1;
@@ -106,7 +113,7 @@ class PODetails extends React.Component {
     }
 
     /**
-     * What to do when PO is approved
+     * When user wants to approve PO form, prompts user to take picture of the signed physical PO form
      */
     onApprove() {
         Alert.alert('Approve PO Request',
@@ -120,7 +127,7 @@ class PODetails extends React.Component {
     }
 
     /**
-     * What to do when PO is declined
+     * Rejects a PO form
      */
     onReject() {
         Alert.alert('Reject PO Request', "Are you sure you want to Reject this PO request?", [

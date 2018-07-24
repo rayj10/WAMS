@@ -7,18 +7,18 @@ import { View, Text, Alert, FlatList, ActivityIndicator } from 'react-native';
 import styles from "./styles";
 import * as workspaceAction from '../../../actions/workspaceActions';
 import * as authAction from '../../../actions/authActions';
-import { color, normalize } from '../../../theme/baseTheme';
+import { color } from '../../../theme/baseTheme';
 import errors from '../../../json/errors.json';
 import DBkeys from '../../../json/DBkeys.json';
 
-//Maps store's state to ViewRequest's props
+//Maps store's state to MyRequest's props
 export const mapStateToProps = state => ({
   token: state.authReducer.token,
   myRequestList: state.workspaceReducer.myRequestList,
   myRequestListReceived: state.workspaceReducer.myRequestListReceived
 });
 
-//Maps imported actions to ViewRequest's props
+//Maps imported actions to MyRequest's props
 export const mapDispatchToProps = (dispatch) => ({
   actionsWorkspace: bindActionCreators(workspaceAction, dispatch),
   actionsAuth: bindActionCreators(authAction, dispatch)
@@ -113,7 +113,9 @@ class MyRequest extends React.Component {
     return panel;
   }
 
-
+  /**
+   * Callback to be executed when user use the pull-to-refresh gesture on the list
+   */
   onRefresh() {
     if (this.mounted)
       this.setState({ refreshing: true },

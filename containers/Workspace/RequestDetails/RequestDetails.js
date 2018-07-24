@@ -74,7 +74,7 @@ class RequestDetails extends React.Component {
     }
 
     /**
-     * Fetch list of recipients from API and display it to be selected from
+     * Build forward list items to be displayed onto forward modal
      */
     getForwardList() {
         if (this.props.forwardListReceived)
@@ -88,7 +88,7 @@ class RequestDetails extends React.Component {
     }
 
     /**
-     * What to do when forward button pressed
+     * Forward this request to the selected recipient
      */
     onForward() {
         this.setState({ forwardModal: false });   //close modal
@@ -135,7 +135,7 @@ class RequestDetails extends React.Component {
     }
 
     /**
-     * What to do when Request is approved
+     * Approve this request form
      */
     onApprove() {
         Alert.alert('Approve Request', "Are you sure to APPROVE this request?", [
@@ -164,7 +164,7 @@ class RequestDetails extends React.Component {
     }
 
     /**
-     * What to do when Request is declined
+     * Decline request form with the attached reasoning note from request decline modal
      */
     onDecline() {
         this.props.actionsWorkspace.verifyRequest(this.props.token,

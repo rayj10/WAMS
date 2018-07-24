@@ -1,11 +1,11 @@
 import React from 'react';
-import { Button, Header, CheckBox } from 'react-native-elements'
+import { Button, Header } from 'react-native-elements'
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
     View, Alert, Text,
-    ScrollView, TouchableOpacity, ActivityIndicator
+    ScrollView, ActivityIndicator
 } from 'react-native';
 
 import styles from "./styles";
@@ -15,14 +15,14 @@ import PickerWrapper from '../../../components/PickerWrapper';
 import CheckBoxWrapper from '../../../components/CheckBoxWrapper';
 import { color, normalize } from '../../../theme/baseTheme';
 
-//Maps reducer's states to RequestDetails props
+//Maps reducer's states to RequestConfirm's props
 export const mapStateToProps = state => ({
     token: state.authReducer.token,
     detailsReceived: state.workspaceReducer.detailsReceived,
     details: state.workspaceReducer.details
 });
 
-//Maps actions to RequestDetails props
+//Maps actions to RequestConfirm's props
 export const mapDispatchToProps = (dispatch) => ({
     actionsWorkspace: bindActionCreators(workspaceAction, dispatch),
 });
@@ -70,12 +70,21 @@ class RequestConfirm extends React.Component {
         }
     }
 
+    /**
+     * Callback executed when user picks a DO number out of the picker
+     * @param {String} DONo: Picked DO number that user wants to view the detail of 
+     */
     onDOPicked(DONo) {
         this.setState({ pickedDO: DONo })
         if (DONo !== ' - - - ')
             this.props.actionsWorkspace.getRequestDODetails(DONo, this.props.token, this.onFetchFinish);
     }
 
+    /**
+     * Callback executed when user check an item off the list
+     * @param {String} itemCode: Code of the checked(verified) item 
+     * @param {String} itemPieceNo: piece number of the checked(verified) item  
+     */
     onCheck(itemCode, itemPieceNo) {
         let temp = this.state.verifications;
 
@@ -89,6 +98,9 @@ class RequestConfirm extends React.Component {
         this.setState({ verifications: temp });
     }
 
+    /**
+     * Save the checked items states and update database
+     */
     onSave() {
         let itemPieceNo = '', itemCode = '';
 

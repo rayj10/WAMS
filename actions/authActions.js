@@ -1,5 +1,4 @@
 import { AsyncStorage, Alert } from 'react-native';
-import { Actions } from 'react-native-router-flux';
 import firebase from '../utils/firebase';
 var stringify = require('qs-stringify');
 
@@ -8,7 +7,7 @@ import { fetchAPI } from '../utils/fetch';
 import errors from '../json/errors.json';
 
 /**
- * Fetch token to API based on user login credentials, 
+ * Fetch token to API based on user's login credentials, 
  * then dispatch the information to redux store.
  * @param {Object} user: User's login credentials 
  * @param {Function} finishCB: Callback to be executed once the fetching process is done
@@ -34,7 +33,7 @@ export function login(user, finishCB) {
             .then((json) => {
                 AsyncStorage.setItem('token', json['access_token']);
                 dispatch({ type: t.LOGGED_IN, token: json['access_token'] });
-                finishCB(json['access_token']);
+                finishCB(json['access_token'], password);
             })
             .catch((error) => {
                 if (errors[error] === undefined)
@@ -48,7 +47,13 @@ export function login(user, finishCB) {
     }
 }
 
-export function getUserProfile(token, resultCB) {
+/**
+ * Get the complete user profile based on session token
+ * @param {String} token: User's session token 
+ * @param {String} password: User's password to be used for firebase login on parallel (for chat feature)
+ * @param {Function} resultCB: callback to be executed once the fetching process is done 
+ */
+export function getUserProfile(token, password, resultCB) {
     var endpoint = "api/v1/user/profile";
 
     let header = {
@@ -59,24 +64,26 @@ export function getUserProfile(token, resultCB) {
     return dispatch => {
         return fetchAPI(endpoint, 'GET', header, null)
             .then((json) => {
-
                 //firebase auth for Chat feature
-                var email = json.data[0]['Email'];
-                firebase.auth()
-                    .signInWithEmailAndPassword(email, 'testpass123')
-                    .catch((error) => {
-                        //if sign in fails because it's new user, sign the user up straightaway
-                        if (error.code === 'auth/user-not-found') {
-                            firebase.auth()
-                                .createUserWithEmailAndPassword(email, 'testpass123')
-                                .catch((error) => {
-                                    console.log(error, error.message);
-                                });
-                        }
-                        else {
-                            console.log(error, error.message);
-                        }
-                    });
+                if (password) {
+                    var email = json.data[0]['Email'];
+                    firebase.auth()
+                        .signInWithEmailAndPassword(email, password)
+                        .catch((error) => {
+                            //if sign in fails because it's new user, sign the user up straightaway
+                            if (error.code === 'auth/user-not-found') {
+                                firebase.auth()
+                                    .createUserWithEmailAndPassword(email, password)
+                                    .catch((error) => {
+                                        console.log(error, error.message);
+                                    });
+                            }
+                            else {
+                                console.log(error, error.message);
+                            }
+                        });
+                }
+
                 dispatch({ type: t.RECEIVE_USER_DETAILS, userDetails: json.data[0] });
                 resultCB(json.message)
             })
@@ -95,7 +102,6 @@ export function getUserProfile(token, resultCB) {
 export function signOut(successCB) {
     return (dispatch) => {
         AsyncStorage.removeItem('token');
-        AsyncStorage.removeItem('username');
         firebase.auth().signOut();
         dispatch({ type: t.LOGGED_OUT });
         successCB();

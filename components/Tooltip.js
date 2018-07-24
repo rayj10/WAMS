@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity, Linking } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import Modal from 'react-native-modal';
 
-import { color, fontFamily, fontSize, windowWidth, windowHeight, normalize } from '../theme/baseTheme';
+import { fontFamily, fontSize, normalize } from '../theme/baseTheme';
 
 const styles = StyleSheet.create({
     container: {
@@ -15,8 +15,8 @@ const styles = StyleSheet.create({
     },
     box: {
         flexDirection: 'row',
-        width: 100,
-        height: 50,
+        width: normalize(100),
+        height: normalize(50),
         justifyContent: 'space-around',
         alignItems: 'center'
     },

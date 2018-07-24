@@ -1,6 +1,6 @@
 import React from 'react';
 import { Scene, Router, Actions, ActionConst, Stack } from 'react-native-router-flux';
-import { AsyncStorage, StyleSheet, BackHandler } from 'react-native';
+import { AsyncStorage, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -9,7 +9,6 @@ import Splash from './components/Splash';
 import NavDrawer from './components/NavDrawer';
 import PageHeader from './components/Header';
 import ScrollableTabBar from './components/ScrollableTabBar';
-import CameraPage from './components/CameraPage';
 import TakePhoto from './components/TakePhoto';
 
 //Import Containers
@@ -33,7 +32,7 @@ import * as menuAction from './actions/menuActions';
 import menuInfo from './json/menuInfo.json';
 import errors from './json/errors.json';
 
-//Maps actions to NavDrawer's props
+//Maps actions to router's props
 export const mapDispatchToProps = (dispatch) => ({
     actionsWorkspace: bindActionCreators(workspaceAction, dispatch),
     actionsAuth: bindActionCreators(authAction, dispatch),
@@ -50,7 +49,7 @@ class Routes extends React.Component {
         }
     }
 
-    //load name and token from async and put it in redux's state
+    //load token from async and update redux store with the necessary data
     componentDidMount() {
         AsyncStorage.getItem('token').then((token) => {
             setTimeout(() => {
@@ -62,7 +61,7 @@ class Routes extends React.Component {
                             Actions.reset("Auth");
                         }
                     });
-                    this.props.actionsAuth.getUserProfile(token, (error) => {
+                    this.props.actionsAuth.getUserProfile(token, null, (error) => {
                         if (error === 401 && this.props.token) {
                             Alert.alert(errors[error].name, errors[error].message)
                             this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));
@@ -145,7 +144,6 @@ class Routes extends React.Component {
                                 </Scene>
                             </Scene>
                             <Scene key="TakePhoto" hideNavBar component={TakePhoto} title="TakePhoto" drawerLockMode={'locked-closed'} />
-                            <Scene key="CameraPage" hideNavBar component={CameraPage} title="CameraPage" drawerLockMode={'locked-closed'} />
                         </Scene>
                     </Stack>
                 </Scene>

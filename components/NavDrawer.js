@@ -142,7 +142,7 @@ class NavDrawer extends React.Component {
 
     /**
      * Determine the next scene to be displayed utilizing RNRF's Actions
-        @param {String} route: Name of screen to be displayed
+     * @param {String} route: Name of screen to be displayed
      */
     goto(route) {
         Actions.drawerClose();
@@ -153,6 +153,10 @@ class NavDrawer extends React.Component {
         }
     }
 
+    /**
+     * Callback to be executed once the picture's taken
+     * @param {String} img: Base64 encoded string representation of the jpeg taken from the phone's camera 
+     */
     pictureTaken(img) {
         this.setState({ profilePic: { uri: 'data:image/jpg;base64,' + img } });
         Alert.alert('Successful!', 'Profile Picture has been successfully updated');

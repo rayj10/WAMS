@@ -11,14 +11,14 @@ import * as authAction from '../../../actions/authActions';
 import errors from '../../../json/errors.json';
 import DBkeys from '../../../json/DBkeys.json';
 
-//Maps store's state to ViewRequest's props
+//Maps store's state to MyConfirmation's props
 export const mapStateToProps = state => ({
   token: state.authReducer.token,
   requestConfirmationList: state.workspaceReducer.requestConfirmationList,
   requestConfirmationReceived: state.workspaceReducer.requestConfirmationReceived,
 });
 
-//Maps imported actions to ViewRequest's props
+//Maps imported actions to MyConfirmation's props
 export const mapDispatchToProps = (dispatch) => ({
   actionsWorkspace: bindActionCreators(workspaceAction, dispatch),
   actionsAuth: bindActionCreators(authAction, dispatch)
@@ -45,7 +45,6 @@ class MyConfirmation extends React.Component {
    * @param {String} status: Fetch status response (directly related to HTTP status code response) 
    */
   onFetchFinish(status) {
-    console.log(status)
     if (status === 401 && this.props.token) {
       Alert.alert(errors[status].name, errors[status].message)
       this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));

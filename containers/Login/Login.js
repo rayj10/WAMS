@@ -1,7 +1,7 @@
 import React from 'react';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
-import { Linking, View, Keyboard, ActivityIndicator, Platform } from 'react-native';
+import { View, Keyboard, Platform } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { Icon } from 'react-native-elements';
 
@@ -11,7 +11,6 @@ import * as workspaceAction from '../../actions/workspaceActions';
 import LoginForm from '../../components/loginForm'
 import OfflineNotice from '../../components/OfflineNotice';
 import Tooltip from '../../components/Tooltip';
-import styles from './styles';
 import { windowWidth, windowHeight, color, normalize } from '../../theme/baseTheme'
 import errors from '../../json/errors.json';
 
@@ -82,15 +81,16 @@ class Login extends React.Component {
     onSubmit(data, callback) {
         this.setState({ error: error }); //clear out error messages
         Keyboard.dismiss(); //close keyboard
-        this.props.actionsAuth.login(data, (token) => this.onFinish(token, callback));
+        this.props.actionsAuth.login(data, (token, password) => this.onFinish(token, password, callback));
     }
 
     /**
      * Callback to be excuted once the login process is done
      * @param {String} token: User's session token 
+     * @param {String} password: User's password to be used for firebase login on parallel (for chat feature)
      * @param {Function} callback: Callback to update login form's state 
      */
-    onFinish(token, callback) {
+    onFinish(token, password, callback) {
         if (token) {
             this.props.actionsMenu.getAvailableMenu(token, (error) => {
                 if (error === 401 && this.props.token) {
@@ -99,7 +99,7 @@ class Login extends React.Component {
                     Actions.reset("Auth");
                 }
             });
-            this.props.actionsAuth.getUserProfile(token, (error) => {
+            this.props.actionsAuth.getUserProfile(token, password, (error) => {
                 if (error === 401 && this.props.token) {
                     Alert.alert(errors[error].name, errors[status].message)
                     this.props.actionsAuth.signOut(this.props.actionsWorkspace.successSignOut.bind(this));

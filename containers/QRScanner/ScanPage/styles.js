@@ -1,14 +1,20 @@
 import { StyleSheet } from 'react-native';
-import { padding, color, fontSize, fontFamily, windowWidth, normalize } from '../../../theme/baseTheme';
+import { normalize, fontFamily, fontSize } from '../../../theme/baseTheme';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1
   },
 
+  textStyle: {
+    fontSize: fontSize.small,
+    fontFamily: fontFamily.light,
+    marginLeft: normalize(10)
+  },
+
   backButtonContainer: {
     position: 'absolute',
-    bottom: 0,    
+    bottom: 0,
     height: normalize(60),
     width: normalize(60),
     backgroundColor: 'rgba(0, 0, 0, .2)',
@@ -17,7 +23,7 @@ const styles = StyleSheet.create({
 
   backButton: {
     position: 'absolute',
-    bottom: 0, 
+    bottom: 0,
     height: normalize(55),
     width: normalize(55),
     alignItems: 'center',

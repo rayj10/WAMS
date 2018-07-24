@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, NetInfo, Dimensions, StyleSheet, StatusBar } from 'react-native';
+import { View, Text, NetInfo, StyleSheet, StatusBar } from 'react-native';
 
 import { windowWidth, normalize, color } from '../theme/baseTheme'
 

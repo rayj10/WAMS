@@ -24,7 +24,7 @@ class ScanPage extends React.Component {
   }
 
   /**
-   * Add hyperlinlks to String and by making them into an array of touchable objects if they satify the regex
+   * Add hyperlinks to String and by making them into an array of touchable objects if they satify the regex
    * @param {String} input: String to be formatted 
    */
   formatString(input) {

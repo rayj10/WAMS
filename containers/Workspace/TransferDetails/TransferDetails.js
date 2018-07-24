@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
     View, Alert, Text,
-    ScrollView, TouchableOpacity, ActivityIndicator
+    ScrollView, ActivityIndicator
 } from 'react-native';
 
 import styles from "./styles";
@@ -14,14 +14,14 @@ import IconWrapper from '../../../components/IconWrapper';
 import PickerWrapper from '../../../components/PickerWrapper';
 import { color, normalize } from '../../../theme/baseTheme';
 
-//Maps reducer's states to RequestDetails props
+//Maps reducer's states to TransferDetail's props
 export const mapStateToProps = state => ({
     token: state.authReducer.token,
     detailsReceived: state.workspaceReducer.detailsReceived,
     details: state.workspaceReducer.details
 });
 
-//Maps actions to RequestDetails props
+//Maps actions to TransferDetail's props
 export const mapDispatchToProps = (dispatch) => ({
     actionsWorkspace: bindActionCreators(workspaceAction, dispatch),
 });

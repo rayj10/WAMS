@@ -11,14 +11,14 @@ import * as authAction from '../../../actions/authActions';
 import errors from '../../../json/errors.json';
 import DBkeys from '../../../json/DBkeys.json';
 
-//Maps store's state to ViewRequest's props
+//Maps store's state to TaskList's props
 export const mapStateToProps = state => ({
   token: state.authReducer.token,
   taskList: state.workspaceReducer.taskList,
   taskListReceived: state.workspaceReducer.taskListReceived
 });
 
-//Maps imported actions to ViewRequest's props
+//Maps imported actions to TaskList's props
 export const mapDispatchToProps = (dispatch) => ({
   actionsWorkspace: bindActionCreators(workspaceAction, dispatch),
   actionsAuth: bindActionCreators(authAction, dispatch)

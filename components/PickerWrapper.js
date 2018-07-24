@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View, Text, Picker, Platform, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
 
-import { normalize, windowWidth, fontFamily, fontSize, color, windowHeight } from '../theme/baseTheme';
+import { normalize, windowWidth, fontFamily, color, windowHeight } from '../theme/baseTheme';
 import IconWrapper from './IconWrapper';
 
 class PickerWrapper extends React.Component {
