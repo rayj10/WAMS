@@ -54,10 +54,10 @@ const styles = StyleSheet.create({
 class MyListItem extends React.PureComponent{
     render(){
         let info = this.props.buildPanel(this.props.item);
-        status = this.props.title === 'PO' || this.props.title === 'DO Customer' ? info.slice(4) : info.slice(3);
-        info = this.props.title === 'PO' || this.props.title === 'DO Customer' ? info.slice(0, 4) : info.slice(0, 3);
+        status = this.props.name === 'PO' || this.props.name === 'DO Customer' ? info.slice(4) : info.slice(3);
+        info = this.props.name === 'PO' || this.props.name === 'DO Customer' ? info.slice(0, 4) : info.slice(0, 3);
         return (<TouchableOpacity onPress={() => this.props.onShowDetails(this.props.item)} key={this.props.index}>
-            <View style={[styles.outterPanel, this.props.title === 'PO' || this.props.title === 'DO Customer' ? { height: normalize(90) } : null]}>
+            <View style={[styles.outterPanel, this.props.name === 'PO' || this.props.name === 'DO Customer' ? { height: normalize(90) } : null]}>
                 <View style={[styles.innerPanel, { flex: 4 }]}>
                     {info}
                 </View>
@@ -107,7 +107,7 @@ class SummaryListPage extends React.Component {
         panel.push(<Text style={{ left: 15 }} key={'no'}>
             <Text style={styles.idNumber}>{item[keys['no']]}</Text>
         </Text>);
-        if (this.props.title === 'PO') {
+        if (this.props.name === 'PO') {
             panel.push(<Text style={{ left: 15 }} key={'requestor'}>
                 <Text style={styles.titleTextStyle}>{"Created By: "}</Text>
                 <Text style={styles.textStyle}>{item[keys['requestor']]}</Text>
@@ -117,7 +117,7 @@ class SummaryListPage extends React.Component {
                 <Text style={styles.textStyle}>{item[keys['handler']]}</Text>
             </Text>);
         }
-        else if (this.props.title === 'DO Customer') {
+        else if (this.props.name === 'DO Customer') {
             panel.push(<Text style={{ left: 15 }} key={'giver'}>
                 <Text style={styles.titleTextStyle}>{"Giver: "}</Text>
                 <Text style={styles.textStyle}>{item[keys['giver']]}</Text>

@@ -89,15 +89,15 @@ class ViewPage extends React.Component {
 
     if (pageName === 'Requests') {
       if (this.props.requestViewReceived)
-        return <SummaryListPage title={'View Requests'} status={this.state.request} onRefresh={this.getLists} list={this.props.requestViewList} keys={keys} onShowDetails={(reqHead) => Actions.RequestDetails({ header: reqHead, caller: 'View', keys })} />
+        return <SummaryListPage name={pageName} title={'View Requests'} status={this.state.request} onRefresh={this.getLists} list={this.props.requestViewList} keys={keys} onShowDetails={(reqHead) => Actions.RequestDetails({ header: reqHead, caller: 'View', keys })} />
       else
-        return <SummaryListPage title={'View Requests'} status={this.state.request} onRefresh={this.getLists} />
+        return <SummaryListPage name={pageName} title={'View Requests'} status={this.state.request} onRefresh={this.getLists} />
     }
     else if (pageName === 'PO') {
       if (this.props.POViewReceived)
-        return <SummaryListPage title={'View PO'} status={this.state.PO} onRefresh={this.getLists} list={this.props.POViewList} keys={keys} onShowDetails={(POHead) => Actions.PODetails({ header: POHead, caller: 'View', keys, refresh: this.getLists})} />
+        return <SummaryListPage name={pageName} title={'View PO'} status={this.state.PO} onRefresh={this.getLists} list={this.props.POViewList} keys={keys} onShowDetails={(POHead) => Actions.PODetails({ header: POHead, caller: 'View', keys, refresh: this.getLists})} />
       else
-        return <SummaryListPage title={'View PO'} status={this.state.PO} onRefresh={this.getLists} />
+        return <SummaryListPage name={pageName} title={'View PO'} status={this.state.PO} onRefresh={this.getLists} />
     }
   }
 

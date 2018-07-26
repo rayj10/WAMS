@@ -43,7 +43,10 @@ export default class App extends React.Component {
             { "Material Design Icons": require('./node_modules/@expo/vector-icons/fonts/MaterialCommunityIcons.ttf') },
             { "FontAwesome": require('./node_modules/@expo/vector-icons/fonts/FontAwesome.ttf') },
             { "MaterialIcons": require('./node_modules/@expo/vector-icons/fonts/MaterialIcons.ttf') },
-            { "MaterialCommunityIcons": require('./node_modules/@expo/vector-icons/fonts/MaterialCommunityIcons.ttf') }
+            { "MaterialCommunityIcons": require('./node_modules/@expo/vector-icons/fonts/MaterialCommunityIcons.ttf') },
+            { "Entypo": require('./node_modules/@expo/vector-icons/fonts/Entypo.ttf') },
+            { "Octicons": require('./node_modules/@expo/vector-icons/fonts/Octicons.ttf') },
+            { "simple-line-icons": require('./node_modules/@expo/vector-icons/fonts/SimpleLineIcons.ttf') }
         ]);
 
         const imageAssets = cacheImages([

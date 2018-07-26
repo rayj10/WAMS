@@ -17,13 +17,13 @@ const styles = StyleSheet.create({
 
   panelContainer: {
     flex: 1,
-    marginBottom: normalize(30),
     marginTop: normalize(5),
     marginHorizontal: normalize(15)
   },
 
   outterPanel: {
-    height: normalize(160),
+    flex: 1,
+    height: normalize(140),
     flexDirection: 'row',
     borderColor: color.light_grey,
     borderRadius: 3,
@@ -33,7 +33,8 @@ const styles = StyleSheet.create({
 
   innerPanel: {
     flex: 1,
-    justifyContent: 'space-evenly'
+    justifyContent: 'space-evenly',
+    paddingHorizontal: normalize(2)
   },
 
   itemName: {

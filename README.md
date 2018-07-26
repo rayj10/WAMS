@@ -1,5 +1,5 @@
 Download latest published apk here:
-https://expo.io/artifacts/62497de7-d78a-4f62-99ff-43f948a52faa
+https://expo.io/artifacts/8801edc5-ca9e-4039-91f8-33bff7179b9a
 
 This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
 

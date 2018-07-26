@@ -35,7 +35,7 @@ export const img =
         "Deliver": { name: 'truck-fast', type: 'material-community', color: '#8B4513' },
         "On Warehouse": { name: 'garage', type: 'material-community', color: '#8B4513' },
         "On PO": { name: 'basket', type: 'simple-line-icon', color: '#05B8CC' },
-        "Complate PO": { name: 'basket-loaded', type: 'simple-line-icon', color: '#05B8CC' },
+        "Complete PO": { name: 'basket-loaded', type: 'simple-line-icon', color: '#05B8CC' },
         "Cancel": { name: 'cancel', type: 'material-community', color: '#ff3030' },
         "Reject": { name: 'close-octagon-outline', type: 'material-community', color: '#ff3030' },
         "Finish": { name: 'checkbox-marked-circle-outline', type: 'material-community', color: '#6B8E23' }
@@ -48,7 +48,7 @@ export const img =
         "Deliver": { name: 'truck-fast', type: 'material-community', color: '#8B4513' },
         "Handle": { name: 'garage', type: 'material-community', color: '#8B4513' },
         "On PO": { name: 'basket', type: 'simple-line-icon', color: '#05B8CC' },
-        "Complate PO": { name: 'basket-loaded', type: 'simple-line-icon', color: '#05B8CC' },
+        "Complete PO": { name: 'basket-loaded', type: 'simple-line-icon', color: '#05B8CC' },
         "Cancel": { name: 'cancel', type: 'material-community', color: '#ff3030' },
         "Reject": { name: 'close-octagon-outline', type: 'material-community', color: '#ff3030' },
         "Finish": { name: 'account-check', type: 'material-community', color: '#6B8E23' }

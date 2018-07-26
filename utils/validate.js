@@ -34,7 +34,7 @@ export function validate(form) {
             if (isEmpty(value)){
                 error[field] = 'Your ' + field + ' is required';
                 success = false;
-            }else{
+            }/*else{
                 error[field] = '';
 
                 if (type === "email" && !validateEmail(value)) {
@@ -44,7 +44,7 @@ export function validate(form) {
                     error[field] = 'Password must be at least 6 characters';
                     success = false;
                 }
-            }
+            }*/
         }
     });
 

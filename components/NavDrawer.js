@@ -105,8 +105,10 @@ class NavDrawer extends React.Component {
             this.goto(menuInfo[tabs[0]['MenuID']].name);
         }
 
-        if (this.props.userDetailsReceived)
-            this.setState({ userName: this.props.userDetails['DisplayName'] });
+        if (this.props.userDetailsReceived) {
+            let displayName = this.props.userDetails['DisplayName'].split(' ');
+            this.setState({ userName: displayName[0] + ' ' + displayName[displayName.length - 1] });
+        }
     }
 
     /**
@@ -116,8 +118,10 @@ class NavDrawer extends React.Component {
         let tabs = this.props.menuList;
 
         //display user's name
-        if (this.props.userDetailsReceived && this.state.userName === null)
-            this.setState({ userName: this.props.userDetails['DisplayName'] });
+        if (this.props.userDetailsReceived && this.state.userName === null){
+            let displayName = this.props.userDetails['DisplayName'].split(' ');
+            this.setState({ userName: displayName[0] + ' ' + displayName[displayName.length - 1] });
+        }
 
         //Adjust highlighted tab position
         if (this.props.menuReceived && this.state.currentTab !== menuInfo[tabs[0]['MenuID']].name && Actions.currentScene === '_' + this.state.initialPage)

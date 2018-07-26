@@ -25,7 +25,8 @@ class PickerWrapper extends React.Component {
                         selectedValue={this.state.verification}
                         onValueChange={(itemValue, itemIndex) => {
                             this.setState({ verification: itemValue });
-                            this.props.onSelect(itemValue);
+                            this.setState({ modal: false });
+                            setTimeout(() => this.props.onSelect(itemValue), 1200);
                         }}
                     >
                         {this.props.items.map((item, key) => <Picker.Item label={item} value={item} key={key} />)}

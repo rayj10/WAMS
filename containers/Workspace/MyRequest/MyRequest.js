@@ -79,7 +79,7 @@ class MyRequest extends React.Component {
   renderSummary() {
     if (this.props.myRequestListReceived)
       return this.props.myRequestList.map((item, index) => {
-        return <MyListItem index={index} item={item} buildPanel={this.buildPanel.bind(this)}/>
+        return <MyListItem index={index} item={item} buildPanel={this.buildPanel.bind(this)} />
       });
   }
 
@@ -91,29 +91,27 @@ class MyRequest extends React.Component {
     let panel = [];
     let keys = DBkeys['Requests'].MyRequest;
 
-    panel.push(<Text style={{ left: 15 }} key={'item'}>
+    panel.push(<Text style={{ marginHorizontal: normalize(10) }} key={'item'}>
       <Text style={styles.itemName}>{index + ". " + item[keys['item']]}</Text>
     </Text>);
-    panel.push(<Text style={{ left: 15 }} key={'code'}>
+    panel.push(<Text style={{ left: 10 }} key={'code'}>
       <Text style={styles.titleTextStyle}>{"Item Code: "}</Text>
       <Text style={styles.textStyle}>{item[keys['code']]}</Text>
     </Text>);
-    panel.push(<View style={{ flexDirection: 'row' }} key={'amount'}>
-      <Text style={{ left: 15, flex: 1 }}>
-        <Text style={styles.titleTextStyle}>{"Ordered: "}</Text>
-        <Text style={styles.textStyle}>{item[keys['amount']] + " " + item[keys['unit']]}</Text>
-      </Text>
-      <Text style={{ flex: 1 }}>
-        <Text style={styles.titleTextStyle}>{"SOH: "}</Text>
-        <Text style={styles.textStyle}>{item[keys['inWarehouse']] + " " + item[keys['unit']]}</Text>
-      </Text>
-    </View>);
-    panel.push(<Text style={{ left: 15, paddingBottom: normalize(15) }} key={'date'}>
+    panel.push(<Text style={{ left: 10 }} key={'amount'}>
+      <Text style={styles.titleTextStyle}>{"Ordered: "}</Text>
+      <Text style={styles.textStyle}>{item[keys['amount']] + " " + item[keys['unit']]}</Text>
+    </Text>);
+    panel.push(<Text style={{ left: 10 }} key={'SOH'}>
+      <Text style={styles.titleTextStyle}>{"SOH: "}</Text>
+      <Text style={styles.textStyle}>{item[keys['inWarehouse']] + " " + item[keys['unit']]}</Text>
+    </Text>);
+    panel.push(<Text style={{ left: 10 }} key={'date'}>
       <Text style={styles.titleTextStyle}>{"Target Date: "}</Text>
       <Text style={styles.textStyle}>{item[keys['date']].split("T")[0]}</Text>
     </Text>);
     let status = item[keys['status']];
-    panel.push(<View style={{ position: 'absolute', right: 0, bottom: 0, padding: 10, alignItems: 'center' }} key={'status'}>
+    panel.push(<View style={{ position: 'absolute', right: 0, bottom: 0, padding: normalize(5), alignItems: 'center' }} key={'status'}>
       <Icon name={img.itemStatus[status].name} type={img.itemStatus[status].type} color={img.itemStatus[status].color} size={normalize(38)} />
     </View>);
 

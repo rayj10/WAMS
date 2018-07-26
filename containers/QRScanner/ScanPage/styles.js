@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: fontSize.small,
     fontFamily: fontFamily.light,
-    marginLeft: normalize(10)
+    marginLeft: normalize(5)
   },
 
   backButtonContainer: {

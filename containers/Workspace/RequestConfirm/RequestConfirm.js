@@ -189,7 +189,7 @@ class RequestConfirm extends React.Component {
     renderItems(requestItems) {
         let content = (
             <View style={{ flex: 1, alignItems: 'center', height: normalize(50) }}>
-                <Text style={[styles.textStyle, { marginTop: normalize(15), textAlign: 'center', fontSize: normalize(16) }]}> Pick a DO Number </Text>
+                <Text style={[styles.textStyle, { marginTop: normalize(15), textAlign: 'center', fontSize: normalize(16) }]}> No DO number selected </Text>
             </View>);
 
         if (this.state.pickedDO !== null && this.state.pickedDO !== ' - - - ') {
