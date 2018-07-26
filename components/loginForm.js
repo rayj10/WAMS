@@ -13,7 +13,7 @@ import { Button } from 'react-native-elements';
 import { isEmpty, validate } from '../utils/validate'
 import AuthTextInput from './AuthTextInput'
 import { color, windowWidth, normalize, fontSize, fontFamily, windowHeight } from '../theme/baseTheme';
-import { Logo } from '../assets/images';
+import { img } from '../assets/images';
 
 const styles = StyleSheet.create({
     container: {
@@ -152,7 +152,7 @@ class loginForm extends React.Component {
         return (
             <KeyboardAvoidingView style={styles.container} behavior="padding">
                 <View style={styles.wrapper}>
-                    <Image style={styles.image} source={Logo} />
+                    <Image style={styles.image} source={img.app.Logo} />
                     {
                         (!isEmpty(this.state.error['general'])) &&
                         <Text style={styles.errorText}>{this.state.error['general']}</Text>

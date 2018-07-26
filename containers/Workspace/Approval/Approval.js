@@ -95,21 +95,21 @@ class Approval extends React.Component {
 
         if (pageName === 'Requests') {
             if (this.props.requestApprovalReceived)
-                return <SummaryListPage title={pageName} status={this.state.request} onRefresh={this.getLists} list={this.props.requestApprovalList} keys={keys} onShowDetails={(reqHead) => Actions.RequestDetails({ header: reqHead, caller: 'Approval', keys, refresh: this.getLists })} />
+                return <SummaryListPage title={'Request Approval'} status={this.state.request} onRefresh={this.getLists} list={this.props.requestApprovalList} keys={keys} onShowDetails={(reqHead) => Actions.RequestDetails({ header: reqHead, caller: 'Approval', keys, refresh: this.getLists })} />
             else
-                return <SummaryListPage title={pageName} status={this.state.request} onRefresh={this.getLists} />
+                return <SummaryListPage title={'Request Approval'} status={this.state.request} onRefresh={this.getLists} />
         }
         else if (pageName === 'PO') {
             if (this.props.POApprovalReceived)
-                return <SummaryListPage title={pageName} status={this.state.PO} onRefresh={this.getLists} list={this.props.POApprovalList} keys={keys} onShowDetails={(POHead) => Actions.PODetails({ header: POHead, caller: 'Approval', keys, refresh: this.getLists })} />
+                return <SummaryListPage title={'PO Approval'} status={this.state.PO} onRefresh={this.getLists} list={this.props.POApprovalList} keys={keys} onShowDetails={(POHead) => Actions.PODetails({ header: POHead, caller: 'Approval', keys, refresh: this.getLists })} />
             else
-                return <SummaryListPage title={pageName} status={this.state.PO} onRefresh={this.getLists} />
+                return <SummaryListPage title={'PO Approval'} status={this.state.PO} onRefresh={this.getLists} />
         }
         else if (pageName === 'Transfers') {
             if (this.props.transferApprovalReceived)
-                return <SummaryListPage title={pageName} status={this.state.transfer} onRefresh={this.getLists} list={this.props.transferApprovalList} keys={keys} onShowDetails={(trfHead) => Actions.TransferDetails({ header: trfHead, caller: 'Approval', keys, refresh: this.getLists })} />
+                return <SummaryListPage title={'Transfer Approval'} status={this.state.transfer} onRefresh={this.getLists} list={this.props.transferApprovalList} keys={keys} onShowDetails={(trfHead) => Actions.TransferDetails({ header: trfHead, caller: 'Approval', keys, refresh: this.getLists })} />
             else
-                return <SummaryListPage title={pageName} status={this.state.transfer} onRefresh={this.getLists} />
+                return <SummaryListPage title={'Transfer Approval'} status={this.state.transfer} onRefresh={this.getLists} />
         }
     }
 

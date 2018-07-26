@@ -3,13 +3,15 @@ import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { View, Text, Alert, FlatList, ActivityIndicator } from 'react-native';
+import { Icon } from 'react-native-elements';
 
 import styles from "./styles";
 import * as workspaceAction from '../../../actions/workspaceActions';
 import * as authAction from '../../../actions/authActions';
-import { color } from '../../../theme/baseTheme';
+import { color, normalize } from '../../../theme/baseTheme';
 import errors from '../../../json/errors.json';
 import DBkeys from '../../../json/DBkeys.json';
+import { img } from '../../../assets/images';
 
 //Maps store's state to MyRequest's props
 export const mapStateToProps = state => ({
@@ -23,6 +25,16 @@ export const mapDispatchToProps = (dispatch) => ({
   actionsWorkspace: bindActionCreators(workspaceAction, dispatch),
   actionsAuth: bindActionCreators(authAction, dispatch)
 });
+
+class MyListItem extends React.PureComponent {
+  render() {
+    return (<View style={styles.outterPanel}>
+      <View style={styles.innerPanel}>
+        {this.props.buildPanel((this.props.index + 1), this.props.item)}
+      </View>
+    </View>)
+  }
+}
 
 class MyRequest extends React.Component {
   constructor() {
@@ -67,12 +79,7 @@ class MyRequest extends React.Component {
   renderSummary() {
     if (this.props.myRequestListReceived)
       return this.props.myRequestList.map((item, index) => {
-        return (
-          <View style={styles.outterPanel}>
-            <View style={styles.innerPanel}>
-              {this.buildPanel((index + 1), item)}
-            </View>
-          </View>)
+        return <MyListItem index={index} item={item} buildPanel={this.buildPanel.bind(this)}/>
       });
   }
 
@@ -101,13 +108,13 @@ class MyRequest extends React.Component {
         <Text style={styles.textStyle}>{item[keys['inWarehouse']] + " " + item[keys['unit']]}</Text>
       </Text>
     </View>);
-    panel.push(<Text style={{ left: 15 }} key={'date'}>
+    panel.push(<Text style={{ left: 15, paddingBottom: normalize(15) }} key={'date'}>
       <Text style={styles.titleTextStyle}>{"Target Date: "}</Text>
       <Text style={styles.textStyle}>{item[keys['date']].split("T")[0]}</Text>
     </Text>);
-    panel.push(<View style={{ left: 15 }} key={'status'}>
-      <Text style={styles.titleTextStyle}>{"Status: "}</Text>
-      <Text style={styles.textStyle}>{item[keys['status']]}</Text>
+    let status = item[keys['status']];
+    panel.push(<View style={{ position: 'absolute', right: 0, bottom: 0, padding: 10, alignItems: 'center' }} key={'status'}>
+      <Icon name={img.itemStatus[status].name} type={img.itemStatus[status].type} color={img.itemStatus[status].color} size={normalize(38)} />
     </View>);
 
     return panel;
@@ -139,8 +146,8 @@ class MyRequest extends React.Component {
           status = 'Unknown Error';
         content = ([
           <View style={{ alignItems: 'center' }}>
-            <Text style={[styles.titleTextStyle, { textAlign: 'center', fontSize: 20 }]}>{'\n\n' + errors[status].name + '\n'}</Text>
-            <Text style={[styles.titleTextStyle, { textAlign: 'center', fontSize: 16 }]}>{errors[status].message}</Text>
+            <Text style={[styles.textStyle, { textAlign: 'center', fontSize: 20 }]}>{'\n\n' + errors[status].name + '\n'}</Text>
+            <Text style={[styles.textStyle, { textAlign: 'center', fontSize: 16 }]}>{errors[status].message}</Text>
           </View>
         ]);
       }
@@ -148,7 +155,7 @@ class MyRequest extends React.Component {
 
     return (
       <View style={styles.container}>
-        <Text style={styles.subHeader}>Items You Requested</Text>
+        <Text style={styles.subHeader}>My Requests</Text>
         <View style={[styles.panelContainer, status === 'success' ? {} : { backgroundColor: color.white }]}>
           <FlatList
             showsVerticalScrollIndicator={false}

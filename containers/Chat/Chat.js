@@ -44,7 +44,7 @@ export default class Chat extends React.Component {
             // get children as an array
             var items = [];
             snap.forEach((child) => {
-                var avatar = '../../assets/images/Ray.png'
+                var avatar = '../../assets/images/Avatar.png'
                 var name = child.val().uid == this.user.uid ? this.user.name : this.friend.name
                 items.push({
                     _id: child.val().createdAt,

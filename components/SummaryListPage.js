@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, StyleSheet, Text, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { Icon } from '../node_modules/react-native-elements';
 
 import { color, fontSize, fontFamily, normalize } from '../theme/baseTheme';
 import errors from '../json/errors.json';
+import { img } from '../assets/images';
 
 const styles = StyleSheet.create({
     subHeader: {
@@ -38,16 +40,34 @@ const styles = StyleSheet.create({
         fontFamily: fontFamily.boldItalic,
     },
 
-    titleTextStyle: {
+    textStyle: {
         fontSize: fontSize.small + 1,
         fontFamily: fontFamily.bold,
     },
 
-    textStyle: {
+    titleTextStyle: {
         fontSize: fontSize.small + 1,
-        fontFamily: fontFamily.light,
+        fontFamily: fontFamily.regular,
     }
 });
+
+class MyListItem extends React.PureComponent{
+    render(){
+        let info = this.props.buildPanel(this.props.item);
+        status = this.props.title === 'PO' || this.props.title === 'DO Customer' ? info.slice(4) : info.slice(3);
+        info = this.props.title === 'PO' || this.props.title === 'DO Customer' ? info.slice(0, 4) : info.slice(0, 3);
+        return (<TouchableOpacity onPress={() => this.props.onShowDetails(this.props.item)} key={this.props.index}>
+            <View style={[styles.outterPanel, this.props.title === 'PO' || this.props.title === 'DO Customer' ? { height: normalize(90) } : null]}>
+                <View style={[styles.innerPanel, { flex: 4 }]}>
+                    {info}
+                </View>
+                <View style={styles.innerPanel}>
+                    {status}
+                </View>
+            </View>
+        </TouchableOpacity>)
+    }
+}
 
 class SummaryListPage extends React.Component {
     constructor(props) {
@@ -72,19 +92,7 @@ class SummaryListPage extends React.Component {
      */
     renderSummary(headers) {
         return headers.map((item, key) => {
-            let info = this.buildPanel(item);
-            status = this.props.title === 'PO' ||  this.props.title === 'DO Customer' ? info.slice(4) : info.slice(3);
-            info = this.props.title === 'PO' || this.props.title === 'DO Customer' ? info.slice(0, 4) : info.slice(0, 3);
-            return (<TouchableOpacity onPress={() => this.props.onShowDetails(item)} key={key}>
-                <View style={[styles.outterPanel, this.props.title === 'PO' || this.props.title === 'DO Customer' ? { height: normalize(90) } : null]}>
-                    <View style={[styles.innerPanel, { flex: 3.5 }]}>
-                        {info}
-                    </View>
-                    <View style={styles.innerPanel}>
-                        {status}
-                    </View>
-                </View>
-            </TouchableOpacity>)
+           return <MyListItem item={item} index={key} buildPanel={this.buildPanel.bind(this)} {...this.props}/>
         });
     }
 
@@ -130,15 +138,8 @@ class SummaryListPage extends React.Component {
         </Text>);
 
         let status = item[keys['status']];
-        panel.push(<View style={{ flex: 1, justifyContent: 'space-evenly', alignItems: 'center' }} key={'status'}>
-            <Text style={[styles.titleTextStyle, { fontSize: fontSize.regular }]}>{"Status:"}</Text>
-            <Text
-                style={
-                    [styles.titleTextStyle,
-                    { fontSize: fontSize.regular + 4 },
-                    (status === 'Reject' || status === 'Cancel') ? { color: '#ff3030' } : (status === 'Open') ? { color: '#ffae19' } : { color: '#3fd130' }]}>
-                {status}
-            </Text>
+        panel.push(<View style={{ justifyContent: 'center', alignItems: 'center' }} key={'status'}>
+            <Icon name={img.formStatus[status].name} type={img.formStatus[status].type} color={img.formStatus[status].color} size={normalize(42)} />
         </View>);
 
         return panel;
@@ -165,13 +166,13 @@ class SummaryListPage extends React.Component {
             if (status === 'success' && list) {
                 content = this.renderSummary(list);
             }
-            else{
+            else {
                 if (!errors[status])
                     status = 'Unknown Error';
                 content = ([
                     <View style={{ alignItems: 'center' }}>
-                        <Text style={[styles.titleTextStyle, { textAlign: 'center', fontSize: 20 }]}>{'\n\n' + errors[status].name + '\n'}</Text>
-                        <Text style={[styles.titleTextStyle, { textAlign: 'center', fontSize: 16 }]}>{errors[status].message}</Text>
+                        <Text style={[styles.textStyle, { textAlign: 'center', fontSize: 20 }]}>{'\n\n' + errors[status].name + '\n'}</Text>
+                        <Text style={[styles.textStyle, { textAlign: 'center', fontSize: 16 }]}>{errors[status].message}</Text>
                     </View>
                 ]);
             }

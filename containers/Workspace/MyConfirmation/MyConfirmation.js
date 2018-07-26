@@ -68,9 +68,9 @@ class MyConfirmation extends React.Component {
     let refresh = (finishRefresh) => this.props.actionsWorkspace.getRequestConfirmation(this.props.token, (status) => this.onFetchFinish(status, finishRefresh && finishRefresh()));
 
     if (this.props.requestConfirmationReceived)
-      return <SummaryListPage title={pageName} status={this.state.fetchStatus} onRefresh={refresh} list={this.props.requestConfirmationList} keys={keys} onShowDetails={(reqHead) => Actions.RequestConfirm({ header: reqHead, keys, refresh })} />
+      return <SummaryListPage title={'My Confirmation'} status={this.state.fetchStatus} onRefresh={refresh} list={this.props.requestConfirmationList} keys={keys} onShowDetails={(reqHead) => Actions.RequestConfirm({ header: reqHead, keys, refresh })} />
     else
-      return <SummaryListPage title={pageName} status={this.state.fetchStatus} onRefresh={refresh} />
+      return <SummaryListPage title={'My Confirmation'} status={this.state.fetchStatus} onRefresh={refresh} />
   }
 
   render() {

@@ -83,7 +83,7 @@ export function getUserProfile(token, password, resultCB) {
                             }
                         });
                 }
-
+//console.log(json)
                 dispatch({ type: t.RECEIVE_USER_DETAILS, userDetails: json.data[0] });
                 resultCB(json.message)
             })

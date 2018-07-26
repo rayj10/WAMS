@@ -12,9 +12,10 @@ import {
 import styles from "./styles";
 import * as workspaceAction from '../../../actions/workspaceActions';
 import IconWrapper from '../../../components/IconWrapper';
-import { color, fontSize } from '../../../theme/baseTheme';
+import { color, fontSize, normalize, fontFamily } from '../../../theme/baseTheme';
 import DialogBoxModal from '../../../components/DialogBoxModal';
 import errors from '../../../json/errors.json';
+import { img } from '../../../assets/images';
 
 //Maps reducer's states to PODetails props
 export const mapStateToProps = state => ({
@@ -198,35 +199,38 @@ class PODetails extends React.Component {
 
         if (vendor) {
             info.push(<View key={1} style={styles.priceSumRow}>
-                <Text style={[styles.priceSumKeys, { fontSize: fontSize.regular + 4 }]}>{vendor[keys['vendor']]}</Text>
+                <Text style={[styles.priceSumData, { fontSize: fontSize.regular + 4}]}>{vendor[keys['vendor']]}</Text>
             </View>);
-            info.push(<View key={2} style={styles.priceSumRow}>
-                <Text style={styles.priceSumData}>{vendor[keys['vAdd1']]}</Text>
-            </View>);
-            info.push(<View key={3} style={styles.priceSumRow}>
-                <Text style={styles.priceSumData}>{vendor[keys['vAdd2']]}</Text>
-            </View>);
-            info.push(<View key={4} style={styles.priceSumRow}>
-                <Text style={styles.priceSumData}>{vendor[keys['vAdd3']]}</Text>
-            </View>);
+            if (vendor[keys['vAdd1']] !== '')
+                info.push(<View key={2} style={styles.priceSumRow}>
+                    <Text style={[styles.priceSumData, {fontFamily: fontFamily.medium}]}>{vendor[keys['vAdd1']]}</Text>
+                </View>);
+            if (vendor[keys['vAdd2']] !== '')
+                info.push(<View key={3} style={styles.priceSumRow}>
+                    <Text style={[styles.priceSumData, {fontFamily: fontFamily.medium}]}>{vendor[keys['vAdd2']]}</Text>
+                </View>);
+            if (vendor[keys['vAdd3']] !== '')
+                info.push(<View key={4} style={styles.priceSumRow}>
+                    <Text style={[styles.priceSumData, {fontFamily: fontFamily.medium}]}>{vendor[keys['vAdd3']]}</Text>
+                </View>);
             info.push(<View key={5} style={[styles.priceSumRow, { flexDirection: 'row' }]}>
-                <Text style={[styles.priceSumKeys, { flex: 0.5 }]}>{"Phone:"}</Text>
+                <Text style={[styles.priceSumKeys, { flex: 0.5 }]}>{"Phone: "}</Text>
                 <Text onPress={() => vendor[keys['vPhone']] !== "" ? Linking.openURL("tel:" + vendor[keys['vPhone']]) : null} style={[styles.priceSumData, vendor[keys['vPhone']] !== "" ? { color: color.light_blue, textDecorationLine: 'underline' } : null]}>
                     {vendor[keys['vPhone']] === "" ? "-" : vendor[keys['vPhone']]}
                 </Text>
             </View>);
             info.push(<View key={6} style={[styles.priceSumRow, { flexDirection: 'row' }]}>
-                <Text style={[styles.priceSumKeys, { flex: 0.5 }]}>{"Fax:"}</Text>
+                <Text style={[styles.priceSumKeys, { flex: 0.5 }]}>{"Fax: "}</Text>
                 <Text style={styles.priceSumData}>{vendor[keys['vFax']] === "" ? "-" : vendor[keys['vFax']]}</Text>
             </View>);
             info.push(<View key={7} style={[styles.priceSumRow, { flexDirection: 'row' }]}>
-                <Text style={[styles.priceSumKeys, { flex: 0.5 }]}>{"Email:"}</Text>
+                <Text style={[styles.priceSumKeys, { flex: 0.5 }]}>{"Email: "}</Text>
                 <Text onPress={() => vendor[keys['vMail']] !== "" ? Linking.openURL("mailto:" + vendor[keys['vMail']]) : null} style={[styles.priceSumData, vendor[keys['vMail']] !== "" ? { color: color.light_blue, textDecorationLine: 'underline' } : null]}>
                     {vendor[keys['vMail']] === "" ? "-" : vendor[keys['vMail']]}
                 </Text>
             </View>);
             info.push(<View key={8} style={[styles.priceSumRow, { flexDirection: 'row' }]}>
-                <Text style={[styles.priceSumKeys, { flex: 0.5 }]}>{"Website:"}</Text>
+                <Text style={[styles.priceSumKeys, { flex: 0.5 }]}>{"Website: "}</Text>
                 <Text onPress={() => vendor[keys['vSite']] !== "" ? Linking.openURL("http://" + vendor[keys['vSite']]) : null} style={[styles.priceSumData, vendor[keys['vSite']] !== "" ? { color: color.light_blue, textDecorationLine: 'underline' } : null]}>
                     {vendor[keys['vSite']] === "" ? "-" : vendor[keys['vSite']]}
                 </Text>
@@ -246,35 +250,35 @@ class PODetails extends React.Component {
 
         if (sales) {
             info.push(<View key={1} style={styles.priceSumRow}>
-                <Text style={[styles.priceSumKeys, { fontSize: fontSize.regular + 4 }]}>{sales[keys['sales']]}</Text>
+                <Text style={[styles.priceSumData, { fontSize: fontSize.regular + 4 }]}>{sales[keys['sales']]}</Text>
             </View>);
             info.push(<View key={2} style={[styles.priceSumRow, { flexDirection: 'row' }]}>
                 <Text style={[styles.priceSumKeys, { flex: 0.5 }]}>{"Phone:"}</Text>
-                <Text onPress={() => sales[keys['sPhone']] !== "" ? Linking.openURL("tel:" + sales[keys['sPhone']]) : null} style={[styles.priceSumData, sales[keys['sPhone']] !== "" ? { color: color.light_blue, textDecorationLine: 'underline' } : null]}>
+                <Text onPress={() => sales[keys['sPhone']] !== "" ? Linking.openURL("tel: " + sales[keys['sPhone']]) : null} style={[styles.priceSumData, sales[keys['sPhone']] !== "" ? { color: color.light_blue, textDecorationLine: 'underline' } : null]}>
                     {sales[keys['sPhone']] === "" ? "-" : sales[keys['sPhone']]}
                 </Text>
             </View>);
             info.push(<View key={3} style={[styles.priceSumRow, { flexDirection: 'row' }]}>
                 <Text style={[styles.priceSumKeys, { flex: 0.5 }]}>{"Mobile 1:"}</Text>
-                <Text onPress={() => sales[keys['sMob1']] !== "" ? Linking.openURL("tel:" + sales[keys['sMob1']]) : null} style={[styles.priceSumData, sales[keys['sMob1']] !== "" ? { color: color.light_blue, textDecorationLine: 'underline' } : null]}>
+                <Text onPress={() => sales[keys['sMob1']] !== "" ? Linking.openURL("tel: " + sales[keys['sMob1']]) : null} style={[styles.priceSumData, sales[keys['sMob1']] !== "" ? { color: color.light_blue, textDecorationLine: 'underline' } : null]}>
                     {sales[keys['sMob1']] === "" ? "-" : sales[keys['sMob1']]}
                 </Text>
             </View>);
             info.push(<View key={4} style={[styles.priceSumRow, { flexDirection: 'row' }]}>
                 <Text style={[styles.priceSumKeys, { flex: 0.5 }]}>{"Mobile 2:"}</Text>
-                <Text onPress={() => sales[keys['sMob2']] !== "" ? Linking.openURL("tel:" + sales[keys['sMob2']]) : null} style={[styles.priceSumData, sales[keys['sMob2']] !== "" ? { color: color.light_blue, textDecorationLine: 'underline' } : null]}>
+                <Text onPress={() => sales[keys['sMob2']] !== "" ? Linking.openURL("tel: " + sales[keys['sMob2']]) : null} style={[styles.priceSumData, sales[keys['sMob2']] !== "" ? { color: color.light_blue, textDecorationLine: 'underline' } : null]}>
                     {sales[keys['sMob2']] === "" ? "-" : sales[keys['sMob2']]}
                 </Text>
             </View>);
             info.push(<View key={5} style={[styles.priceSumRow, { flexDirection: 'row' }]}>
                 <Text style={[styles.priceSumKeys, { flex: 0.5 }]}>{"Email 1:"}</Text>
-                <Text onPress={() => sales[keys['sMail1']] !== "" ? Linking.openURL("mailto:" + sales[keys['sMail1']]) : null} style={[styles.priceSumData, sales[keys['sMail1']] !== "" ? { color: color.light_blue, textDecorationLine: 'underline' } : null]} >
+                <Text onPress={() => sales[keys['sMail1']] !== "" ? Linking.openURL("mailto: " + sales[keys['sMail1']]) : null} style={[styles.priceSumData, sales[keys['sMail1']] !== "" ? { color: color.light_blue, textDecorationLine: 'underline' } : null]} >
                     {sales[keys['sMail1']] === "" ? "-" : sales[keys['sMail1']]}
                 </Text>
             </View>);
             info.push(<View key={6} style={[styles.priceSumRow, { flexDirection: 'row' }]}>
                 <Text style={[styles.priceSumKeys, { flex: 0.5 }]}>{"Email 2:"}</Text>
-                <Text onPress={() => sales[keys['sMail2']] !== "" ? Linking.openURL("mailto:" + sales[keys['sMail2']]) : null} style={[styles.priceSumData, sales[keys['sMail2']] !== "" ? { color: color.light_blue, textDecorationLine: 'underline' } : null]} >
+                <Text onPress={() => sales[keys['sMail2']] !== "" ? Linking.openURL("mailto: " + sales[keys['sMail2']]) : null} style={[styles.priceSumData, sales[keys['sMail2']] !== "" ? { color: color.light_blue, textDecorationLine: 'underline' } : null]} >
                     {sales[keys['sMail2']] === "" ? "-" : sales[keys['sMail2']]}
                 </Text>
             </View>);
@@ -299,25 +303,32 @@ class PODetails extends React.Component {
                 content = (
                     <ScrollView>
                         <View style={styles.requestHead}>
-                            <View style={styles.subRequestHead}>
-                                <Text style={styles.titleTextStyle}>{"PO No.:"}</Text>
-                                <Text style={styles.textStyle}>{header[keys['no']]}</Text>
-                                <Text style={styles.titleTextStyle}>{"PO Date:"}</Text>
-                                <Text style={styles.textStyle}>{header[keys['date']]}</Text>
-                                <Text style={styles.titleTextStyle}>{"Vendor:"}</Text>
-                                <Text onPress={() => this.setState({ vendorDetails: true })} style={[styles.textStyle, { color: color.light_blue, textDecorationLine: 'underline' }]}>
-                                    {header[keys['vendor']]}
+                            <View style={{ flex: 0.2, alignItems: 'center', justifyContent: 'center', marginHorizontal: normalize(2), marginTop: normalize(2), borderRadius: 6, backgroundColor: img.formStatus[header[keys['status']]].color }}>
+                                <Text style={[styles.textStyle, { marginLeft: 0, fontSize: normalize(18), color: color.white }]}>
+                                    {header[keys['status']]}
                                 </Text>
                             </View>
-                            <View style={styles.subRequestHead}>
-                                <Text style={styles.titleTextStyle}>{"Created By:"}</Text>
-                                <Text style={styles.textStyle}>{header[keys['requestor']]}</Text>
-                                <Text style={styles.titleTextStyle}>{"Max Receive Date:"}</Text>
-                                <Text style={styles.textStyle}>{header[keys['maxDate']]}</Text>
-                                <Text style={styles.titleTextStyle}>{"Sales:"}</Text>
-                                <Text onPress={() => this.setState({ salesDetails: true })} style={[styles.textStyle, { color: color.light_blue, textDecorationLine: 'underline' }]}>
-                                    {details.sales[keys['sales']]}
-                                </Text>
+                            <View style={styles.horizontalSubRequestHead}>
+                                <View style={styles.verticalSubRequestHead}>
+                                    <Text style={styles.titleTextStyle}>{"PO No.:"}</Text>
+                                    <Text style={styles.textStyle}>{header[keys['no']]}</Text>
+                                    <Text style={styles.titleTextStyle}>{"PO Date:"}</Text>
+                                    <Text style={styles.textStyle}>{header[keys['date']]}</Text>
+                                    <Text style={styles.titleTextStyle}>{"Vendor:"}</Text>
+                                    <Text onPress={() => this.setState({ vendorDetails: true })} style={[styles.textStyle, { color: color.light_blue, textDecorationLine: 'underline' }]}>
+                                        {header[keys['vendor']]}
+                                    </Text>
+                                </View>
+                                <View style={styles.verticalSubRequestHead}>
+                                    <Text style={styles.titleTextStyle}>{"Created By:"}</Text>
+                                    <Text style={styles.textStyle}>{header[keys['requestor']]}</Text>
+                                    <Text style={styles.titleTextStyle}>{"Max Receive Date:"}</Text>
+                                    <Text style={styles.textStyle}>{header[keys['maxDate']]}</Text>
+                                    <Text style={styles.titleTextStyle}>{"Sales:"}</Text>
+                                    <Text onPress={() => this.setState({ salesDetails: true })} style={[styles.textStyle, { color: color.light_blue, textDecorationLine: 'underline' }]}>
+                                        {details.sales[keys['sales']]}
+                                    </Text>
+                                </View>
                             </View>
                         </View>
                         <View style={styles.requestBody}>
@@ -353,7 +364,7 @@ class PODetails extends React.Component {
             return (
                 <View style={styles.itemPanel} key={key}>
                     <View style={styles.verticalSubPanel}>
-                        <Text style={[styles.titleTextStyle, { marginLeft: 1 }]}>{(key + 1) + ". " + item[keys['item']]}</Text>
+                        <Text style={[styles.textStyle, { marginLeft: 1 }]}>{(key + 1) + ". " + item[keys['item']]}</Text>
                     </View>
                     <View style={styles.verticalSubPanel}>
                         <View style={styles.horizontalSubPanel}>

@@ -37,15 +37,19 @@ const styles = StyleSheet.create({
   },
 
   requestHead: {
-    height: normalize(110),
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    height: normalize(150),
     borderColor: color.grey,
     borderBottomWidth: 1,
     borderWidth: 2
   },
 
-  subRequestHead: {
+  horizontalSubRequestHead: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly'
+  },
+
+  verticalSubRequestHead: {
     flex: 1,
     justifyContent: 'space-evenly',
     marginRight: normalize(3)
@@ -79,19 +83,19 @@ const styles = StyleSheet.create({
     marginRight: normalize(3)
   },
 
-  titleTextStyle: {
-    flex: 1,
+  textStyle: {
+    flex: 2,
     marginTop: normalize(3),
     fontSize: fontSize.small,
     fontFamily: fontFamily.bold,
     marginLeft: normalize(15)
   },
 
-  textStyle: {
-    flex: 2,
+  titleTextStyle: {
+    flex: 1,
     marginTop: normalize(3),
     fontSize: fontSize.small,
-    fontFamily: fontFamily.light,
+    fontFamily: fontFamily.regular,
     marginLeft: normalize(15)
   },
 

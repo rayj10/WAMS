@@ -13,9 +13,8 @@ import * as menuAction from '../actions/menuActions';
 import * as authAction from '../actions/authActions';
 import * as workspaceAction from '../actions/workspaceActions';
 import { color, fontFamily, fontSize, normalize } from '../theme/baseTheme';
-import { Avatar } from '../assets/images';
 import menuInfo from '../json/menuInfo.json';
-import * as img from '../assets/images';
+import { img, getIcon } from '../assets/images';
 
 //Maps reducer's state to NavDrawer's props
 export const mapStateToProps = state => ({
@@ -87,7 +86,7 @@ class NavDrawer extends React.Component {
 
         this.state = {
             tabs: null,
-            profilePic: Avatar,
+            profilePic: img.app.Avatar,
             currentTab: null,                                                           //marks which drawer item to highlight based on active scene
             initialPage: null,
             userName: null,
@@ -115,7 +114,7 @@ class NavDrawer extends React.Component {
      */
     componentDidUpdate() {
         let tabs = this.props.menuList;
-        
+
         //display user's name
         if (this.props.userDetailsReceived && this.state.userName === null)
             this.setState({ userName: this.props.userDetails['DisplayName'] });
@@ -176,7 +175,7 @@ class NavDrawer extends React.Component {
                     <FlatList showVerticalScrollIndicator={false}
                         data={this.state.tabs}
                         renderItem={({ item }) => {
-                            let source = img.getIcon(item['MenuID']),
+                            let source = getIcon(item['MenuID']),
                                 name = menuInfo[item['MenuID']].name;
 
                             return (

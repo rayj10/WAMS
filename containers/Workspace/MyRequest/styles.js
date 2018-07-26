@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   },
 
   outterPanel: {
-    height: normalize(170),
+    height: normalize(160),
     flexDirection: 'row',
     borderColor: color.light_grey,
     borderRadius: 3,
@@ -41,14 +41,14 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily.boldItalic,
   },
 
-  titleTextStyle: {
+  textStyle: {
     fontSize: fontSize.small + 1,
     fontFamily: fontFamily.bold,
   },
 
-  textStyle: {
+  titleTextStyle: {
     fontSize: fontSize.small + 1,
-    fontFamily: fontFamily.light,
+    fontFamily: fontFamily.regular,
   }
 });
 

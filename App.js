@@ -5,7 +5,7 @@ import { Image } from 'react-native';
 
 import Router from './routes'
 import store from './redux/store';
-import * as img from './assets/images';
+import { img } from './assets/images';
 
 function cacheFonts(fonts) {
     return fonts.map(function (font) { return Font.loadAsync(font) });
@@ -27,6 +27,7 @@ export default class App extends React.Component {
         this.state = {
             isReady: false,
         }
+
         Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.PORTRAIT_UP);
     }
 
@@ -46,21 +47,24 @@ export default class App extends React.Component {
         ]);
 
         const imageAssets = cacheImages([
-            img.Approval,
-            img.Avatar,
-            img.DOCustomer,
-            img.FAQ,
-            img.Information,
-            img.InformationWhite,
-            img.Link,
-            img.LinkWhite,
-            img.Logo,
-            img.MyConfirmation,
-            img.MyRequest,
-            img.Sidebar,
-            img.Test,
-            img.UserManual,
-            img.Report
+            img.app.Avatar,
+            img.app.Logo,
+            img.menu.Approval,
+            img.menu.DOCustomer,
+            img.menu.Report,
+            img.menu.MyConfirmation,
+            img.menu.MyRequest,
+            img.menu.View,
+            img.menu.TaskList,
+            img.menu.UserManual,
+            img.menu.FAQ,
+            img.menu.Test,
+            img.menu.Information,
+            img.menu.InformationWhite,
+            img.menu.Link,
+            img.menu.LinkWhite,
+            img.menu.TakePicture,
+            img.menu.Gallery
         ]);
 
         await Promise.all([...imageAssets, ...fontAssets]);

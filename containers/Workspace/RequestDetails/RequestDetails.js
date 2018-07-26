@@ -15,6 +15,7 @@ import IconWrapper from '../../../components/IconWrapper';
 import { color, normalize } from '../../../theme/baseTheme';
 import RequestDeclineModal from '../../../components/RequestDeclineModal';
 import errors from '../../../json/errors.json';
+import { img } from '../../../assets/images';
 
 //Maps reducer's states to RequestDetails props
 export const mapStateToProps = state => ({
@@ -205,23 +206,30 @@ class RequestDetails extends React.Component {
                 content = (
                     <ScrollView>
                         <View style={styles.requestHead}>
-                            <View style={styles.subRequestHead}>
-                                <Text style={styles.titleTextStyle}>{"Request No.:"}</Text>
-                                <Text style={styles.textStyle}>{header[keys['no']]}</Text>
-                                <Text style={styles.titleTextStyle}>{"Request Date:"}</Text>
-                                <Text style={styles.textStyle}>{header[keys['date']]}</Text>
+                            <View style={{ flex: 0.3, alignItems: 'center', justifyContent: 'center', marginHorizontal: normalize(2), marginTop: normalize(2), borderRadius: 6, backgroundColor: img.formStatus[header[keys['status']]].color }}>
+                                <Text style={[styles.textStyle, { marginLeft: 0, fontSize: normalize(18), color: color.white }]}>
+                                    {header[keys['status']]}
+                                </Text>
                             </View>
-                            <View style={styles.subRequestHead}>
-                                <Text style={styles.titleTextStyle}>{"Requestor:"}</Text>
-                                <Text style={styles.textStyle}>{header[keys['requestor']]}</Text>
-                                <Text style={styles.titleTextStyle}>{"Department:"}</Text>
-                                <Text style={styles.textStyle}>{header[keys['department']]}</Text>
+                            <View style={styles.horizontalSubRequestHead}>
+                                <View style={styles.verticalSubRequestHead}>
+                                    <Text style={styles.titleTextStyle}>{"Request No.:"}</Text>
+                                    <Text style={styles.textStyle}>{header[keys['no']]}</Text>
+                                    <Text style={styles.titleTextStyle}>{"Request Date:"}</Text>
+                                    <Text style={styles.textStyle}>{header[keys['date']]}</Text>
+                                </View>
+                                <View style={styles.verticalSubRequestHead}>
+                                    <Text style={styles.titleTextStyle}>{"Requestor:"}</Text>
+                                    <Text style={styles.textStyle}>{header[keys['requestor']]}</Text>
+                                    <Text style={styles.titleTextStyle}>{"Department:"}</Text>
+                                    <Text style={styles.textStyle}>{header[keys['department']]}</Text>
+                                </View>
                             </View>
                         </View>
                         <View style={styles.requestBody}>
                             {this.renderItems(details)}
                         </View>
-                    </ScrollView>);
+                    </ScrollView >);
             }
             else {
                 if (errors[status] === undefined)
@@ -248,11 +256,10 @@ class RequestDetails extends React.Component {
         let { keys } = this.props;
 
         return requestItems.map((item, key) => {
-            let status = item[keys['itemStatus']];
             return (
                 <View style={styles.itemPanel} key={key}>
                     <View style={styles.verticalSubPanel}>
-                        <Text style={[styles.titleTextStyle, { marginLeft: 1 }]}>{(key + 1) + ". " + item[keys['item']]}</Text>
+                        <Text style={[styles.textStyle, { marginLeft: 1 }]}>{(key + 1) + ". " + item[keys['item']]}</Text>
                     </View>
                     <View style={styles.verticalSubPanel}>
                         <View style={styles.horizontalSubPanel}>
@@ -286,12 +293,8 @@ class RequestDetails extends React.Component {
                     </View>
                     <View style={styles.verticalSubPanel}>
                         <Text style={[styles.titleTextStyle, { textAlign: 'right', marginLeft: 0 }]}>{"Status:"}</Text>
-                        <Text
-                            style={[
-                                styles.titleTextStyle,
-                                { marginLeft: 5 },
-                                (status === 'Reject' || status === 'Cancel') ? { color: '#ff3030' } : (status === 'Open') ? { color: '#ffae19' } : { color: '#3fd130' }]}>
-                            {status}
+                        <Text style={[styles.textStyle, { marginLeft: 5, flex: 1, color: img.itemStatus[item[keys['itemStatus']]].color }]}>
+                            {item[keys['itemStatus']]}
                         </Text>
                     </View>
                 </View>)

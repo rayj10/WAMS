@@ -14,6 +14,7 @@ import IconWrapper from '../../../components/IconWrapper';
 import PickerWrapper from '../../../components/PickerWrapper';
 import CheckBoxWrapper from '../../../components/CheckBoxWrapper';
 import { color, normalize } from '../../../theme/baseTheme';
+import { img } from '../../../assets/images';
 
 //Maps reducer's states to RequestConfirm's props
 export const mapStateToProps = state => ({
@@ -113,7 +114,7 @@ class RequestConfirm extends React.Component {
         //remove last comma
         itemPieceNo = itemPieceNo.substr(0, itemPieceNo.length - 1);
         itemCode = itemCode.substr(0, itemCode.length - 1);
-     
+
         Alert.alert('Save Confirmed Items?', "Once saved, you won't be able to unverify the verified items in this form", [
             { text: 'Cancel', onPress: () => console.log('Save Confirmation Cancelled'), style: 'cancel' },
             {
@@ -149,6 +150,11 @@ class RequestConfirm extends React.Component {
             content = (
                 <ScrollView>
                     <View style={styles.requestHead}>
+                        <View style={{ flex: 0.3, alignItems: 'center', justifyContent: 'center', marginHorizontal: normalize(2), marginTop: normalize(2), borderRadius: 6, backgroundColor: img.formStatus[header[keys['status']]].color }}>
+                            <Text style={[styles.textStyle, { marginLeft: 0, fontSize: normalize(18), color: color.white }]}>
+                                {header[keys['status']]}
+                            </Text>
+                        </View>
                         <View style={styles.horizontalSubRequestHead}>
                             <View style={styles.verticalSubRequestHead}>
                                 <Text style={styles.titleTextStyle}>{"Request No.:"}</Text>
@@ -163,7 +169,7 @@ class RequestConfirm extends React.Component {
                                 <Text style={styles.textStyle}>{header[keys['department']]}</Text>
                             </View>
                         </View>
-                        <View style={[styles.horizontalSubRequestHead, { flex: 0.4, justifyContent: 'center' }]}>
+                        <View style={[styles.horizontalSubRequestHead, { flex: 0.3, justifyContent: 'center' }]}>
                             <Text style={[styles.titleTextStyle, { textAlign: 'right', paddingRight: 5 }]}>{"DO Number: "}</Text>
                             <PickerWrapper items={this.state.DONo} style={{ flex: 1.3, marginTop: normalize(3) }} onSelect={(pickedDO) => this.onDOPicked(pickedDO)} />
                         </View>
@@ -183,7 +189,7 @@ class RequestConfirm extends React.Component {
     renderItems(requestItems) {
         let content = (
             <View style={{ flex: 1, alignItems: 'center', height: normalize(50) }}>
-                <Text style={[styles.titleTextStyle, { marginTop: normalize(15), textAlign: 'center', fontSize: normalize(16) }]}> Pick a DO Number </Text>
+                <Text style={[styles.textStyle, { marginTop: normalize(15), textAlign: 'center', fontSize: normalize(16) }]}> Pick a DO Number </Text>
             </View>);
 
         if (this.state.pickedDO !== null && this.state.pickedDO !== ' - - - ') {
@@ -192,14 +198,14 @@ class RequestConfirm extends React.Component {
                     <ActivityIndicator animating={true} size='large' />
                 </View>);
 
-            if (this.props.detailsReceived) {
+            if (this.props.detailsReceived && this.props.details) {
                 let { keys, details } = this.props;
 
                 content = details.map((item, key) => {
                     return (
                         <View style={styles.itemPanel} key={key}>
                             <View style={styles.verticalSubPanel}>
-                                <Text style={[styles.titleTextStyle, { marginLeft: 1 }]}>{(key + 1) + ". " + item[keys['item']]}</Text>
+                                <Text style={[styles.textStyle, { marginLeft: 1 }]}>{(key + 1) + ". " + item[keys['item']]}</Text>
                             </View>
                             <View style={styles.verticalSubPanel}>
                                 <View style={styles.horizontalSubPanel}>
@@ -227,7 +233,7 @@ class RequestConfirm extends React.Component {
                                     <Text style={styles.textStyle}>{item[keys['mac']]}</Text>
                                 </View>
                             </View>
-                            <View style={[styles.verticalSubPanel, { flex: 0.6, justifyContent: 'center', alignItems:'flex-start' }]}>
+                            <View style={[styles.verticalSubPanel, { flex: 0.6, justifyContent: 'center', alignItems: 'flex-start' }]}>
                                 <CheckBoxWrapper title='Verified' onCheck={() => this.onCheck(item[keys['code']], item[keys['piece']])} />
                             </View>
                         </View>)

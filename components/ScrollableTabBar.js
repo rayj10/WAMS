@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 
 import { color, fontFamily, fontSize, normalize } from '../theme/baseTheme';
 import * as menuAction from '../actions/menuActions';
-import * as img from '../assets/images';
+import { getIcon } from '../assets/images';
 import menuInfo from '../json/menuInfo.json';
 
 const styles = StyleSheet.create({
@@ -19,13 +19,15 @@ const styles = StyleSheet.create({
     },
     textContainer: {
         flex: 1,
-        width: normalize(100),
+        width: normalize(70),
         alignItems: 'center',
         justifyContent: 'center',
+        marginHorizontal: normalize(3),
+        opacity: 0.5
     },
     image: {
-        height: normalize(40),
-        width: normalize(40),
+        height: normalize(50),
+        width: normalize(50),
         resizeMode: 'contain'
     },
     textStyle: {
@@ -36,6 +38,7 @@ const styles = StyleSheet.create({
     activeTab: {
         borderBottomWidth: 3,
         borderColor: color.light_grey,
+        opacity: 1
     }
 });
 
@@ -105,14 +108,13 @@ class ScrollableTabBar extends React.Component {
                     contentContainerStyle={styles.overlay}
                     data={this.state.tabs}
                     renderItem={({ item }) => {
-                        let source = img.getIcon(item['MenuID']), 
+                        let source = getIcon(item['MenuID']),
                             name = menuInfo[item['MenuID']].name;
 
                         return (
                             <TouchableOpacity onPress={() => this.goto(name)}>
                                 <View style={[styles.textContainer, this.state.currentTab === name ? styles.activeTab : {}]}>
                                     <Image style={styles.image} source={source} />
-                                    <Text style={styles.textStyle}>{name}</Text>
                                 </View>
                             </TouchableOpacity>
                         );

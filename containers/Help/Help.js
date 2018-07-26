@@ -1,11 +1,9 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
-import { Button } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 
 import styles from './styles';
-import { color } from '../../theme/baseTheme';
-import * as img from '../../assets/images';
+import { img } from '../../assets/images';
 
 class Help extends React.Component {
 
@@ -16,7 +14,7 @@ class Help extends React.Component {
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={{ flex: 1 }} onPress={() => Actions.jump('User Manual')}>
               <View style={styles.button}>
-                <Image style={styles.image} source={img.UserManual} />
+                <Image style={styles.image} source={img.menu.UserManual} />
                 <Text style={styles.buttonText}> User Manual </Text>
               </View>
             </TouchableOpacity>
@@ -24,7 +22,7 @@ class Help extends React.Component {
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={{ flex: 1 }} onPress={() => Actions.jump('FAQ')}>
               <View style={styles.button}>
-                <Image style={styles.image} source={img.FAQ} />
+                <Image style={styles.image} source={img.menu.FAQ} />
                 <Text style={styles.buttonText}> FAQ </Text>
               </View>
             </TouchableOpacity>
@@ -32,7 +30,7 @@ class Help extends React.Component {
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={{ flex: 1 }} onPress={() => { }}>
               <View style={styles.button}>
-                <Image style={styles.image} source={img.Test} />
+                <Image style={styles.image} source={img.menu.Test} />
                 <Text style={styles.buttonText}> Test Panel </Text>
               </View>
             </TouchableOpacity>
@@ -43,7 +41,7 @@ class Help extends React.Component {
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={{ flex: 1 }} onPress={() => { }}>
               <View style={styles.button}>
-                <Image style={styles.image} source={img.Test} />
+                <Image style={styles.image} source={img.menu.Test} />
                 <Text style={styles.buttonText}> Test Panel </Text>
               </View>
             </TouchableOpacity>
@@ -51,7 +49,7 @@ class Help extends React.Component {
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={{ flex: 1 }} onPress={() => { }}>
               <View style={styles.button}>
-                <Image style={styles.image} source={img.Test} />
+                <Image style={styles.image} source={img.menu.Test} />
                 <Text style={styles.buttonText}> Test Panel </Text>
               </View>
             </TouchableOpacity>
@@ -62,7 +60,7 @@ class Help extends React.Component {
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={{ flex: 1 }} onPress={() => { }}>
               <View style={styles.button}>
-                <Image style={styles.image} source={img.Test} />
+                <Image style={styles.image} source={img.menu.Test} />
                 <Text style={styles.buttonText}> Test Panel </Text>
               </View>
             </TouchableOpacity>

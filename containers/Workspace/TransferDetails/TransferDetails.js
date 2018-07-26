@@ -13,6 +13,7 @@ import * as workspaceAction from '../../../actions/workspaceActions';
 import IconWrapper from '../../../components/IconWrapper';
 import PickerWrapper from '../../../components/PickerWrapper';
 import { color, normalize } from '../../../theme/baseTheme';
+import { img } from '../../../assets/images';
 
 //Maps reducer's states to TransferDetail's props
 export const mapStateToProps = state => ({
@@ -117,7 +118,7 @@ class TransferDetails extends React.Component {
         //remove last comma
         itemPieceNo = itemPieceNo.substr(0, itemPieceNo.length - 1);
         verification = verification.substr(0, verification.length - 1);
-    
+
         Alert.alert('Confirm Transfer Request', "Are you sure you want to CONFIRM this transfer request?", [
             { text: 'Cancel', onPress: () => console.log('Transfer Confirmation Cancelled'), style: 'cancel' },
             {
@@ -179,21 +180,28 @@ class TransferDetails extends React.Component {
                 content = (
                     <ScrollView>
                         <View style={styles.requestHead}>
-                            <View style={styles.subRequestHead}>
-                                <Text style={styles.titleTextStyle}>{"Transfer No.:"}</Text>
-                                <Text style={styles.textStyle}>{header[keys['no']]}</Text>
-                                <Text style={styles.titleTextStyle}>{"Request Date:"}</Text>
-                                <Text style={styles.textStyle}>{header[keys['date']]}</Text>
-                                <Text style={styles.titleTextStyle}>{"Origin Location:"}</Text>
-                                <Text style={styles.textStyle}>{header[keys['from']]}</Text>
+                            <View style={{ flex: 0.2, alignItems: 'center', justifyContent: 'center', marginHorizontal: normalize(2), marginTop: normalize(2), borderRadius: 6, backgroundColor: img.formStatus[header[keys['status']]].color }}>
+                                <Text style={[styles.textStyle, { marginLeft: 0, fontSize: normalize(18), color: color.white }]}>
+                                    {header[keys['status']]}
+                                </Text>
                             </View>
-                            <View style={styles.subRequestHead}>
-                                <Text style={styles.titleTextStyle}>{"Transfer By:"}</Text>
-                                <Text style={styles.textStyle}>{header[keys['requestor']]}</Text>
-                                <Text style={styles.titleTextStyle}>{"Department:"}</Text>
-                                <Text style={styles.textStyle}>{header[keys['department']]}</Text>
-                                <Text style={styles.titleTextStyle}>{"Target Location:"}</Text>
-                                <Text style={styles.textStyle}>{header[keys['to']]}</Text>
+                            <View style={styles.horizontalSubRequestHead}>
+                                <View style={styles.verticalSubRequestHead}>
+                                    <Text style={styles.titleTextStyle}>{"Transfer No.:"}</Text>
+                                    <Text style={styles.textStyle}>{header[keys['no']]}</Text>
+                                    <Text style={styles.titleTextStyle}>{"Request Date:"}</Text>
+                                    <Text style={styles.textStyle}>{header[keys['date']]}</Text>
+                                    <Text style={styles.titleTextStyle}>{"Origin Location:"}</Text>
+                                    <Text style={styles.textStyle}>{header[keys['from']]}</Text>
+                                </View>
+                                <View style={styles.verticalSubRequestHead}>
+                                    <Text style={styles.titleTextStyle}>{"Transfer By:"}</Text>
+                                    <Text style={styles.textStyle}>{header[keys['requestor']]}</Text>
+                                    <Text style={styles.titleTextStyle}>{"Department:"}</Text>
+                                    <Text style={styles.textStyle}>{header[keys['department']]}</Text>
+                                    <Text style={styles.titleTextStyle}>{"Target Location:"}</Text>
+                                    <Text style={styles.textStyle}>{header[keys['to']]}</Text>
+                                </View>
                             </View>
                         </View>
                         <View style={styles.requestBody}>
@@ -232,8 +240,8 @@ class TransferDetails extends React.Component {
             if (this.props.caller === 'Approval')
                 lastLine = (
                     <View style={styles.verticalSubPanel}>
-                        <Text style={[styles.titleTextStyle, { textAlign: 'right', marginLeft: 0 }]}>{"Verification:"}</Text>
-                        <PickerWrapper items={['Arrived', 'Missed']} style={{ flex:1.2, marginTop: normalize(3) }} onSelect={(verification) => this.onPickerSelect(item[keys['piece']], verification)} />
+                        <Text style={[styles.textStyle, { flex:1, textAlign: 'right', marginLeft: 0 }]}>{"Verification:"}</Text>
+                        <PickerWrapper items={['Arrived', 'Missed']} style={{ flex: 1.2, marginTop: normalize(3) }} onSelect={(verification) => this.onPickerSelect(item[keys['piece']], verification)} />
                     </View>
                 );
             else if (this.props.caller === 'View')
@@ -249,7 +257,7 @@ class TransferDetails extends React.Component {
             return (
                 <View style={styles.itemPanel} key={key}>
                     <View style={styles.verticalSubPanel}>
-                        <Text style={[styles.titleTextStyle, { marginLeft: 1 }]}>{(key + 1) + ". " + item[keys['item']]}</Text>
+                        <Text style={[styles.textStyle, { marginLeft: 1 }]}>{(key + 1) + ". " + item[keys['item']]}</Text>
                     </View>
                     <View style={styles.verticalSubPanel}>
                         <View style={styles.horizontalSubPanel}>

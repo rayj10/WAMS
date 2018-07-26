@@ -4,7 +4,7 @@ import { ImagePicker, Permissions } from 'expo';
 import { Actions } from 'react-native-router-flux';
 import { Icon } from 'react-native-elements';
 
-import { TakePicture, Gallery } from '../assets/images';
+import { img } from '../assets/images';
 import { color, fontSize, fontFamily, windowWidth, normalize, windowHeight } from '../theme/baseTheme';
 
 const styles = StyleSheet.create({
@@ -193,7 +193,7 @@ export default class TakePhoto extends React.Component {
                 <View style={styles.buttonContainer}>
                   <TouchableOpacity style={{ flex: 1 }} onPress={this._pickImage} >
                     <View style={styles.button}>
-                      <Image style={styles.image} source={Gallery} />
+                      <Image style={styles.image} source={img.menu.Gallery} />
                       <Text style={styles.buttonText}> Gallery </Text>
                     </View>
                   </TouchableOpacity>
@@ -201,7 +201,7 @@ export default class TakePhoto extends React.Component {
                 <View style={styles.buttonContainer}>
                   <TouchableOpacity style={{ flex: 1 }} onPress={this._takePhoto} >
                     <View style={styles.button}>
-                      <Image style={styles.image} source={TakePicture} />
+                      <Image style={styles.image} source={img.menu.TakePicture} />
                       <Text style={styles.buttonText}> Camera </Text>
                     </View>
                   </TouchableOpacity>

@@ -9,7 +9,7 @@ import Accordion from '../../../components/Accordion';
 import styles from './styles';
 import { windowWidth } from '../../../theme/baseTheme';
 import menuInfo from '../../../json/menuInfo.json';
-import * as img from '../../../assets/images';
+import { getIcon } from '../../../assets/images';
 
 //Maps store's state to Approval's props
 export const mapStateToProps = state => ({
@@ -30,7 +30,7 @@ class UserManual extends React.Component {
     return list.map(item => {
       let title = menuInfo[item['MenuID']].name;
       let content = menuInfo[item['MenuID']].manual;
-      let image = img.getIcon(item['MenuID'], 'white');
+      let image = getIcon(item['MenuID'], 'white');
 
       return {
         image,

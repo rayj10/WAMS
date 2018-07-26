@@ -15,8 +15,9 @@ import IconWrapper from '../../../components/IconWrapper';
 import PickerWrapper from '../../../components/PickerWrapper';
 import DialogBoxModal from '../../../components/DialogBoxModal';
 import EditInstallerModal from '../../../components/EditInstallerModal';
-import { color, normalize, fontSize } from '../../../theme/baseTheme';
+import { color, normalize, fontSize, fontFamily } from '../../../theme/baseTheme';
 import errors from '../../../json/errors.json';
+import { img } from '../../../assets/images';
 
 //Maps reducer's states to DODetails props
 export const mapStateToProps = state => ({
@@ -219,29 +220,35 @@ class DODetails extends React.Component {
 
         if (Customer) {
             info.push(<View key={1} style={styles.modalRow}>
-                <Text style={[styles.modalKeys, { fontSize: fontSize.regular + 4 }]}>{Customer[keys['cust']]}</Text>
+                <Text style={[styles.modalData, { fontSize: fontSize.regular + 4 }]}>{Customer[keys['cust']]}</Text>
             </View>);
             info.push(<View key={2} style={styles.modalRow}>
-                <Text style={styles.modalKeys}>{"ID: " + Customer[keys['custID']]}</Text>
+                <Text style={[styles.modalData, { fontFamily: fontFamily.boldItalic }]}>{"ID: " + Customer[keys['custID']]}</Text>
             </View>);
-            info.push(<View key={3} style={styles.modalRow}>
-                <Text style={styles.modalData}>{Customer[keys['add1']]}</Text>
-            </View>);
-            info.push(<View key={4} style={styles.modalRow}>
-                <Text style={styles.modalData}>{Customer[keys['add2']]}</Text>
-            </View>);
-            info.push(<View key={5} style={styles.modalRow}>
-                <Text style={styles.modalData}>{Customer[keys['add3']]}</Text>
-            </View>);
-            info.push(<View key={6} style={styles.modalRow}>
-                <Text style={styles.modalData}>{Customer[keys['city']]}</Text>
-            </View>);
-            info.push(<View key={7} style={styles.modalRow}>
-                <Text style={styles.modalData}>{Customer[keys['country']]}</Text>
-            </View>);
-            info.push(<View key={8} style={styles.modalRow}>
-                <Text style={styles.modalData}>{Customer[keys['zip']]}</Text>
-            </View>);
+            if (Customer[keys['add1']] !== '')
+                info.push(<View key={3} style={styles.modalRow}>
+                    <Text style={[styles.modalData, { fontFamily: fontFamily.medium }]}>{Customer[keys['add1']]}</Text>
+                </View>);
+            if (Customer[keys['add2']] !== '')
+                info.push(<View key={4} style={styles.modalRow}>
+                    <Text style={[styles.modalData, { fontFamily: fontFamily.medium }]}>{Customer[keys['add2']]}</Text>
+                </View>);
+            if (Customer[keys['add3']] !== '')
+                info.push(<View key={5} style={styles.modalRow}>
+                    <Text style={[styles.modalData, { fontFamily: fontFamily.medium }]}>{Customer[keys['add3']]}</Text>
+                </View>);
+            if (Customer[keys['city']] !== '')
+                info.push(<View key={6} style={styles.modalRow}>
+                    <Text style={[styles.modalData, { fontFamily: fontFamily.medium }]}>{Customer[keys['city']]}</Text>
+                </View>);
+            if (Customer[keys['country']] !== '')
+                info.push(<View key={7} style={styles.modalRow}>
+                    <Text style={[styles.modalData, { fontFamily: fontFamily.medium }]}>{Customer[keys['country']]}</Text>
+                </View>);
+            if (Customer[keys['zip']] !== '')
+                info.push(<View key={8} style={styles.modalRow}>
+                    <Text style={[styles.modalData, { fontFamily: fontFamily.medium }]}>{Customer[keys['zip']]}</Text>
+                </View>);
             info.push(<View key={9} style={[styles.modalRow, { flexDirection: 'row' }]}>
                 <Text style={[styles.modalKeys, { flex: 0.5 }]}>{"Username:"}</Text>
                 <Text style={styles.modalData}>{Customer[keys['uName']]}</Text>
@@ -284,23 +291,30 @@ class DODetails extends React.Component {
                 content = (
                     <ScrollView>
                         <View style={styles.requestHead}>
-                            <View style={styles.subRequestHead}>
-                                <Text style={styles.titleTextStyle}>{"DO No.:"}</Text>
-                                <Text style={styles.textStyle}>{header[keys['no']]}</Text>
-                                <Text style={styles.titleTextStyle}>{"Giver :"}</Text>
-                                <Text style={styles.textStyle}>{header[keys['giver']]}</Text>
-                                <Text style={styles.titleTextStyle}>{"Request Date:"}</Text>
-                                <Text style={styles.textStyle}>{header[keys['date']]}</Text>
-                            </View>
-                            <View style={styles.subRequestHead}>
-                                <Text style={styles.titleTextStyle}>{"Ticket No.:"}</Text>
-                                <Text style={styles.textStyle}>{header[keys['ticket']]}</Text>
-                                <Text style={styles.titleTextStyle}>{"Installer:"}</Text>
-                                <Text style={styles.textStyle}>{header[keys['installer']]}</Text>
-                                <Text style={styles.titleTextStyle}>{"Customer:"}</Text>
-                                <Text onPress={() => this.setState({ custDetails: true })} style={[styles.textStyle, { color: color.light_blue, textDecorationLine: 'underline' }]}>
-                                    {details.Customer[keys['cust']]}
+                            <View style={{ flex: 0.2, alignItems: 'center', justifyContent: 'center', marginHorizontal: normalize(2), marginTop: normalize(2), borderRadius: 6, backgroundColor: img.formStatus[header[keys['status']]].color }}>
+                                <Text style={[styles.textStyle, { marginLeft: 0, fontSize: normalize(18), color: color.white }]}>
+                                    {header[keys['status']]}
                                 </Text>
+                            </View>
+                            <View style={styles.horizontalSubRequestHead}>
+                                <View style={styles.verticalSubRequestHead}>
+                                    <Text style={styles.titleTextStyle}>{"DO No.:"}</Text>
+                                    <Text style={styles.textStyle}>{header[keys['no']]}</Text>
+                                    <Text style={styles.titleTextStyle}>{"Giver :"}</Text>
+                                    <Text style={styles.textStyle}>{header[keys['giver']]}</Text>
+                                    <Text style={styles.titleTextStyle}>{"Request Date:"}</Text>
+                                    <Text style={styles.textStyle}>{header[keys['date']]}</Text>
+                                </View>
+                                <View style={styles.verticalSubRequestHead}>
+                                    <Text style={styles.titleTextStyle}>{"Ticket No.:"}</Text>
+                                    <Text style={styles.textStyle}>{header[keys['ticket']]}</Text>
+                                    <Text style={styles.titleTextStyle}>{"Installer:"}</Text>
+                                    <Text style={styles.textStyle}>{header[keys['installer']]}</Text>
+                                    <Text style={styles.titleTextStyle}>{"Customer:"}</Text>
+                                    <Text onPress={() => this.setState({ custDetails: true })} style={[styles.textStyle, { color: color.light_blue, textDecorationLine: 'underline' }]}>
+                                        {details.Customer[keys['cust']]}
+                                    </Text>
+                                </View>
                             </View>
                         </View>
                         <View style={styles.requestBody}>

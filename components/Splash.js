@@ -2,7 +2,7 @@ import React from 'react';
 import { View, ActivityIndicator, Image, StyleSheet } from 'react-native';
 
 import { color, windowWidth, normalize } from "../theme/baseTheme";
-import { Logo } from '../assets/images';
+import { img } from '../assets/images';
 
 const styles = StyleSheet.create({
     container: {
@@ -30,7 +30,7 @@ export default class extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <Image style={styles.image} source={Logo} />
+                <Image style={styles.image} source={img.app.Logo} />
                 <View style={styles.activityIndicatorContainer}>
                     <ActivityIndicator animating={true} size='large' />
                 </View>

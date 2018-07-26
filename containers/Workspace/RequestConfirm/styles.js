@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   },
 
   requestHead: {
-    height: normalize(160),
+    height: normalize(180),
     borderColor: color.grey,
     borderBottomWidth: 1,
     borderWidth: 2
@@ -82,19 +82,19 @@ const styles = StyleSheet.create({
     marginRight: normalize(3)
   },
 
-  titleTextStyle: {
-    flex: 1,
+  textStyle: {
+    flex: 2,
     marginTop: normalize(3),
     fontSize: fontSize.small,
     fontFamily: fontFamily.bold,
     marginLeft: normalize(15)
   },
 
-  textStyle: {
-    flex: 2,
+  titleTextStyle: {
+    flex: 1,
     marginTop: normalize(3),
     fontSize: fontSize.small,
-    fontFamily: fontFamily.light,
+    fontFamily: fontFamily.regular,
     marginLeft: normalize(15)
   },
 

@@ -68,9 +68,9 @@ class TaskList extends React.Component {
     let refresh = (finishRefresh) => this.props.actionsWorkspace.getListDOCustomer(this.props.token, (status) => this.onFetchFinish(status, finishRefresh && finishRefresh()), 2);
 
     if (this.props.taskListReceived)
-      return <SummaryListPage title={pageName} status={this.state.fetchStatus} onRefresh={refresh} list={this.props.taskList} keys={keys} onShowDetails={(reqHead) => Actions.DODetails({ header: reqHead, user: 'Installer', keys, refresh })} />
+      return <SummaryListPage title={'Task List'} status={this.state.fetchStatus} onRefresh={refresh} list={this.props.taskList} keys={keys} onShowDetails={(reqHead) => Actions.DODetails({ header: reqHead, user: 'Installer', keys, refresh })} />
     else
-      return <SummaryListPage title={pageName} status={this.state.fetchStatus} onRefresh={refresh} />
+      return <SummaryListPage title={'Task List'} status={this.state.fetchStatus} onRefresh={refresh} />
   }
 
   render() {
