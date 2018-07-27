@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0,
     },
 
-    icon:{
+    icon: {
         marginVertical: 10,
         marginHorizontal: 10
     }
@@ -37,9 +37,9 @@ class PageHeader extends React.Component {
         return (
             <View>
                 <Header
-                    leftComponent={<IconWrapper name='menu' color='white' size={33} style={styles.icon} onPress={() => Actions.drawerOpen()} />}
+                    leftComponent={this.props.left ? this.props.left : <IconWrapper name='menu' color='white' size={33} style={styles.icon} onPress={() => Actions.drawerOpen()} />}
                     centerComponent={{ text: this.props.title, style: styles.headerText }}
-                    rightComponent={<IconWrapper name='message-text-outline' type='material-community' color='white' size={33} style={styles.icon} onPress={() => {}} />}
+                    rightComponent={this.props.right ? this.props.right : <IconWrapper name='message-text-outline' type='material-community' color='white' size={33} style={styles.icon} onPress={() => { }} />}
                     outerContainerStyles={styles.headerOuterContainer}
                 />
                 <OfflineNotice />

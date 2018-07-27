@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Header } from 'react-native-elements'
+import { Button } from 'react-native-elements'
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -10,6 +10,7 @@ import {
 
 import styles from "./styles";
 import * as workspaceAction from '../../../actions/workspaceActions';
+import PageHeader from '../../../components/Header';
 import ForwardModal from '../../../components/ForwardModal';
 import IconWrapper from '../../../components/IconWrapper';
 import { color, normalize } from '../../../theme/baseTheme';
@@ -349,11 +350,10 @@ class RequestDetails extends React.Component {
             <View style={styles.container}>
                 {forwardModal}
                 {declineModal}
-                <Header
-                    leftComponent={<IconWrapper name='chevron-left' type='font-awesome' color='white' size={28} style={styles.icon} onPress={() => Actions.pop()} />}
-                    centerComponent={{ text: 'Request Details', style: styles.headerText }}
-                    rightComponent={forwardIcon}
-                    outerContainerStyles={styles.headerOuterContainer} />
+                <PageHeader
+                    left={<IconWrapper name='chevron-left' type='font-awesome' color='white' size={28} style={styles.icon} onPress={() => Actions.pop()} />}
+                    title={'Request Details'}
+                    right={forwardIcon} />
                 <View style={styles.bodyContainer}>
                     {this.renderRequest()}
                 </View>

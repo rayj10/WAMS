@@ -13,20 +13,6 @@ const styles = StyleSheet.create({
     marginVertical: 10
   },
 
-  headerText: {
-    fontSize: fontSize.large,
-    fontFamily: fontFamily.medium,
-    color: color.white,
-    padding: normalize(10)
-  },
-
-  headerOuterContainer: {
-    backgroundColor: color.blue,
-    height: normalize(75),
-    padding: 0,
-    borderBottomWidth: 0,
-  },
-
   bodyContainer: {
     flex: 1,
     backgroundColor: color.background,

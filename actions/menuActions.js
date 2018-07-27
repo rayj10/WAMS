@@ -18,7 +18,7 @@ export function updateMenu(currentScene) {
  * @param {Function} errorCB: Callback in case fetch failed
  */
 export function getAvailableMenu(token, errorCB) {
-    let endpoint = '/api/v1/user/menu';
+    let endpoint = 'api/v1/user/menu';
 
     let header = {
         "Authorization": "Bearer " + token,

@@ -83,13 +83,31 @@ export function getUserProfile(token, password, resultCB) {
                             }
                         });
                 }
-//console.log(json)
+
                 dispatch({ type: t.RECEIVE_USER_DETAILS, userDetails: json.data[0] });
                 resultCB(json.message)
             })
             .catch((error) => {
                 dispatch({ type: t.EMPTY_USER_DETAILS });
                 resultCB(error)
+            })
+    }
+}
+
+export function getIntranetDetails(empID, resultCB) {
+    var endpoint = 'api.php?method=DetailStaff&staff_id=' + empID + '&key=xkRKJui9acBcx4CG/HCeboyIDF==';
+
+    let header = {
+        "Content-Type": "application/json"
+    };
+
+    return dispatch => {
+        return fetchAPI(endpoint, 'GET', header, null, 'http://10.64.2.54/api-mob/')
+            .then((json) => {
+                resultCB(json.Detail);
+            })
+            .catch((error) => {
+                console.log(error);
             })
     }
 }

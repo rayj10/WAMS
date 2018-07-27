@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Header } from 'react-native-elements'
+import { Button } from 'react-native-elements'
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -11,6 +11,7 @@ import {
 
 import styles from "./styles";
 import * as workspaceAction from '../../../actions/workspaceActions';
+import PageHeader from '../../../components/Header';
 import IconWrapper from '../../../components/IconWrapper';
 import { color, fontSize, normalize, fontFamily } from '../../../theme/baseTheme';
 import DialogBoxModal from '../../../components/DialogBoxModal';
@@ -456,11 +457,10 @@ class PODetails extends React.Component {
                 {priceModal}
                 {vendorModal}
                 {salesModal}
-                <Header
-                    leftComponent={<IconWrapper name='chevron-left' type='font-awesome' color='white' size={28} style={styles.icon} onPress={this.handleBackPress} />}
-                    centerComponent={{ text: 'PO Details', style: styles.headerText }}
-                    rightComponent={<IconWrapper name='dollar' type='font-awesome' color='white' size={28} style={styles.icon} onPress={() => this.setState({ priceSummary: true })} />}
-                    outerContainerStyles={styles.headerOuterContainer} />
+                <PageHeader
+                    left={<IconWrapper name='chevron-left' type='font-awesome' color='white' size={28} style={styles.icon} onPress={this.handleBackPress} />}
+                    title={'PO Details'}
+                    right={<IconWrapper name='dollar' type='font-awesome' color='white' size={28} style={styles.icon} onPress={() => this.setState({ priceSummary: true })} />} />
                 <View style={styles.bodyContainer}>
                     {this.renderRequest()}
                 </View>

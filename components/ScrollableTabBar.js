@@ -66,7 +66,7 @@ class ScrollableTabBar extends React.Component {
 
     componentDidMount() {
         //When menu is fetched and component mounted, initialize the tabs and default tab
-        if (this.props.menuReceived && !this.state.tabs) {
+        if (this.props.menuReceived && !this.state.tabs && this.props.menuList.length > 0) {
             let tabs = this.props.menuList.find((item) => item['MenuID'] === this.props.tabID)['Children'];
             this.setState({ tabs, currentTab: menuInfo[tabs[0]['MenuID']].name });
             this.goto(menuInfo[tabs[0]['MenuID']].name);
@@ -83,7 +83,7 @@ class ScrollableTabBar extends React.Component {
             this.setState({ currentTab: menuInfo[tabs[0]['MenuID']].name });
 
         //When menu is fetched, initialize the tabs and default tab
-        if (this.props.menuReceived && !this.state.tabs) {
+        if (this.props.menuReceived && !this.state.tabs && this.props.menuList.length > 0) {
             tabs = this.props.menuList.find((item) => item['MenuID'] === this.props.tabID)['Children'];
             this.setState({ tabs, currentTab: menuInfo[tabs[0]['MenuID']].name });
             this.goto(menuInfo[tabs[0]['MenuID']].name);

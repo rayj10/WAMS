@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Header } from 'react-native-elements'
+import { Button } from 'react-native-elements'
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -10,6 +10,7 @@ import {
 
 import styles from "./styles";
 import * as workspaceAction from '../../../actions/workspaceActions';
+import PageHeader from '../../../components/Header';
 import IconWrapper from '../../../components/IconWrapper';
 import PickerWrapper from '../../../components/PickerWrapper';
 import CheckBoxWrapper from '../../../components/CheckBoxWrapper';
@@ -247,11 +248,10 @@ class RequestConfirm extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <Header
-                    leftComponent={<IconWrapper name='chevron-left' type='font-awesome' color='white' size={28} style={styles.icon} onPress={() => Actions.pop()} />}
-                    centerComponent={{ text: 'Request Confirmation', style: styles.headerText }}
-                    rightComponent={<View style={{ width: 38 }} />}
-                    outerContainerStyles={styles.headerOuterContainer} />
+                <PageHeader
+                    left={<IconWrapper name='chevron-left' type='font-awesome' color='white' size={28} style={styles.icon} onPress={() => Actions.pop()} />}
+                    title={'Request Confirmation'}
+                    right={<View style={{ width: 38 }} />} />
                 <View style={styles.bodyContainer}>
                     {this.renderRequest()}
                 </View>

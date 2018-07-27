@@ -7,7 +7,7 @@ import styles from './styles';
 import { getIcon } from '../../assets/images';
 import menuInfo from '../../json/menuInfo.json';
 
-//Maps store's state to Approval's props
+//Maps store's state to QRScanner's props
 export const mapStateToProps = state => ({
   menuList: state.menuReducer.menuList,
   menuReceived: state.menuReducer.menuReceived,

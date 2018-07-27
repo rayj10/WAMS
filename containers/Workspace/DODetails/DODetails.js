@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Header } from 'react-native-elements'
+import { Button } from 'react-native-elements'
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -11,6 +11,7 @@ import {
 
 import styles from "./styles";
 import * as workspaceAction from '../../../actions/workspaceActions';
+import PageHeader from '../../../components/Header';
 import IconWrapper from '../../../components/IconWrapper';
 import PickerWrapper from '../../../components/PickerWrapper';
 import DialogBoxModal from '../../../components/DialogBoxModal';
@@ -412,11 +413,10 @@ class DODetails extends React.Component {
                     close={() => this.setState({ editInstaller: false })}
                     save={this.changeInstaller}
                 />
-                < Header
-                    leftComponent={<IconWrapper name='chevron-left' type='font-awesome' color='white' size={28} style={styles.icon} onPress={() => Actions.pop()} />}
-                    centerComponent={{ text: 'DO Details', style: styles.headerText }}
-                    rightComponent={editInstallerButton}
-                    outerContainerStyles={styles.headerOuterContainer} />
+                < PageHeader
+                    left={<IconWrapper name='chevron-left' type='font-awesome' color='white' size={28} style={styles.icon} onPress={() => Actions.pop()} />}
+                    title={'DO Details'}
+                    right={editInstallerButton} />
                 <View style={styles.bodyContainer}>
                     {this.renderDO()}
                 </View>

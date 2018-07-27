@@ -13,6 +13,7 @@ import TakePhoto from './components/TakePhoto';
 
 //Import Containers
 import Login from './containers/Login';
+import UserProfile from './containers/UserProfile';
 import {
     Approval, DOCustomer, MyConfirmation,
     MyRequest, ViewPage, Report, RequestDetails,
@@ -45,7 +46,8 @@ class Routes extends React.Component {
         this.state = {
             isReady: false,
             isLoggedIn: false,
-            toggleUpdate: false
+            toggleUpdate: false,
+            avatar: null,
         }
     }
 
@@ -75,7 +77,7 @@ class Routes extends React.Component {
                     store.dispatch({ type: aType.LOGGED_OUT });
                     this.setState({ isReady: true, isLoggedIn: false })
                 }
-            }, 2000)
+            }, 1000)
         });
     }
 
@@ -143,7 +145,12 @@ class Routes extends React.Component {
                                     <Scene key="ScanPage" hideNavBar component={ScanPage} title={"ScanPage"} />
                                 </Scene>
                             </Scene>
-                            <Scene key="TakePhoto" hideNavBar component={TakePhoto} title="TakePhoto" drawerLockMode={'locked-closed'} />
+                            <Scene key="UserProfile" hideNavBar title="QR" drawerLockMode={'locked-closed'}>
+                                <Scene tabs={true} hideTabBar animationEnabled={false} swipeEnabled={false} lazy={true}>
+                                    <Scene key="UserProfile" hideNavBar component={UserProfile} title="UserProfile" drawerLockMode={'locked-closed'} />
+                                    <Scene key="TakePhoto" hideNavBar component={TakePhoto} title="TakePhoto" drawerLockMode={'locked-closed'} />
+                                </Scene>
+                            </Scene>
                         </Scene>
                     </Stack>
                 </Scene>

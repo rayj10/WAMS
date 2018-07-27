@@ -94,12 +94,11 @@ class NavDrawer extends React.Component {
 
         this.goto = this.goto.bind(this);
         this.onSignOut = this.onSignOut.bind(this);
-        this.pictureTaken = this.pictureTaken.bind(this);
     }
 
     componentDidMount() {
         //When menu is fetched and component mounted, initialize the tabs and default tab
-        if (this.props.menuReceived && !this.state.tabs) {
+        if (this.props.menuReceived && !this.state.tabs && this.props.menuList.length > 0) {
             let tabs = this.props.menuList;
             this.setState({ tabs, currentTab: menuInfo[tabs[0]['MenuID']].name, initialPage: menuInfo[tabs[0]['Children'][0]['MenuID']].name });
             this.goto(menuInfo[tabs[0]['MenuID']].name);
@@ -118,17 +117,17 @@ class NavDrawer extends React.Component {
         let tabs = this.props.menuList;
 
         //display user's name
-        if (this.props.userDetailsReceived && this.state.userName === null){
+        if (this.props.userDetailsReceived && this.state.userName === null) {
             let displayName = this.props.userDetails['DisplayName'].split(' ');
             this.setState({ userName: displayName[0] + ' ' + displayName[displayName.length - 1] });
         }
 
         //Adjust highlighted tab position
-        if (this.props.menuReceived && this.state.currentTab !== menuInfo[tabs[0]['MenuID']].name && Actions.currentScene === '_' + this.state.initialPage)
+        if (this.props.menuReceived && this.props.menuList.length > 0 && this.state.currentTab !== menuInfo[tabs[0]['MenuID']].name && Actions.currentScene === '_' + this.state.initialPage)
             this.setState({ currentTab: menuInfo[tabs[0]['MenuID']].name })
 
         //When is fetched, initialize the tabs and default tabs
-        if (this.props.menuReceived && !this.state.tabs) {
+        if (this.props.menuReceived && !this.state.tabs && this.props.menuList.length > 0) {
             this.setState({ tabs, currentTab: menuInfo[tabs[0]['MenuID']].name, initialPage: menuInfo[tabs[0]['Children'][0]['MenuID']].name });
             this.goto(menuInfo[tabs[0]['MenuID']].name);
         }
@@ -156,21 +155,15 @@ class NavDrawer extends React.Component {
         }
     }
 
-    /**
-     * Callback to be executed once the picture's taken
-     * @param {String} img: Base64 encoded string representation of the jpeg taken from the phone's camera 
-     */
-    pictureTaken(img) {
-        this.setState({ profilePic: { uri: 'data:image/jpg;base64,' + img } });
-        Alert.alert('Successful!', 'Profile Picture has been successfully updated');
-        Actions.pop();
+    setProfilePicture(profilePic) {
+        this.setState({ profilePic });
     }
 
     render() {
         return (
             <View style={{ backgroundColor: color.white }}>
                 <View style={styles.header}>
-                    <TouchableOpacity onPress={() => Actions.TakePhoto({ pictureTaken: this.pictureTaken, useMsg: 'Set as Profile Picture' })}>
+                    <TouchableOpacity onPress={() => Actions.UserProfile({ profilePic: this.state.profilePic, pictureTaken: this.setProfilePicture.bind(this) })}>
                         <Image source={this.state.profilePic} style={styles.avatar} />
                     </TouchableOpacity>
                     <Text style={styles.headerText}>{this.state.userName}</Text>

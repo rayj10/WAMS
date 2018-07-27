@@ -6,9 +6,10 @@ import _ from 'lodash';
  * @param {String} method: Typically POST or GET  
  * @param {Object} header: Typically contains Authorization details and Content-type 
  * @param {Object} data: Typically contains Parameters for the request 
+ * @param {String} site: optional url if there is a different one
  */
-export function fetchAPI(endpoint, method, header, data) {
-    let url = 'http://10.64.2.149:8082/' + endpoint;
+export function fetchAPI(endpoint, method, header, data, site) {
+    let url = (site ? site : 'http://10.64.2.149:8082/') + endpoint;
 
     let options = {
         method: method,
