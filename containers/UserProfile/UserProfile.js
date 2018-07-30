@@ -38,6 +38,10 @@ class UserProfile extends React.Component {
     this.props.actionsAuth.getIntranetDetails(this.props.userDetails.Empl_id, (details) => this.setState({ details }))
   }
 
+  saveAvatar = async (uri) => {
+    await Expo.FileSystem.writeAsStringAsync(Expo.FileSystem.documentDirectory + 'avatar/' + this.props.userDetails.DisplayName.replace(/ /g,'_'), uri)
+  }
+
   /**
      * Callback to be executed once the picture's taken
      * @param {String} img: Base64 encoded string representation of the jpeg taken from the phone's camera 
@@ -45,6 +49,7 @@ class UserProfile extends React.Component {
   pictureTaken(img) {
     this.setState({ profilePic: { uri: 'data:image/jpg;base64,' + img } });
     this.props.pictureTaken({ uri: 'data:image/jpg;base64,' + img });
+    this.saveAvatar('data:image/jpg;base64,' + img);
     Alert.alert('Successful!', 'Profile Picture has been successfully updated');
     Actions.pop();
   }
@@ -69,7 +74,7 @@ class UserProfile extends React.Component {
           {
             details ?
               <ScrollView>
-                <Icon name='work' color={color.light_grey} size={30}/>
+                <Icon name='work' color={color.light_grey} size={30} />
                 <Text style={styles.titleTextStyle}>Division</Text>
                 <View style={styles.dataContainer}>
                   <Text style={styles.textStyle}>{details.DIVISION_NAME}</Text>
@@ -86,7 +91,7 @@ class UserProfile extends React.Component {
                 <View style={styles.dataContainer}>
                   <Text style={styles.textStyle}>{details.SIGNIN}</Text>
                 </View>
-                <Icon name='person' color={color.light_grey} size={32}/>
+                <Icon name='person' color={color.light_grey} size={32} />
                 <Text style={styles.titleTextStyle}>Email 1</Text>
                 <View style={styles.dataContainer}>
                   <Text style={styles.textStyle}>{details.EMAIL}</Text>

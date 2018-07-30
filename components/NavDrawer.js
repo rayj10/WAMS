@@ -1,13 +1,12 @@
 import React from 'react';
 import {
-    View, Text, StyleSheet, TouchableOpacity,
-    ScrollView, Alert, Image, FlatList,
-    AsyncStorage
+    View, Text, StyleSheet, TouchableOpacity, Image, FlatList
 } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { FileSystem } from 'expo';
 
 import * as menuAction from '../actions/menuActions';
 import * as authAction from '../actions/authActions';
@@ -96,6 +95,34 @@ class NavDrawer extends React.Component {
         this.onSignOut = this.onSignOut.bind(this);
     }
 
+    ensureDirAsync = async () => {
+        const props = await FileSystem.getInfoAsync(FileSystem.documentDirectory + 'avatar/');
+
+        if (props.exists && props.isDirectory) {
+            return props;
+        }
+
+        try {
+            await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'avatar/', { intermediates: true });
+        }
+        catch (e) {
+            console.log(e);
+        }
+
+        return await this.ensureDirAsync()
+    }
+
+    getAvatar = async (name) => {
+        let dir = await this.ensureDirAsync(),
+            data = null,
+            props = await FileSystem.getInfoAsync(dir.uri + name.replace(/ /g, '_'));
+  
+        if (props.exists) {
+            data = await FileSystem.readAsStringAsync(props.uri);
+            this.setState({ profilePic: { uri: data } })
+        }
+    }
+
     componentDidMount() {
         //When menu is fetched and component mounted, initialize the tabs and default tab
         if (this.props.menuReceived && !this.state.tabs && this.props.menuList.length > 0) {
@@ -104,9 +131,11 @@ class NavDrawer extends React.Component {
             this.goto(menuInfo[tabs[0]['MenuID']].name);
         }
 
+        //display user's name
         if (this.props.userDetailsReceived) {
             let displayName = this.props.userDetails['DisplayName'].split(' ');
             this.setState({ userName: displayName[0] + ' ' + displayName[displayName.length - 1] });
+            this.getAvatar(this.props.userDetails['DisplayName']);
         }
     }
 
@@ -120,6 +149,7 @@ class NavDrawer extends React.Component {
         if (this.props.userDetailsReceived && this.state.userName === null) {
             let displayName = this.props.userDetails['DisplayName'].split(' ');
             this.setState({ userName: displayName[0] + ' ' + displayName[displayName.length - 1] });
+            this.getAvatar(this.props.userDetails['DisplayName']);
         }
 
         //Adjust highlighted tab position

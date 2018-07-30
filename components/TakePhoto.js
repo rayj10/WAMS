@@ -12,15 +12,15 @@ const styles = StyleSheet.create({
     flex: 1
   },
 
-  infoContainer:{
-    flex: 1, 
-    justifyContent: 'center' 
+  infoContainer: {
+    flex: 1,
+    justifyContent: 'center'
   },
 
-  infoText:{
+  infoText: {
     fontFamily: fontFamily.bold,
     fontSize: fontSize.large,
-    alignSelf:'center'
+    alignSelf: 'center'
   },
 
   subheader: {
@@ -146,24 +146,24 @@ export default class TakePhoto extends React.Component {
         <View style={styles.infoContainer}>
           <Text style={styles.infoText}> Camera permission is not granted </Text>
           <View style={styles.backButtonContainer}>
-                <TouchableOpacity style={{ flex: 1 }} onPress={() => Actions.pop()}>
-                  <View style={styles.backButton}>
-                    <Icon name='action-undo' type='simple-line-icon' size={40} color='white' />
-                  </View>
-                </TouchableOpacity>
+            <TouchableOpacity style={{ flex: 1 }} onPress={() => Actions.pop()}>
+              <View style={styles.backButton}>
+                <Icon name='action-undo' type='simple-line-icon' size={40} color='white' />
               </View>
+            </TouchableOpacity>
+          </View>
         </View>
         :
         this.state.hasGalleryPermission === false ?
           <View style={styles.infoContainer}>
             <Text style={styles.infoText}> Gallery permission is not granted </Text>
             <View style={styles.backButtonContainer}>
-                <TouchableOpacity style={{ flex: 1 }} onPress={() => Actions.pop()}>
-                  <View style={styles.backButton}>
-                    <Icon name='action-undo' type='simple-line-icon' size={40} color='white' />
-                  </View>
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity style={{ flex: 1 }} onPress={() => Actions.pop()}>
+                <View style={styles.backButton}>
+                  <Icon name='action-undo' type='simple-line-icon' size={40} color='white' />
+                </View>
+              </TouchableOpacity>
+            </View>
           </View>
           :
           image ?
