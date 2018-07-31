@@ -68,8 +68,8 @@ class ScrollableTabBar extends React.Component {
         //When menu is fetched and component mounted, initialize the tabs and default tab
         if (this.props.menuReceived && !this.state.tabs && this.props.menuList.length > 0) {
             let tabs = this.props.menuList.find((item) => item['MenuID'] === this.props.tabID)['Children'];
-            this.setState({ tabs, currentTab: menuInfo[tabs[0]['MenuID']].name });
-            this.goto(menuInfo[tabs[0]['MenuID']].name);
+            this.setState({ tabs, currentTab: menuInfo[tabs[0]].name });
+            this.goto(menuInfo[tabs[0]].name);
         }
     }
 
@@ -79,14 +79,14 @@ class ScrollableTabBar extends React.Component {
     componentDidUpdate() {
         //Adjust highlighted tab position
         let tabs = this.state.tabs;
-        if (tabs && this.state.currentTab !== menuInfo[tabs[0]['MenuID']].name && Actions.currentScene === '_' + menuInfo[tabs[0]['MenuID']].name)
-            this.setState({ currentTab: menuInfo[tabs[0]['MenuID']].name });
+        if (tabs && this.state.currentTab !== menuInfo[tabs[0]].name && Actions.currentScene === '_' + menuInfo[tabs[0]].name)
+            this.setState({ currentTab: menuInfo[tabs[0]].name });
 
         //When menu is fetched, initialize the tabs and default tab
         if (this.props.menuReceived && !this.state.tabs && this.props.menuList.length > 0) {
             tabs = this.props.menuList.find((item) => item['MenuID'] === this.props.tabID)['Children'];
-            this.setState({ tabs, currentTab: menuInfo[tabs[0]['MenuID']].name });
-            this.goto(menuInfo[tabs[0]['MenuID']].name);
+            this.setState({ tabs, currentTab: menuInfo[tabs[0]].name });
+            this.goto(menuInfo[tabs[0]].name);
         }
     }
 
@@ -108,8 +108,8 @@ class ScrollableTabBar extends React.Component {
                     contentContainerStyle={styles.overlay}
                     data={this.state.tabs}
                     renderItem={({ item }) => {
-                        let source = getIcon(item['MenuID']),
-                            name = menuInfo[item['MenuID']].name;
+                        let source = getIcon(item),
+                            name = menuInfo[item].name;
 
                         return (
                             <TouchableOpacity onPress={() => this.goto(name)}>
@@ -120,7 +120,7 @@ class ScrollableTabBar extends React.Component {
                         );
                     }}
                     extraData={this.state.currentTab}
-                    keyExtractor={(item) => item['MenuName']} />
+                    keyExtractor={(item) => `${item}`} />
             </View>
         );
     }

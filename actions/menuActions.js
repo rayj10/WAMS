@@ -30,24 +30,21 @@ export function getAvailableMenu(token, errorCB) {
         return fetchAPI(endpoint, 'GET', header, null)
             .then((json) => {
                 let menu = [];
-                //find level 1 menu and sort them
+                //find level 1 menu
                 json.data.map((item) => {
                     if (item['ParentMenuID'] === menuInfo.Constants.ROOT) {
-                        menu.push(item);
+                        //find the children of currently iterated menu in the list
+                        let children = []
+                        json.data.map((subitem) => {
+                            if (subitem['ParentMenuID'] === item['MenuID'])
+                                children.push(subitem['MenuID']);
+                        });
+                        menu.push({ 'MenuID': item['MenuID'], 'Children': children });
                     }
                 });
-                menu.sort((a, b) => { return a['MenuID'] - b['MenuID'] });
 
-                //iterate the level 1 menu
-                menu.forEach((item) => {
-                    let subMenu = []
-                    //find the children of currently iterated menu in the list
-                    json.data.map((subitem) => {
-                        if (subitem['ParentMenuID'] === item['MenuID'])
-                            subMenu.push(subitem);
-                    });
-                    item['Children'] = subMenu;
-                });
+                //sort level 1 menu based on number of children
+                menu.sort((a, b) => { return b['Children'].length - a['Children'].length });
 
                 dispatch({ type: types.RECEIVE_MENU, menu: menu });
             })

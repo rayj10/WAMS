@@ -28,18 +28,24 @@ class ScanPage extends React.Component {
    * @param {String} input: String to be formatted 
    */
   formatString(input) {
-    let regex = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i;
+    let webUrl = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i;
+    let email = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i
 
     let jsString = [];
     let str = "";
 
     input.split(" ").forEach((item, key) => {
-      if (regex.test(item)) {
+      let isWeb = webUrl.test(item), isEmail = email.test(item);
+      if (isWeb || isEmail) {
         let protocol = "http://";
-        if (item.split("://")[0] === "http" || item.split("://")[0] === "https")
+        if (isEmail)
+          protocol = "mailto:";
+
+        let prefix = item.split(":")[0]
+        if (prefix === "http" || prefix === "https" || prefix === "ftp" || prefix === "mailto")
           protocol = "";
 
-        if (str !== "")
+        if (str !== ""){
           jsString.push(
             <View key={key} style={{ flexDirection: 'row' }}>
               <Text style={styles.textStyle}>{str} </Text>
@@ -48,10 +54,12 @@ class ScanPage extends React.Component {
               </TouchableOpacity>
             </View>
           );
-        else
+        }
+        else{
           jsString.push(<TouchableOpacity key={key} onPress={() => Linking.openURL(protocol + item)}>
             <Text style={style = [styles.textStyle, { textDecorationLine: 'underline', color: color.light_blue }]}>{item}</Text>
           </TouchableOpacity>);
+        }
         str = "";
       }
       else if (item === "\n" && str !== "") {
@@ -63,8 +71,7 @@ class ScanPage extends React.Component {
     });
 
     if (str !== "")
-      jsString.push(<Text key={jsString.length} style={styles.textStyle}>{str}</Text>);
-
+      jsString.push(<Text key={input.split(" ").length} style={styles.textStyle}>{str}</Text>);
     return jsString;
   }
 

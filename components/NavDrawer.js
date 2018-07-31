@@ -127,7 +127,7 @@ class NavDrawer extends React.Component {
         //When menu is fetched and component mounted, initialize the tabs and default tab
         if (this.props.menuReceived && !this.state.tabs && this.props.menuList.length > 0) {
             let tabs = this.props.menuList;
-            this.setState({ tabs, currentTab: menuInfo[tabs[0]['MenuID']].name, initialPage: menuInfo[tabs[0]['Children'][0]['MenuID']].name });
+            this.setState({ tabs, currentTab: menuInfo[tabs[0]['MenuID']].name, initialPage: menuInfo[tabs[0]['Children'][0]].name });
             this.goto(menuInfo[tabs[0]['MenuID']].name);
         }
 
@@ -158,7 +158,7 @@ class NavDrawer extends React.Component {
 
         //When is fetched, initialize the tabs and default tabs
         if (this.props.menuReceived && !this.state.tabs && this.props.menuList.length > 0) {
-            this.setState({ tabs, currentTab: menuInfo[tabs[0]['MenuID']].name, initialPage: menuInfo[tabs[0]['Children'][0]['MenuID']].name });
+            this.setState({ tabs, currentTab: menuInfo[tabs[0]['MenuID']].name, initialPage: menuInfo[tabs[0]['Children'][0]].name });
             this.goto(menuInfo[tabs[0]['MenuID']].name);
         }
     }
@@ -215,7 +215,7 @@ class NavDrawer extends React.Component {
                             );
                         }}
                         extraData={this.state.currentTab}
-                        keyExtractor={(item) => item['MenuName']} />
+                        keyExtractor={(item) => `${item['MenuID']}`} />
                 </View>
                 <Button title="Logout" onPress={this.onSignOut} buttonStyle={styles.button} textStyle={styles.navText} />
             </View>

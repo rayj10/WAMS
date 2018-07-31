@@ -28,9 +28,9 @@ class UserManual extends React.Component {
    */
   mapTabsToManuals(list) {
     return list.map(item => {
-      let title = menuInfo[item['MenuID']].name;
-      let content = menuInfo[item['MenuID']].manual;
-      let image = getIcon(item['MenuID'], 'white');
+      let title = menuInfo[item].name;
+      let content = menuInfo[item].manual;
+      let image = getIcon(item, 'white');
 
       return {
         image,

@@ -29,10 +29,10 @@ class QRScanner extends React.Component {
             this.props.menuReceived ? this.props.menuList.find((item) => item['MenuID'] === menuInfo.Constants.QRSCANNER)['Children'].map((item, key) => {
               return (
                 <View style={styles.buttonContainer} key={key}>
-                  <TouchableOpacity style={{ flex: 1 }} onPress={() => Actions.jump("ScanPage", { type: item['MenuID'] })}>
+                  <TouchableOpacity style={{ flex: 1 }} onPress={() => Actions.jump("ScanPage", { type: item })}>
                     <View style={styles.button}>
-                      <Image style={styles.image} source={getIcon(item['MenuID'])} />
-                      <Text style={styles.buttonText}> {menuInfo[item['MenuID']].name} </Text>
+                      <Image style={styles.image} source={getIcon(item)} />
+                      <Text style={styles.buttonText}> {menuInfo[item].name} </Text>
                     </View>
                   </TouchableOpacity>
                 </View>);
