@@ -200,19 +200,19 @@ class PODetails extends React.Component {
 
         if (vendor) {
             info.push(<View key={1} style={styles.priceSumRow}>
-                <Text style={[styles.priceSumData, { fontSize: fontSize.regular + 4}]}>{vendor[keys['vendor']]}</Text>
+                <Text style={[styles.priceSumData, { fontSize: fontSize.regular + 4 }]}>{vendor[keys['vendor']]}</Text>
             </View>);
             if (vendor[keys['vAdd1']] !== '')
                 info.push(<View key={2} style={styles.priceSumRow}>
-                    <Text style={[styles.priceSumData, {fontFamily: fontFamily.medium}]}>{vendor[keys['vAdd1']]}</Text>
+                    <Text style={[styles.priceSumData, { fontFamily: fontFamily.medium }]}>{vendor[keys['vAdd1']]}</Text>
                 </View>);
             if (vendor[keys['vAdd2']] !== '')
                 info.push(<View key={3} style={styles.priceSumRow}>
-                    <Text style={[styles.priceSumData, {fontFamily: fontFamily.medium}]}>{vendor[keys['vAdd2']]}</Text>
+                    <Text style={[styles.priceSumData, { fontFamily: fontFamily.medium }]}>{vendor[keys['vAdd2']]}</Text>
                 </View>);
             if (vendor[keys['vAdd3']] !== '')
                 info.push(<View key={4} style={styles.priceSumRow}>
-                    <Text style={[styles.priceSumData, {fontFamily: fontFamily.medium}]}>{vendor[keys['vAdd3']]}</Text>
+                    <Text style={[styles.priceSumData, { fontFamily: fontFamily.medium }]}>{vendor[keys['vAdd3']]}</Text>
                 </View>);
             info.push(<View key={5} style={[styles.priceSumRow, { flexDirection: 'row' }]}>
                 <Text style={[styles.priceSumKeys, { flex: 0.5 }]}>{"Phone: "}</Text>
@@ -254,19 +254,19 @@ class PODetails extends React.Component {
                 <Text style={[styles.priceSumData, { fontSize: fontSize.regular + 4 }]}>{sales[keys['sales']]}</Text>
             </View>);
             info.push(<View key={2} style={[styles.priceSumRow, { flexDirection: 'row' }]}>
-                <Text style={[styles.priceSumKeys, { flex: 0.5 }]}>{"Phone:"}</Text>
+                <Text style={[styles.priceSumKeys, { flex: 0.5 }]}>{"Phone: "}</Text>
                 <Text onPress={() => sales[keys['sPhone']] !== "" ? Linking.openURL("tel: " + sales[keys['sPhone']]) : null} style={[styles.priceSumData, sales[keys['sPhone']] !== "" ? { color: color.light_blue, textDecorationLine: 'underline' } : null]}>
                     {sales[keys['sPhone']] === "" ? "-" : sales[keys['sPhone']]}
                 </Text>
             </View>);
             info.push(<View key={3} style={[styles.priceSumRow, { flexDirection: 'row' }]}>
-                <Text style={[styles.priceSumKeys, { flex: 0.5 }]}>{"Mobile 1:"}</Text>
+                <Text style={[styles.priceSumKeys, { flex: 0.5 }]}>{"Mobile 1: "}</Text>
                 <Text onPress={() => sales[keys['sMob1']] !== "" ? Linking.openURL("tel: " + sales[keys['sMob1']]) : null} style={[styles.priceSumData, sales[keys['sMob1']] !== "" ? { color: color.light_blue, textDecorationLine: 'underline' } : null]}>
                     {sales[keys['sMob1']] === "" ? "-" : sales[keys['sMob1']]}
                 </Text>
             </View>);
             info.push(<View key={4} style={[styles.priceSumRow, { flexDirection: 'row' }]}>
-                <Text style={[styles.priceSumKeys, { flex: 0.5 }]}>{"Mobile 2:"}</Text>
+                <Text style={[styles.priceSumKeys, { flex: 0.5 }]}>{"Mobile 2: "}</Text>
                 <Text onPress={() => sales[keys['sMob2']] !== "" ? Linking.openURL("tel: " + sales[keys['sMob2']]) : null} style={[styles.priceSumData, sales[keys['sMob2']] !== "" ? { color: color.light_blue, textDecorationLine: 'underline' } : null]}>
                     {sales[keys['sMob2']] === "" ? "-" : sales[keys['sMob2']]}
                 </Text>
@@ -304,8 +304,8 @@ class PODetails extends React.Component {
                 content = (
                     <ScrollView>
                         <View style={styles.requestHead}>
-                            <View style={{ flex: 0.2, alignItems: 'center', justifyContent: 'center', marginHorizontal: normalize(2), marginTop: normalize(2), borderRadius: 6, backgroundColor: img.formStatus[header[keys['status']]].color }}>
-                                <Text style={[styles.textStyle, { marginLeft: 0, fontSize: normalize(18), color: color.white }]}>
+                            <View style={{ flex: 0.2, alignItems: 'center', justifyContent: 'center', margin: normalize(1), borderRadius: 6, backgroundColor: img.formStatus[header[keys['status']]].color }}>
+                                <Text style={[styles.textStyle, { flex: 0, margin: 0, fontSize: normalize(18), color: color.white }]}>
                                     {header[keys['status']]}
                                 </Text>
                             </View>

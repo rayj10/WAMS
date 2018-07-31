@@ -151,8 +151,8 @@ class RequestConfirm extends React.Component {
             content = (
                 <ScrollView>
                     <View style={styles.requestHead}>
-                        <View style={{ flex: 0.3, alignItems: 'center', justifyContent: 'center', marginHorizontal: normalize(2), marginTop: normalize(2), borderRadius: 6, backgroundColor: img.formStatus[header[keys['status']]].color }}>
-                            <Text style={[styles.textStyle, { marginLeft: 0, fontSize: normalize(18), color: color.white }]}>
+                        <View style={{ flex: 0.3, alignItems: 'center', justifyContent: 'center', margin: normalize(1), borderRadius: 6, backgroundColor: img.formStatus[header[keys['status']]].color }}>
+                            <Text style={[styles.textStyle, { flex: 0, margin: 0, fontSize: normalize(18), color: color.white }]}>
                                 {header[keys['status']]}
                             </Text>
                         </View>
@@ -172,7 +172,7 @@ class RequestConfirm extends React.Component {
                         </View>
                         <View style={[styles.horizontalSubRequestHead, { flex: 0.3, justifyContent: 'center' }]}>
                             <Text style={[styles.titleTextStyle, { textAlign: 'right', paddingRight: 5 }]}>{"DO Number: "}</Text>
-                            <PickerWrapper items={this.state.DONo} style={{ flex: 1.3, marginTop: normalize(3) }} onSelect={(pickedDO) => this.onDOPicked(pickedDO)} />
+                            <PickerWrapper items={this.state.DONo} style={{ flex: 1.3 }} onSelect={(pickedDO) => this.onDOPicked(pickedDO)} />
                         </View>
                     </View>
 
@@ -234,7 +234,7 @@ class RequestConfirm extends React.Component {
                                     <Text style={styles.textStyle}>{item[keys['mac']]}</Text>
                                 </View>
                             </View>
-                            <View style={[styles.verticalSubPanel, { flex: 0.6, justifyContent: 'center', alignItems: 'flex-start' }]}>
+                            <View style={[styles.verticalSubPanel, { justifyContent: 'center' }]}>
                                 <CheckBoxWrapper title='Verified' onCheck={() => this.onCheck(item[keys['code']], item[keys['piece']])} />
                             </View>
                         </View>)

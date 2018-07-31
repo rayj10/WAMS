@@ -153,11 +153,11 @@ class NavDrawer extends React.Component {
         }
 
         //Adjust highlighted tab position
-        if (this.props.menuReceived && this.props.menuList.length > 0 && this.state.currentTab !== menuInfo[tabs[0]['MenuID']].name && Actions.currentScene === '_' + this.state.initialPage)
+        if (this.props.menuReceived && tabs.length > 0 && this.state.currentTab !== menuInfo[tabs[0]['MenuID']].name && Actions.currentScene === '_' + this.state.initialPage)
             this.setState({ currentTab: menuInfo[tabs[0]['MenuID']].name })
 
         //When is fetched, initialize the tabs and default tabs
-        if (this.props.menuReceived && !this.state.tabs && this.props.menuList.length > 0) {
+        if (this.props.menuReceived && !this.state.tabs && tabs.length > 0) {
             this.setState({ tabs, currentTab: menuInfo[tabs[0]['MenuID']].name, initialPage: menuInfo[tabs[0]['Children'][0]].name });
             this.goto(menuInfo[tabs[0]['MenuID']].name);
         }

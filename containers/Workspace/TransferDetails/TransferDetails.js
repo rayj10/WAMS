@@ -181,8 +181,8 @@ class TransferDetails extends React.Component {
                 content = (
                     <ScrollView>
                         <View style={styles.requestHead}>
-                            <View style={{ flex: 0.2, alignItems: 'center', justifyContent: 'center', marginHorizontal: normalize(2), marginTop: normalize(2), borderRadius: 6, backgroundColor: img.formStatus[header[keys['status']]].color }}>
-                                <Text style={[styles.textStyle, { marginLeft: 0, fontSize: normalize(18), color: color.white }]}>
+                            <View style={{ flex: 0.2, alignItems: 'center', justifyContent: 'center', margin: normalize(1), borderRadius: 6, backgroundColor: img.formStatus[header[keys['status']]].color }}>
+                                <Text style={[styles.textStyle, { flex: 0, margin: 0, fontSize: normalize(18), color: color.white }]}>
                                     {header[keys['status']]}
                                 </Text>
                             </View>
@@ -241,7 +241,7 @@ class TransferDetails extends React.Component {
             if (this.props.caller === 'Approval')
                 lastLine = (
                     <View style={styles.verticalSubPanel}>
-                        <Text style={[styles.textStyle, { flex:1, textAlign: 'right', marginLeft: 0 }]}>{"Verification:"}</Text>
+                        <Text style={[styles.textStyle, { flex: 1, textAlign: 'right', marginLeft: 0 }]}>{"Verification:"}</Text>
                         <PickerWrapper items={['Arrived', 'Missed']} style={{ flex: 1.2, marginTop: normalize(3) }} onSelect={(verification) => this.onPickerSelect(item[keys['piece']], verification)} />
                     </View>
                 );

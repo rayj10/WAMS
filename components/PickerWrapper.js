@@ -36,12 +36,12 @@ class PickerWrapper extends React.Component {
 
         if (Platform.OS === 'ios')
             return (
-                <View style={[this.props.style]}>
+                <View style={this.props.style}>
                     {iosPickerModal}
                     <TouchableOpacity onPress={() => this.setState({ modal: true })}>
-                        <View style={{ flexDirection: 'row', width: 0.3 * windowWidth, height: normalize(25), borderWidth: 1, borderColor: color.light_grey, marginLeft: normalize(10), justifyContent: 'space-around', alignItems: 'center', borderRadius: 4 }}>
-                            <Text style={{ fontFamily: fontFamily.regular }}> {this.state.verification}</Text>
-                            <IconWrapper name='md-arrow-dropdown' type='ionicon' color={color.light_grey} size={20} onPress={() => this.setState({ modal: true })} />
+                        <View style={{ flexDirection: 'row', width: normalize(140), height: normalize(25), borderWidth: 1, borderColor: color.light_grey, marginLeft: normalize(10), justifyContent: 'center', alignItems: 'center', borderRadius: 4 }}>
+                            <Text style={{ fontFamily: fontFamily.regular, marginRight: 30 }}> {this.state.verification}</Text>
+                            <IconWrapper name='md-arrow-dropdown' type='ionicon' color={color.light_grey} size={20} onPress={() => this.setState({ modal: true })} style={{ position: 'absolute', right: 10 }} />
                         </View>
                     </TouchableOpacity>
                 </View >);

@@ -14,6 +14,7 @@ import { isEmpty, validate } from '../utils/validate'
 import AuthTextInput from './AuthTextInput'
 import { color, windowWidth, normalize, fontSize, fontFamily, windowHeight } from '../theme/baseTheme';
 import { img } from '../assets/images';
+import app from '../app.json';
 
 const styles = StyleSheet.create({
     container: {
@@ -28,15 +29,15 @@ const styles = StyleSheet.create({
     },
 
     image: {
-        height: normalize(160),
+        height: normalize(120),
         width: windowWidth - 35,
-        marginBottom: normalize(15),
         alignSelf: 'center',
-        resizeMode: 'contain'
+        resizeMode: 'contain',
+        marginBottom: normalize(15)
     },
 
     wrapper: {
-        marginVertical:windowHeight/10,
+        marginVertical: windowHeight / 7,
         justifyContent: "center",
     },
 
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
     },
 
     containerView: {
-        marginVertical: 24,
+        marginVertical: normalize(24),
         width: windowWidth - 40
     },
 
@@ -66,6 +67,12 @@ const styles = StyleSheet.create({
         color: color.black,
         fontSize: fontSize.regular + 2,
         fontFamily: fontFamily.bold,
+    },
+
+    versionInfo: {
+        fontSize: fontSize.small - 2,
+        fontFamily: fontFamily.light,
+        marginLeft: 17
     }
 });
 
@@ -152,6 +159,7 @@ class loginForm extends React.Component {
         return (
             <KeyboardAvoidingView style={styles.container} behavior="padding">
                 <View style={styles.wrapper}>
+                    <Text style={styles.versionInfo}>{"Version " + app.expo.version}</Text>
                     <Image style={styles.image} source={img.app.Logo} />
                     {
                         (!isEmpty(this.state.error['general'])) &&

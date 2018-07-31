@@ -8,7 +8,7 @@ import { color, fontFamily, fontSize, windowWidth, windowHeight, normalize } fro
 const styles = StyleSheet.create({
     dialogBox: {
         backgroundColor: color.white,
-        width: 0.8 * windowWidth,
+        width: 0.88 * windowWidth,
         height: 0.25 * windowHeight,
         borderRadius: normalize(4),
         alignSelf: 'center'
