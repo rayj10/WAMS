@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
 
   buttonContainer: {
     height: normalize(150),
-    width: normalize((windowWidth - 20) / 3)
+    width: normalize((windowWidth - 60) / 3) < normalize(120) ? normalize((windowWidth - 60) / 3) : normalize(120)
   },
 
   button: {

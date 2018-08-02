@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { padding, color, fontSize, fontFamily, windowWidth, normalize, windowHeight } from '../../theme/baseTheme';
+import { color, fontSize, fontFamily, windowWidth, normalize, windowHeight } from '../../theme/baseTheme';
 
 const styles = StyleSheet.create({
   container: {
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 
   buttonContainer: {
     height: normalize(150),
-    width: normalize((windowWidth - 60) / 3)
+    width: normalize((windowWidth - 30) / 3) < normalize(120) ? normalize((windowWidth - 30) / 3) : normalize(120),
   },
 
   button: {

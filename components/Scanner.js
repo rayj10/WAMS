@@ -2,7 +2,7 @@ import React from 'react';
 import {
     Text,
     View,
-    StyleSheet
+    StyleSheet, Platform
 } from 'react-native';
 import { BarCodeScanner, Permissions, Camera } from 'expo';
 
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     scanArea: {
-        height: windowHeight - 70,
+        height: windowHeight - 0.11 * windowHeight,
         width: windowWidth
     },
     layerTop: {
@@ -107,12 +107,14 @@ export default class Scanner extends React.Component {
                         this.state.hasCameraPermission === false ?
                             <Text style={{ color: '#fff' }}> Camera permission is not granted </Text> :
 
-                            <BarCodeScanner
+                            <Camera
                                 onBarCodeRead={this.onSuccessRead.bind(this)}
                                 style={styles.scanArea}
                                 autoFocus={Camera.Constants.AutoFocus.on}
                                 focusDepth={1}
-                                torchMode={this.props.torch}>
+                                useCamera2Api={Platform.OS === 'android' ? Platform.Version > 21 : false}
+                                flashMode={this.props.torch ? Camera.Constants.FlashMode.torch : Camera.Constants.FlashMode.off}
+                                >
 
                                 <View style={styles.layerTop} />
                                 <View style={styles.layerCenter}>
@@ -121,7 +123,7 @@ export default class Scanner extends React.Component {
                                     <View style={styles.layerRight} />
                                 </View>
                                 <View style={styles.layerBottom} />
-                            </BarCodeScanner>
+                            </Camera>
                 }
             </View>
         );

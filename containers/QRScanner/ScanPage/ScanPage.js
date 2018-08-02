@@ -117,7 +117,7 @@ class ScanPage extends React.Component {
         }
         <Scanner
           onRead={this.onBarcodeRead}
-          torch={this.state.torchOn ? 'on' : 'off'} />
+          torch={this.state.torchOn} />
         <View style={styles.backButtonContainer}>
           <TouchableOpacity style={{ flex: 1 }} onPress={() => Actions.pop()}>
             <View style={styles.backButton}>

@@ -5,7 +5,7 @@ import { StyleSheet, View } from 'react-native';
 
 import OfflineNotice from './OfflineNotice';
 import IconWrapper from './IconWrapper';
-import { color, fontSize, fontFamily, normalize } from '../theme/baseTheme';
+import { color, fontSize, fontFamily, windowHeight, normalize } from '../theme/baseTheme';
 
 const styles = StyleSheet.create({
     headerText: {
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 
     headerOuterContainer: {
         backgroundColor: color.blue,
-        height: normalize(75),
+        height: 0.11 * windowHeight,
         padding: 0,
         borderBottomWidth: 0,
     },

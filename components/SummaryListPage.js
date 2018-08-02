@@ -51,8 +51,8 @@ const styles = StyleSheet.create({
     }
 });
 
-class MyListItem extends React.PureComponent{
-    render(){
+class MyListItem extends React.PureComponent {
+    render() {
         let info = this.props.buildPanel(this.props.item);
         status = this.props.name === 'PO' || this.props.name === 'DO Customer' ? info.slice(4) : info.slice(3);
         info = this.props.name === 'PO' || this.props.name === 'DO Customer' ? info.slice(0, 4) : info.slice(0, 3);
@@ -92,7 +92,7 @@ class SummaryListPage extends React.Component {
      */
     renderSummary(headers) {
         return headers.map((item, key) => {
-           return <MyListItem item={item} index={key} buildPanel={this.buildPanel.bind(this)} {...this.props}/>
+            return <MyListItem item={item} index={key} buildPanel={this.buildPanel.bind(this)} {...this.props} />
         });
     }
 
@@ -149,9 +149,11 @@ class SummaryListPage extends React.Component {
      * Fetch new data for the FlatList using callback supplied to onRefresh props
      */
     onRefresh() {
+        //inside checking of this.mounted ensures that when the fetching is slow for some reason and user clicked away,
+        //it wouldn't try to setState on unmounted component
         if (this.mounted)
             this.setState({ refreshing: true },
-                () => this.props.onRefresh(() => this.setState({ refreshing: false })));
+                () => this.props.onRefresh(() => this.mounted ? this.setState({ refreshing: false }) : null));
     }
 
     render() {
