@@ -18,7 +18,7 @@ import {
     Approval, DOCustomer, MyConfirmation,
     MyRequest, ViewPage, Report, RequestDetails,
     PODetails, TransferDetails, RequestConfirm,
-    DODetails, TaskList
+    DODetails, TaskList, TaskDetails
 } from './containers/Workspace';
 import { QRScanner, ScanPage } from './containers/QRScanner';
 import { Help, UserManual, FAQ } from './containers/Help';
@@ -126,6 +126,7 @@ class Routes extends React.Component {
                                 <Scene key="TransferDetails" hideNavBar component={TransferDetails} title="Transfer Details" />
                                 <Scene key="RequestConfirm" hideNavBar component={RequestConfirm} title="Request Confirm" />
                                 <Scene key="DODetails" hideNavBar component={DODetails} title="DO Details" />
+                                <Scene key="TaskDetails" hideNavBar component={TaskDetails} title="Task Details" />
                             </Scene>
                             <Scene key="Help" navBar={() => <PageHeader title='Help' />} title="Help" drawerLockMode={'locked-closed'}>
                                 <Scene tabs={true} hideTabBar animationEnabled={false} swipeEnabled={false} lazy={true}>

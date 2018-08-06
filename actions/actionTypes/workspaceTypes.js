@@ -19,6 +19,8 @@ export const RECEIVE_DOCUST = 'workspace/RECEIVE_DOCUST';
 export const EMPTY_DOCUST = 'workspace/EMPTY_DOCUST';
 export const RECEIVE_TASKLIST = 'workspace/RECEIVE_TASKLIST';
 export const EMPTY_TASKLIST = 'workspace/EMPTY_TASKLIST';
+export const RECEIVE_INTRA_TASKLIST = 'workspace/RECEIVE_INTRA_TASKLIST';
+export const EMPTY_INTRA_TASKLIST = 'workspace/EMPTY_INTRA_TASKLIST';
 export const RECEIVE_INSTALLERS = 'workspace/RECEIVE_INSTALLERS';
 export const EMPTY_INSTALLERS = 'workspace/EMPTY_INSTALLERS';
 

@@ -37,7 +37,7 @@ class DOCustomer extends React.Component {
   //fetch data to be displayed as soon as the component is mounted
   componentDidMount() {
     this.mounted = true;
-    this.props.actionsWorkspace.getListDOCustomer(this.props.token, this.onFetchFinish, 1)
+    this.props.actionsWorkspace.getListDOCustomer(this.props.token, this.onFetchFinish)
   }
 
   /**
@@ -68,7 +68,7 @@ class DOCustomer extends React.Component {
     let refresh = (finishRefresh) => this.props.actionsWorkspace.getListDOCustomer(this.props.token, (status) => this.onFetchFinish(status, finishRefresh && finishRefresh()), 1);
 
     if (this.props.DOCustListReceived)
-      return <SummaryListPage name={pageName} title={pageName} status={this.state.fetchStatus} onRefresh={refresh} list={this.props.DOCustList} keys={keys} onShowDetails={(reqHead) => Actions.DODetails({ header: reqHead, user: 'Admin', keys, refresh })} />
+      return <SummaryListPage name={pageName} title={pageName} status={this.state.fetchStatus} onRefresh={refresh} list={this.props.DOCustList} keys={keys} onShowDetails={(reqHead) => Actions.DODetails({ header: reqHead, keys, refresh })} />
     else
       return <SummaryListPage name={pageName} title={pageName} status={this.state.fetchStatus} onRefresh={refresh} />
   }

@@ -95,14 +95,15 @@ export function getUserProfile(token, password, resultCB) {
 }
 
 export function getIntranetDetails(empID, resultCB) {
-    var endpoint = 'api.php?method=DetailStaff&staff_id=' + empID + '&key=xkRKJui9acBcx4CG/HCeboyIDF==';
+    var endpoint = `api.php?method=DetailStaff&staff_id=${empID}&key=xkRKJui9acBcx4CG/HCeboyIDF==`;
+    let url = 'http://10.64.2.54/api-mob/';
 
     let header = {
         "Content-Type": "application/json"
     };
 
     return dispatch => {
-        return fetchAPI(endpoint, 'GET', header, null, 'http://10.64.2.54/api-mob/')
+        return fetchAPI(endpoint, 'GET', header, null, url)
             .then((json) => {
                 resultCB(json.Detail);
             })

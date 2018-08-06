@@ -31,7 +31,7 @@ export const img =
     formStatus: {
         "Open": { name: 'open-book', type: 'entypo', color: '#ffb732' },
         "Approve": { name: 'checklist', type: 'octicon', color: '#3CB371' },
-        "Escalated": { name: 'mail-forward', type: 'font-awesome', color: '#ffae19' },
+        "Escalated": { name: 'mail-forward', type: 'font-awesome', color: '#ffb732' },
         "Deliver": { name: 'truck-fast', type: 'material-community', color: '#8B4513' },
         "On Warehouse": { name: 'garage', type: 'material-community', color: '#8B4513' },
         "On PO": { name: 'basket', type: 'simple-line-icon', color: '#05B8CC' },
@@ -43,7 +43,7 @@ export const img =
     itemStatus: {
         "Open": { name: 'open-book', type: 'entypo', color: '#ffb732' },
         "Approved": { name: 'checklist', type: 'octicon', color: '#3CB371' },
-        "Escalated": { name: 'mail-forward', type: 'font-awesome', color: '#ffae19' },
+        "Escalated": { name: 'mail-forward', type: 'font-awesome', color: '#ffb732' },
         "Deliver Partial": { name: 'arrange-send-to-back', type: 'material-community', color: '#8B4513' },
         "Deliver": { name: 'truck-fast', type: 'material-community', color: '#8B4513' },
         "Handle": { name: 'garage', type: 'material-community', color: '#8B4513' },
@@ -52,6 +52,13 @@ export const img =
         "Cancel": { name: 'cancel', type: 'material-community', color: '#ff3030' },
         "Reject": { name: 'close-octagon-outline', type: 'material-community', color: '#ff3030' },
         "Finish": { name: 'account-check', type: 'material-community', color: '#6B8E23' }
+    },
+    taskCategory: {
+        Survey: { name: 'clipboard', type: 'font-awesome', color: '#ffb732' },
+        Meeting: { name: 'person-pin', type: null, color: '#3CB371' },
+        Instalasi: { name: 'install', type: 'entypo', color: '#6B8E23' },
+        Dismantle: { name: 'uninstall', type: 'entypo', color: '#ff3232' },
+        Troubleshooting: { name: 'wrench', type: 'font-awesome', color: '#ffb732' },
     }
 };
 

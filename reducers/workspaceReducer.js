@@ -16,6 +16,7 @@ let initialState = {
     myRequestListReceived: false,
     DOCustListReceived: false,
     taskListReceived: false,
+    intraTaskListReceived: false,
     installerListReceived: false,
 
     requestApprovalList: {},
@@ -33,6 +34,7 @@ let initialState = {
     myRequestList: {},
     DOCustList: {},
     taskList: {},
+    intraTaskList: {},
     installerList: {}
 };
 
@@ -82,6 +84,10 @@ export default function workspaceReducer(state = initialState, action) {
             return Object.assign({}, state, { taskListReceived: true, taskList: action.taskList }); break;
         case t.EMPTY_TASKLIST:
             return Object.assign({}, state, { taskListReceived: false, taskList: {} }); break;
+        case t.RECEIVE_INTRA_TASKLIST:
+            return Object.assign({}, state, { intraTaskListReceived: true, intraTaskList: action.intraTaskList }); break;
+        case t.EMPTY_INTRA_TASKLIST:
+            return Object.assign({}, state, { intraTaskListReceived: false, intraTaskList: {} }); break;
         case t.RECEIVE_INSTALLERS:
             return Object.assign({}, state, { installerListReceived: true, installerList: action.installerList }); break;
         case t.EMPTY_INSTALLERS:

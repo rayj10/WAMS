@@ -849,16 +849,43 @@ export function getListDOCustomer(token, resultCB, options) {
                 else
                     dispatch({ type: types.RECEIVE_TASKLIST, taskList: json.data });
 
-                resultCB(json.message);
+                resultCB(json.message, 'WAMS');
             })
             .catch((error) => {
                 if (options === 1)
-                dispatch({ type: types.EMPTY_DOCUST });
+                    dispatch({ type: types.EMPTY_DOCUST });
                 else
-                dispatch({ type: types.EMPTY_TASKLIST });
-                
-                resultCB(error);
+                    dispatch({ type: types.EMPTY_TASKLIST });
+
+                resultCB(error, 'WAMS');
             });
+    }
+}
+
+export function getTaskList(empID, resultCB) {
+    let endpoint = `api.php?method=Customer_visit&staff_id=${empID}&key=xkRKJui9acBcx4CG/UAdasjajH==`;
+    let url = 'http://10.64.2.54/api-mob/';
+
+    let header = {
+        "Content-Type": "application/json"
+    };
+
+    return dispatch => {
+        return fetchAPI(endpoint, 'GET', header, null, url)
+            .then((json) => {
+                if (json.Detail !== null) {
+                    dispatch({ type: types.RECEIVE_INTRA_TASKLIST, intraTaskList: Object.values(json.Detail) });
+                    resultCB('success', 'Intranet');
+                }
+                else {
+                    dispatch({ type: types.EMPTY_INTRA_TASKLIST });
+                    resultCB('no record found', 'Intranet');
+                }
+            })
+            .catch((error) => {
+                dispatch({ type: types.EMPTY_TASKLIST });
+                resultCB(error, 'Intranet');
+            })
     }
 }
 

@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import {
     View, Alert, Text,
     ScrollView, ActivityIndicator,
-    TouchableOpacity, Linking
+    Linking
 } from 'react-native';
 
 import styles from "./styles";
@@ -15,47 +15,41 @@ import PageHeader from '../../../components/Header';
 import IconWrapper from '../../../components/IconWrapper';
 import PickerWrapper from '../../../components/PickerWrapper';
 import DialogBoxModal from '../../../components/DialogBoxModal';
-import EditInstallerModal from '../../../components/EditInstallerModal';
 import { color, normalize, fontSize, fontFamily } from '../../../theme/baseTheme';
-import errors from '../../../json/errors.json';
 import { img } from '../../../assets/images';
 
-//Maps reducer's states to DODetails props
+//Maps reducer's states to TaskDetails props
 export const mapStateToProps = state => ({
     token: state.authReducer.token,
     detailsReceived: state.workspaceReducer.detailsReceived,
     details: state.workspaceReducer.details,
-    installerListReceived: state.workspaceReducer.installerListReceived,
-    installerList: state.workspaceReducer.installerList
 });
 
-//Maps actions to DODetails props
+//Maps actions to TaskDetails props
 export const mapDispatchToProps = (dispatch) => ({
     actionsWorkspace: bindActionCreators(workspaceAction, dispatch),
 });
 
-class DODetails extends React.Component {
+class TaskDetails extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             fetchStatus: null,
             custDetails: false,
-            selectedInstaller: null,
-            editInstaller: false,
             itemActions: [],
         };
 
         this.onPickerSelect = this.onPickerSelect.bind(this);
         this.onSave = this.onSave.bind(this);
-        this.changeInstaller = this.changeInstaller.bind(this);
-        this.getInstallerList = this.getInstallerList.bind(this);
         this.onFetchFinish = this.onFetchFinish.bind(this);
     }
 
     componentDidMount() {
         this.mounted = true;
-        this.props.actionsWorkspace.getDOCustDetails(this.props.header[this.props.keys['no']], this.props.token, this.onFetchFinish);
-        this.props.actionsWorkspace.getInstallerList(this.props.token, this.onFetchFinish);
+        if (this.props.DONo)
+            this.props.actionsWorkspace.getDOCustDetails(this.props.DONo, this.props.token, this.onFetchFinish);
+        else
+            this.setState({ fetchStatus: 'none' });
     }
 
     componentWillUnmount() {
@@ -150,67 +144,6 @@ class DODetails extends React.Component {
     }
 
     /**
-     * Build list of installers to be assigned with the list fetched from API
-     */
-    getInstallerList() {
-        if (this.props.installerListReceived)
-            return this.props.installerList.map((item, key) =>
-                <TouchableOpacity key={key} onPress={() => this.setState({ selectedInstaller: { name: item['name'], Ucode: item['id'] } })}>
-                    <View style={[styles.installerListItem, this.state.selectedInstaller && this.state.selectedInstaller.name === item['name'] ? styles.activeItem : {}]}>
-                        <Text style={styles.installerListText}>{item['name']}</Text>
-                    </View>
-                </TouchableOpacity>);
-        return [];
-    }
-
-    /**
-     * Update the installer assigned to this DO Customer job
-     */
-    changeInstaller() {
-        this.setState({ editInstaller: false });   //close modal
-        let installer = this.state.selectedInstaller;
-
-        //Timeout is workaround for react native modal problem
-        setTimeout(() => {
-            //Check if installer has been picked before pressing forward
-            if (installer !== null) {
-                let { name, Ucode } = installer;
-                Alert.alert('Edit Confirmation', 'You are about to assign this task to ' + name + '\n\nProceed?', [
-                    { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-                    {
-                        text: 'Proceed', onPress: () => {
-                            this.props.actionsWorkspace.updateInstaller(this.props.token,
-                                this.props.header[this.props.keys['no']],
-                                Ucode,
-                                (status, title, msg) => {
-                                    if (status === 'success')
-                                        Alert.alert(title, msg + name, [
-                                            {
-                                                text: 'OK', onPress: () => {
-                                                    this.props.refresh();
-                                                    setTimeout(() => Actions.pop(), 300);
-                                                }
-                                            }
-                                        ]);
-                                    else
-                                        Alert.alert(status);
-                                }
-                            );
-                        }
-                    }
-                ]);
-            }
-            else
-                Alert.alert('Oops!', 'You must pick an installer before saving', [
-                    { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-                    { text: 'Pick an Installer', onPress: () => this.setState({ editInstaller: true }) } //reopen modal
-                ])
-        }, 1200);
-
-        this.setState({ selectedInstaller: null }); //un-highlight the last choice
-    }
-
-    /**
      * Build customer information modal content
      */
     getCustomerInfo() {
@@ -278,65 +211,62 @@ class DODetails extends React.Component {
      * Render complete DO form with the help of renderItems to render individual panels for items
      */
     renderDO() {
-        let content = (
-            <View style={{ flex: 1, justifyContent: 'center' }}>
-                <ActivityIndicator animating={true} size='large' />
-            </View>);
-        let status = this.state.fetchStatus;
-
-        if (status !== null) {
-            if (this.props.detailsReceived) {
-                let { header, details, keys } = this.props;
-
-                content = (
-                    <ScrollView>
-                        <View style={styles.requestHead}>
-                            <View style={{ flex: 0.2, alignItems: 'center', justifyContent: 'center', margin: normalize(1), borderRadius: 6, backgroundColor: img.formStatus[header[keys['status']]].color }}>
-                                <Text style={[styles.textStyle, { flex: 0, margin: 0, fontSize: normalize(18), color: color.white }]}>
-                                    {header[keys['status']]}
-                                </Text>
-                            </View>
-                            <View style={styles.horizontalSubRequestHead}>
-                                <View style={styles.verticalSubRequestHead}>
-                                    <Text style={styles.titleTextStyle}>{"DO No.:"}</Text>
-                                    <Text style={styles.textStyle}>{header[keys['no']]}</Text>
-                                    <Text style={styles.titleTextStyle}>{"Giver :"}</Text>
-                                    <Text style={styles.textStyle}>{header[keys['giver']]}</Text>
-                                    <Text style={styles.titleTextStyle}>{"Request Date:"}</Text>
-                                    <Text style={styles.textStyle}>{header[keys['date']]}</Text>
-                                </View>
-                                <View style={styles.verticalSubRequestHead}>
-                                    <Text style={styles.titleTextStyle}>{"Ticket No.:"}</Text>
-                                    <Text style={styles.textStyle}>{header[keys['ticket']]}</Text>
-                                    <Text style={styles.titleTextStyle}>{"Installer:"}</Text>
-                                    <Text style={styles.textStyle}>{header[keys['installer']]}</Text>
-                                    <Text style={styles.titleTextStyle}>{"Customer:"}</Text>
-                                    <Text onPress={() => this.setState({ custDetails: true })} style={[styles.textStyle, { color: color.light_blue, textDecorationLine: 'underline' }]}>
-                                        {details.Customer[keys['cust']]}
-                                    </Text>
-                                </View>
-                            </View>
-                        </View>
-                        <View style={styles.requestBody}>
-                            {this.renderItems(details.Items)}
-                        </View>
-                    </ScrollView>);
-            }
-            else {
-                if (errors[status] === undefined)
-                    status = 'Unknown Error';
-
-                content = (
-                    <View style={{ alignItems: 'center' }}>
-                        <Text style={[styles.titleTextStyle, { textAlign: 'center', fontSize: 20 }]}>{'\n\n' + errors[status].name + '\n'}</Text>
-                        <Text style={[styles.titleTextStyle, { textAlign: 'center', fontSize: 16 }]}>
-                            {errors[status].message}
+        let { header, keys } = this.props;
+        let date = new Date(header[keys['date']].replace(/\./g, '-')).toString().split(' ');
+        return (
+            <ScrollView>
+                <View style={styles.requestHead}>
+                    <View style={{ flex: 0.15, alignItems: 'center', justifyContent: 'center', margin: normalize(1), borderRadius: 6, backgroundColor: img.taskCategory[header[keys['category']]].color }}>
+                        <Text style={[styles.textStyle, { flex: 0, margin: 0, fontSize: normalize(18), color: color.white }]}>
+                            {header[keys['category']]}
                         </Text>
                     </View>
-                );
-            }
-        }
-        return content;
+                    <View style={styles.horizontalSubRequestHead}>
+                        <View style={styles.verticalSubRequestHead}>
+                            <View style={{ flex: 1 }}>
+                                <Text style={styles.titleTextStyle}>{"Tanggal Pergi:"}</Text>
+                                <Text style={styles.textStyle}>{`${date[2]} ${date[1]} ${date[3]}`}</Text>
+                                <Text style={styles.titleTextStyle}>{"Jam Pergi:"}</Text>
+                                <Text style={styles.textStyle}>{header[keys['time']]}</Text>
+                            </View>
+                            <View style={{ flex: 1 }}>
+                                <Text style={[styles.titleTextStyle, { flex: 0 }]}>{"Keperluan:"}</Text>
+                                <Text style={styles.textStyle}>{header[keys['needs']]}</Text>
+                            </View>
+                        </View>
+                        <View style={styles.verticalSubRequestHead}>
+                            <View style={{ flex: 1 }}>
+                                <Text style={styles.titleTextStyle}>{"PIC Staff:"}</Text>
+                                <Text style={styles.textStyle}>{header[keys['pic']]}</Text>
+                                <Text style={styles.titleTextStyle}>{"Customer:"}</Text>
+                                <Text onPress={() => this.setState({ custDetails: true })} style={[styles.textStyle, { color: color.light_blue, textDecorationLine: 'underline' }]}>
+                                    {this.state.detailsReceived ? details.Customer[keys['cust']] : null}
+                                </Text>
+                            </View>
+                            <View style={{ flex: 1 }}>
+                                <Text style={[styles.titleTextStyle, { flex: 0 }]}>{"Catatan:"}</Text>
+                                <Text style={styles.textStyle}>{header[keys['note']]}</Text>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+                {
+                    this.state.fetchStatus ?
+                        <View style={styles.requestBody}>
+                            {
+                                this.state.detailsReceived ?
+                                    this.renderItems(this.props.details.Items)
+                                    :
+                                    <View style={{ flex: 1, alignItems: 'center', height: normalize(50) }}>
+                                        <Text style={[styles.textStyle, { marginTop: normalize(15), textAlign: 'center', fontSize: normalize(16) }]}> No Items Listed </Text>
+                                    </View>}
+                        </View>
+                        :
+                        <View style={{ flex: 1, justifyContent: 'center' }}>
+                            <ActivityIndicator animating={true} size='large' />
+                        </View>
+                }
+            </ScrollView>);
     }
 
     /**
@@ -401,33 +331,31 @@ class DODetails extends React.Component {
                         buttons={[{ text: "OK", onPress: () => this.setState({ custDetails: false }) }]}
                     />
                     : null}
-                <EditInstallerModal
-                    visible={this.state.editInstaller}
-                    installerList={this.getInstallerList}
-                    close={() => this.setState({ editInstaller: false })}
-                    save={this.changeInstaller}
-                />
                 < PageHeader
                     left={<IconWrapper name='chevron-left' type='font-awesome' color='white' size={28} style={styles.icon} onPress={() => Actions.pop()} />}
-                    title={'DO Details'}
-                    right={<IconWrapper name='person-pin-circle' color='white' size={28} style={styles.icon} onPress={() => this.setState({ editInstaller: true })} />} />
+                    title={'Task Details'}
+                    right={<View style={{ width: 38 }} />} />
                 <View style={styles.bodyContainer}>
                     {this.renderDO()}
                 </View>
-                <View style={styles.buttonContainer}>
-                    <View style={styles.button}>
-                        <Button
-                            raised
-                            borderRadius={8}
-                            title={'SAVE'}
-                            backgroundColor={color.blue}
-                            textStyle={styles.buttonText}
-                            onPress={this.onSave} />
-                    </View>
-                </View>
+                {this.props.DONo ?
+                    <View style={styles.buttonContainer}>
+                        <View style={styles.button}>
+                            <Button
+                                raised
+                                borderRadius={8}
+                                title={'SAVE'}
+                                backgroundColor={color.blue}
+                                textStyle={styles.buttonText}
+                                onPress={this.onSave} />
+                        </View>
+                    </View> :
+                    null
+                }
+
             </View>
         );
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DODetails);
+export default connect(mapStateToProps, mapDispatchToProps)(TaskDetails);

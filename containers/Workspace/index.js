@@ -10,5 +10,6 @@ import TransferDetails from './TransferDetails';
 import RequestConfirm from './RequestConfirm';
 import DODetails from './DODetails';
 import TaskList from './TaskList';
+import TaskDetails from './TaskDetails';
 
-export { Approval, DOCustomer, MyConfirmation, MyRequest, ViewPage, Report, RequestDetails, PODetails, TransferDetails, RequestConfirm, DODetails, TaskList };
+export { Approval, DOCustomer, MyConfirmation, MyRequest, ViewPage, Report, RequestDetails, PODetails, TransferDetails, RequestConfirm, DODetails, TaskList, TaskDetails };

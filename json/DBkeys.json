@@ -195,5 +195,53 @@
             "Cancelled By Customer": 2,
             "Non-Compatible": 3
         }
+    },
+    "Task List":{
+        "ticket": "ticket_number",
+        "date": "tanggal_pergi",
+        "time": "jam_pergi",
+        "pic": "nama_staff",
+        "picID": "staff",
+        "category": "kategori",
+        "needs": "keperluan",
+        "note": "note",
+        "custID": "CustomerId",
+        "uName": "Username",
+        "cust": "Fullname",
+        "service": "Service",
+        "add1": "Address1",
+        "add2": "Address2",
+        "add3": "Address3",
+        "city": "City",
+        "country": "Country",
+        "zip": "Zip",
+        "tel1": "Telp1",
+        "tel2": "Telp2",
+        "item": "ItemName",
+        "code": "ItemCode",
+        "piece": "ItemPieceNo",
+        "serial": "SerialNumber",
+        "amount": "Amount",
+        "itemStatus": "Status",
+        "statusCode": {
+            "B": "Broken",
+            "C": "On Service",
+            "D": "Dismantle",
+            "E": "Entry",
+            "H": "Exchanged",
+            "N": "Rent",
+            "O": "Stock",
+            "R": "Repair",
+            "S": "Sold",
+            "T": "Transfer Item",
+            "U": "Use",
+            "X": "Discarded"
+        },
+        "actions": {
+            "list" : ["Installed", "Cancelled By Customer", "Non-Compatible"],
+            "Installed" : 1,
+            "Cancelled By Customer": 2,
+            "Non-Compatible": 3
+        }
     }
 }
