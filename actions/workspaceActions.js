@@ -820,7 +820,7 @@ export function getItemRequestBy(token, resultCB) {
 
 /**
  * Get list of DO Customers
-* @param {String} token: User's session token 
+ * @param {String} token: User's session token 
  * @param {Function} resultCB: Callback to be executed once fetching process is done 
  * @param {Number} options: 1 = Admin's DO list, 2 = Installer's task list 
  */
@@ -862,6 +862,11 @@ export function getListDOCustomer(token, resultCB, options) {
     }
 }
 
+/**
+ * Get list of tasks from Intranet for installer based on empID
+ * @param {String} empID: Employee ID of the person that logged in 
+ * @param {Function} resultCB: Callback to be executed once the fetch is done 
+ */
 export function getTaskList(empID, resultCB) {
     let endpoint = `api.php?method=Customer_visit&staff_id=${empID}&key=xkRKJui9acBcx4CG/UAdasjajH==`;
     let url = 'http://10.64.2.54/api-mob/';
@@ -890,6 +895,68 @@ export function getTaskList(empID, resultCB) {
 }
 
 /**
+ * Get staff details with the provided Employee ID
+ * @param {String} empID: Employee ID of interest
+ * @param {Function} resultCB: Callback to be executed once the fetch is done 
+ */
+export function getStaffDetails(empID, resultCB) {
+    let endpoint = `api.php?method=DetailStaff&staff_id=${empID}&key=xkRKJui9acBcx4CG/HCeboyIDF==`;
+    let url = 'http://10.64.2.54/api-mob/';
+
+    let header = {
+        "Content-Type": "application/json"
+    };
+
+    return dispatch => {
+        return fetchAPI(endpoint, 'GET', header, null, url)
+            .then((json) => {
+                if (json.Detail !== null) {
+                    resultCB('success', json.Detail);
+                }
+                else {
+                    resultCB('no record found');
+                }
+            })
+            .catch((error) => {
+                resultCB(error);
+            })
+    }
+}
+
+/**
+ * Get customer details from the given ticket
+ * @param {String} token: User's session token 
+ * @param {String} ticketNo: Ticket number of interest 
+* @param {Function} resultCB: Callback to be executed once the fetch is done 
+ */
+export function getCustfromTicket(token, ticketNo, resultCB) {
+    let endpoint = 'api/v1/cbn/inventory/GetTicketCustomer';
+
+    let header = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+    };
+
+    let body = {
+        "ListTicketNo": [
+            {
+                "TicketNo": ticketNo
+            }
+        ]
+    };
+
+    return dispatch => {
+        return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
+            .then((json) => {
+                resultCB(json.message, json.data[0]);
+            })
+            .catch((error) => {
+                resultCB(error);
+            });
+    }
+}
+
+/**
  * Get details of a particular DO number
  * @param {String} DONo: DO number of interest 
  * @param {String} token: User's session token 
@@ -912,6 +979,10 @@ export function getDOCustDetails(DONo, token, resultCB) {
     };
 
     return dispatch => {
+        if (!DONo){
+            resultCB('no DONo');
+            return dispatch({ type: types.EMPTY_DETAILS });
+        }
         return fetchAPI(endpoint, 'POST', header, JSON.stringify(body))
             .then((json) => {
                 let details = {};

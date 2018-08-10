@@ -6,8 +6,9 @@ import { bindActionCreators } from 'redux';
 import {
     View, Alert, Text,
     ScrollView, ActivityIndicator,
-    Linking
+    Linking, Platform
 } from 'react-native';
+import { Constants, Location, Permissions } from 'expo';
 
 import styles from "./styles";
 import * as workspaceAction from '../../../actions/workspaceActions';
@@ -35,21 +36,25 @@ class TaskDetails extends React.Component {
         super(props);
         this.state = {
             fetchStatus: null,
-            custDetails: false,
+            custDialog: false,
+            custDetails: null,
             itemActions: [],
+            staffDialog: false,
+            staffDetails: null,
+            location: null
         };
 
         this.onPickerSelect = this.onPickerSelect.bind(this);
         this.onSave = this.onSave.bind(this);
         this.onFetchFinish = this.onFetchFinish.bind(this);
+        this.finalizeTask = this.finalizeTask.bind(this);
     }
 
     componentDidMount() {
         this.mounted = true;
-        if (this.props.DONo)
-            this.props.actionsWorkspace.getDOCustDetails(this.props.DONo, this.props.token, this.onFetchFinish);
-        else
-            this.setState({ fetchStatus: 'none' });
+        this.props.actionsWorkspace.getStaffDetails(this.props.header.staff, (status, staffDetails) => status === 'success' && this.mounted ? this.setState({ staffDetails }) : console.log(status));
+        this.props.actionsWorkspace.getDOCustDetails(this.props.DONo, this.props.token, this.onFetchFinish);
+        this.props.actionsWorkspace.getCustfromTicket(this.props.token, this.props.header['ticket_number'], (status, custDetails) => status === 'success' && this.mounted ? this.setState({ custDetails }) : console.log(status));
     }
 
     componentWillUnmount() {
@@ -65,6 +70,8 @@ class TaskDetails extends React.Component {
             Actions.reset('Main')   //go back to workspace and workspace will logout
         else if (this.mounted && status === "success")
             this.setState({ fetchStatus: status });
+        else if (this.mounted && status === "no DONo")
+            this.setState({ fetchStatus: status })
         else {                      //in case data was stale and need refreshing to sync with current DB
             Alert.alert(status);
             this.props.refresh();
@@ -93,11 +100,37 @@ class TaskDetails extends React.Component {
     }
 
     /**
+     * Asynchronous function to get current location of the device
+     */
+    _getLocationAsync = async () => {
+        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        if (status !== 'granted') {
+            Alert.alert('Permission Denied', 'You have to give permission to access location before proceeding\nGo to your phone setting to change permission settings');
+        }
+
+        let location = await Location.getCurrentPositionAsync({});
+        this.setState({ location });
+        return Promise.resolve(location)
+    };
+
+    /**
      * Save the recorded selected actions on the items in the list
      */
     onSave() {
-        let itemPieceNo = "", itemCode = "", status = "", statusItem = "";
+        /***** Collect user's location data *****/
+        if (Platform.OS === 'android' && !Constants.isDevice) {
+            Alert.alert('Emulator Detected', 'This feature only works on devices');
+        } else {
+            this._getLocationAsync().then((location) => this.finalizeTask(location));
+        }
+    }
 
+    /**
+     * Record user's input together with the location retrieved from _getLocationAsync()
+     */
+    finalizeTask(location) {
+        /***** Collect input data user has selected *****/
+        let itemPieceNo = "", itemCode = "", status = "", statusItem = "";
         //set default verification to "Arrived" for the rest of the items
         this.props.details.Items.forEach((element) => {
             if (this.state.itemActions.findIndex((item) => item['itemPieceNo'] === element[this.props.keys['piece']]) === -1) {
@@ -107,7 +140,6 @@ class TaskDetails extends React.Component {
                 statusItem += (1 + ",");
             }
         })
-
         //turn into individual strings
         this.state.itemActions.forEach((element) => {
             itemPieceNo += element['itemPieceNo'] + ",";
@@ -115,13 +147,13 @@ class TaskDetails extends React.Component {
             status += element['status'] + ",";
             statusItem += element['statusItem'] + ",";
         });
-
         //remove last comma
         itemPieceNo = itemPieceNo.substr(0, itemPieceNo.length - 1);
         itemCode = itemCode.substr(0, itemCode.length - 1);
         status = status.substr(0, status.length - 1);
         statusItem = statusItem.substr(0, statusItem.length - 1);
 
+        /***** Double Check with user before finalizing action *****/
         Alert.alert('Save changes to DO Details?', "Are you sure you want to SAVE the Actions on these items?", [
             { text: 'Cancel', onPress: () => console.log('Save Cancelled'), style: 'cancel' },
             {
@@ -145,9 +177,9 @@ class TaskDetails extends React.Component {
 
     /**
      * Build customer information modal content
+     * @param Customer: customer info to be rendered
      */
-    getCustomerInfo() {
-        let { Customer } = this.props.details;
+    getCustomerInfo(Customer) {
         let { keys } = this.props;
         let info = [];
 
@@ -158,27 +190,27 @@ class TaskDetails extends React.Component {
             info.push(<View key={2} style={styles.modalRow}>
                 <Text style={[styles.modalData, { fontFamily: fontFamily.boldItalic }]}>{"ID: " + Customer[keys['custID']]}</Text>
             </View>);
-            if (Customer[keys['add1']] !== '')
+            if (Customer[keys['add1']] !== '' && Customer[keys['add1']] !== null)
                 info.push(<View key={3} style={styles.modalRow}>
                     <Text style={[styles.modalData, { fontFamily: fontFamily.medium }]}>{Customer[keys['add1']]}</Text>
                 </View>);
-            if (Customer[keys['add2']] !== '')
+            if (Customer[keys['add2']] !== '' && Customer[keys['add2']] !== null)
                 info.push(<View key={4} style={styles.modalRow}>
                     <Text style={[styles.modalData, { fontFamily: fontFamily.medium }]}>{Customer[keys['add2']]}</Text>
                 </View>);
-            if (Customer[keys['add3']] !== '')
+            if (Customer[keys['add3']] !== '' && Customer[keys['add3']] !== null)
                 info.push(<View key={5} style={styles.modalRow}>
                     <Text style={[styles.modalData, { fontFamily: fontFamily.medium }]}>{Customer[keys['add3']]}</Text>
                 </View>);
-            if (Customer[keys['city']] !== '')
+            if (Customer[keys['city']] !== '' && Customer[keys['city']] !== null)
                 info.push(<View key={6} style={styles.modalRow}>
                     <Text style={[styles.modalData, { fontFamily: fontFamily.medium }]}>{Customer[keys['city']]}</Text>
                 </View>);
-            if (Customer[keys['country']] !== '')
+            if (Customer[keys['country']] !== '' && Customer[keys['country']] !== null)
                 info.push(<View key={7} style={styles.modalRow}>
                     <Text style={[styles.modalData, { fontFamily: fontFamily.medium }]}>{Customer[keys['country']]}</Text>
                 </View>);
-            if (Customer[keys['zip']] !== '')
+            if (Customer[keys['zip']] !== '' && Customer[keys['zip']] !== null)
                 info.push(<View key={8} style={styles.modalRow}>
                     <Text style={[styles.modalData, { fontFamily: fontFamily.medium }]}>{Customer[keys['zip']]}</Text>
                 </View>);
@@ -208,22 +240,77 @@ class TaskDetails extends React.Component {
     }
 
     /**
+     * Build staff info modal content
+     */
+    getStaffInfo() {
+        let { staffDetails } = this.state;
+        let { keys, header } = this.props;
+        let info = [];
+
+        if (staffDetails) {
+            info.push(<View key={1} style={styles.modalRow}>
+                <Text style={[styles.modalData, { fontSize: fontSize.regular + 4 }]}>{staffDetails[keys['staff']]}</Text>
+            </View>);
+            info.push(<View key={2} style={styles.modalRow}>
+                <Text style={[styles.modalData, { fontFamily: fontFamily.boldItalic }]}>{staffDetails[keys['division']]}</Text>
+            </View>);
+            info.push(<View key={3} style={styles.modalRow}>
+                <Text style={[styles.modalData, { fontFamily: fontFamily.boldItalic, fontSize: fontSize.small }]}>{`ID: ${header[keys['picID']]}`}</Text>
+            </View>);
+            info.push(<View key={4} style={[styles.modalRow, { flexDirection: 'row' }]}>
+                <Text style={[styles.modalKeys, { flex: 0.4 }]}>{"Ext: "}</Text>
+                <Text style={styles.modalData}>
+                    {staffDetails[keys['ext']] === "" ? "-" : staffDetails[keys['ext']]}
+                </Text>
+            </View>);
+            info.push(<View key={5} style={[styles.modalRow, { flexDirection: 'row' }]}>
+                <Text style={[styles.modalKeys, { flex: 0.4 }]}>{"Email 1: "}</Text>
+                <Text onPress={() => staffDetails[keys['sMail1']] !== "" ? Linking.openURL("mailto:" + staffDetails[keys['sMail1']]) : null} style={[styles.modalData, staffDetails[keys['sMail1']] !== "" ? { color: color.light_blue, textDecorationLine: 'underline' } : null]}>
+                    {staffDetails[keys['sMail1']] === "" ? "-" : staffDetails[keys['sMail1']]}
+                </Text>
+            </View>);
+            info.push(<View key={6} style={[styles.modalRow, { flexDirection: 'row' }]}>
+                <Text style={[styles.modalKeys, { flex: 0.4 }]}>{"Email 2: "}</Text>
+                <Text onPress={() => staffDetails[keys['sMail2']] !== "" ? Linking.openURL("mailto:" + staffDetails[keys['sMail2']]) : null} style={[styles.modalData, staffDetails[keys['sMail2']] !== "" ? { color: color.light_blue, textDecorationLine: 'underline' } : null]}>
+                    {staffDetails[keys['sMail2']] === "" ? "-" : staffDetails[keys['sMail2']]}
+                </Text>
+            </View>);
+            info.push(<View key={7} style={[styles.modalRow, { flexDirection: 'row' }]}>
+                <Text style={[styles.modalKeys, { flex: 0.4 }]}>{"Phone 1: "}</Text>
+                <Text onPress={() => staffDetails[keys['phone1']] !== "" ? Linking.openURL("tel:" + staffDetails[keys['phone1']]) : null} style={[styles.modalData, staffDetails[keys['phone1']] !== "" ? { color: color.light_blue, textDecorationLine: 'underline' } : null]}>
+                    {staffDetails[keys['phone1']] === "" ? "-" : staffDetails[keys['phone1']]}
+                </Text>
+            </View>);
+            info.push(<View key={8} style={[styles.modalRow, { flexDirection: 'row' }]}>
+                <Text style={[styles.modalKeys, { flex: 0.4 }]}>{"Phone 2: "}</Text>
+                <Text onPress={() => staffDetails[keys['phone2']] !== "" ? Linking.openURL("tel:" + staffDetails[keys['phone2']]) : null} style={[styles.modalData, staffDetails[keys['phone2']] !== "" ? { color: color.light_blue, textDecorationLine: 'underline' } : null]}>
+                    {staffDetails[keys['phone2']] === "" ? "-" : staffDetails[keys['phone2']]}
+                </Text>
+            </View>);
+        }
+
+        return info;
+    }
+
+    /**
      * Render complete DO form with the help of renderItems to render individual panels for items
      */
     renderDO() {
-        let { header, keys } = this.props;
+        let { header, keys, details } = this.props;
         let date = new Date(header[keys['date']].replace(/\./g, '-')).toString().split(' ');
         return (
             <ScrollView>
                 <View style={styles.requestHead}>
-                    <View style={{ flex: 0.15, alignItems: 'center', justifyContent: 'center', margin: normalize(1), borderRadius: 6, backgroundColor: img.taskCategory[header[keys['category']]].color }}>
+                    <View style={{ flex: 0.12, alignItems: 'center', justifyContent: 'center', margin: normalize(1), borderRadius: 6, backgroundColor: img.taskCategory[header[keys['category']]].color }}>
                         <Text style={[styles.textStyle, { flex: 0, margin: 0, fontSize: normalize(18), color: color.white }]}>
                             {header[keys['category']]}
                         </Text>
                     </View>
                     <View style={styles.horizontalSubRequestHead}>
                         <View style={styles.verticalSubRequestHead}>
-                            <View style={{ flex: 1 }}>
+                            <View style={{ flex: 1.5 }}>
+                                <Text style={styles.titleTextStyle}>{"Nomor Tiket:"}</Text>
+                                <Text style={styles.textStyle}>{header[keys['ticket']]}</Text>
                                 <Text style={styles.titleTextStyle}>{"Tanggal Pergi:"}</Text>
                                 <Text style={styles.textStyle}>{`${date[2]} ${date[1]} ${date[3]}`}</Text>
                                 <Text style={styles.titleTextStyle}>{"Jam Pergi:"}</Text>
@@ -235,13 +322,23 @@ class TaskDetails extends React.Component {
                             </View>
                         </View>
                         <View style={styles.verticalSubRequestHead}>
-                            <View style={{ flex: 1 }}>
+                            <View style={{ flex: 1.5 }}>
+                                <Text style={styles.titleTextStyle}>{"Lokasi:"}</Text>
+                                <Text style={styles.textStyle}>{header[keys['location']]}</Text>
                                 <Text style={styles.titleTextStyle}>{"PIC Staff:"}</Text>
-                                <Text style={styles.textStyle}>{header[keys['pic']]}</Text>
-                                <Text style={styles.titleTextStyle}>{"Customer:"}</Text>
-                                <Text onPress={() => this.setState({ custDetails: true })} style={[styles.textStyle, { color: color.light_blue, textDecorationLine: 'underline' }]}>
-                                    {this.state.detailsReceived ? details.Customer[keys['cust']] : null}
+                                <Text onPress={() => this.setState({ staffDialog: true })} style={[styles.textStyle, { color: color.light_blue, textDecorationLine: 'underline' }]}>
+                                    {header[keys['pic']]}
                                 </Text>
+                                <Text style={styles.titleTextStyle}>{"Customer:"}</Text>
+                                {this.state.custDetails ?
+                                    <Text onPress={() => this.setState({ custDialog: true })} style={[styles.textStyle, { color: color.light_blue, textDecorationLine: 'underline' }]}>
+                                        {this.state.custDetails[keys['cust']]}
+                                    </Text>
+                                    :
+                                    <Text onPress={() => this.setState({ custDialog: true })} style={[styles.textStyle, { color: color.light_blue, textDecorationLine: 'underline' }]}>
+                                        {this.props.detailsReceived ? details.Customer[keys['cust']] : null}
+                                    </Text>
+                                }
                             </View>
                             <View style={{ flex: 1 }}>
                                 <Text style={[styles.titleTextStyle, { flex: 0 }]}>{"Catatan:"}</Text>
@@ -254,11 +351,11 @@ class TaskDetails extends React.Component {
                     this.state.fetchStatus ?
                         <View style={styles.requestBody}>
                             {
-                                this.state.detailsReceived ?
+                                this.props.detailsReceived ?
                                     this.renderItems(this.props.details.Items)
                                     :
                                     <View style={{ flex: 1, alignItems: 'center', height: normalize(50) }}>
-                                        <Text style={[styles.textStyle, { marginTop: normalize(15), textAlign: 'center', fontSize: normalize(16) }]}> No Items Listed </Text>
+                                        <Text style={[styles.textStyle, { marginTop: normalize(15), textAlign: 'center', fontSize: normalize(16) }]}> Perangkat tidak terdaftar di WAMS </Text>
                                     </View>}
                         </View>
                         :
@@ -322,13 +419,28 @@ class TaskDetails extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                {this.props.detailsReceived ?
+                {this.state.custDetails ?
                     <DialogBoxModal
-                        visible={this.state.custDetails}
-                        height={0.6}
+                        visible={this.state.custDialog}
                         title={"Customer Details: "}
-                        content={this.getCustomerInfo()}
-                        buttons={[{ text: "OK", onPress: () => this.setState({ custDetails: false }) }]}
+                        height={0.6}
+                        content={this.getCustomerInfo(this.state.custDetails)}
+                        buttons={[{ text: "OK", onPress: () => this.setState({ custDialog: false }) }]}
+                    />
+                    : this.props.detailsReceived ?
+                        <DialogBoxModal
+                            visible={this.state.custDialog}
+                            title={"Customer Details: "}
+                            height={0.6}
+                            content={this.getCustomerInfo(this.props.details.Customer)}
+                            buttons={[{ text: "OK", onPress: () => this.setState({ custDialog: false }) }]}
+                        /> : null}
+                {this.state.staffDetails ?
+                    <DialogBoxModal
+                        visible={this.state.staffDialog}
+                        title={"Staff Details: "}
+                        content={this.getStaffInfo()}
+                        buttons={[{ text: "OK", onPress: () => this.setState({ staffDialog: false }) }]}
                     />
                     : null}
                 < PageHeader

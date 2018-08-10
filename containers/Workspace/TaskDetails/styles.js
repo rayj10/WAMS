@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   },
 
   requestHead: {
-    height: normalize(250),
+    height: normalize(320),
     borderColor: color.grey,
     borderBottomWidth: 1,
     borderWidth: 2

@@ -64,7 +64,7 @@ class TaskList extends React.Component {
   //fetch data to be displayed as soon as the component is mounted
   componentDidMount() {
     this.mounted = true;
-    this.props.actionsWorkspace.getTaskList('2017043', this.onFetchFinish);
+    this.props.actionsWorkspace.getTaskList(this.props.userDetails.Empl_id, this.onFetchFinish);
     this.props.actionsWorkspace.getListDOCustomer(this.props.token, this.onFetchFinish, 2);
   }
 
@@ -101,8 +101,12 @@ class TaskList extends React.Component {
       });
   }
 
+  /**
+   * Get related DO number from list of WAMS' DO Customer List based on given ticket
+   * @param {String} ticketNo: Ticket number to find relating DO number of 
+   */
   findDONo(ticketNo) {
-    let DOheader = this.props.taskList ? this.props.taskList.find((element) => { return element[DBkeys['DO Customer'].ticket] === ticketNo }) : null;
+    let DOheader = this.props.taskListReceived && this.props.taskList ? this.props.taskList.find((element) => { return element[DBkeys['DO Customer'].ticket] === ticketNo }) : null;
     return DOheader ? DOheader[DBkeys['DO Customer'].no] : null
   }
   /**
@@ -140,7 +144,7 @@ class TaskList extends React.Component {
     if (this.mounted)
       this.setState({ refreshing: true },
         () => {
-          this.props.actionsWorkspace.getTaskList('2017043', this.onFetchFinish, this.setState({ refreshing: false }));
+          this.props.actionsWorkspace.getTaskList(this.props.userDetails.Empl_id, this.onFetchFinish, this.setState({ refreshing: false }));
           this.props.actionsWorkspace.getListDOCustomer(this.props.token, this.onFetchFinish, 2);
         });
   }

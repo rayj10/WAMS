@@ -212,9 +212,9 @@ class DODetails extends React.Component {
 
     /**
      * Build customer information modal content
+     * @param Customer: customer info to be rendered
      */
-    getCustomerInfo() {
-        let { Customer } = this.props.details;
+    getCustomerInfo(Customer) {
         let { keys } = this.props;
         let info = [];
 
@@ -397,7 +397,7 @@ class DODetails extends React.Component {
                         visible={this.state.custDetails}
                         height={0.6}
                         title={"Customer Details: "}
-                        content={this.getCustomerInfo()}
+                        content={this.getCustomerInfo(this.props.details.Customer)}
                         buttons={[{ text: "OK", onPress: () => this.setState({ custDetails: false }) }]}
                     />
                     : null}

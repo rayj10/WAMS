@@ -55,7 +55,7 @@ export const img =
     },
     taskCategory: {
         Survey: { name: 'clipboard', type: 'font-awesome', color: '#ffb732' },
-        Meeting: { name: 'person-pin', type: null, color: '#3CB371' },
+        Meeting: { name: 'human-greeting', type: 'material-community', color: '#3CB371' },
         Instalasi: { name: 'install', type: 'entypo', color: '#6B8E23' },
         Dismantle: { name: 'uninstall', type: 'entypo', color: '#ff3232' },
         Troubleshooting: { name: 'wrench', type: 'font-awesome', color: '#ffb732' },
