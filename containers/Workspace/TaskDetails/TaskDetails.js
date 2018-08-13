@@ -40,8 +40,7 @@ class TaskDetails extends React.Component {
             custDetails: null,
             itemActions: [],
             staffDialog: false,
-            staffDetails: null,
-            location: null
+            staffDetails: null
         };
 
         this.onPickerSelect = this.onPickerSelect.bind(this);
@@ -105,11 +104,10 @@ class TaskDetails extends React.Component {
     _getLocationAsync = async () => {
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
         if (status !== 'granted') {
-            Alert.alert('Permission Denied', 'You have to give permission to access location before proceeding\nGo to your phone setting to change permission settings');
+            return Promise.reject('Permission Denied')
         }
 
         let location = await Location.getCurrentPositionAsync({});
-        this.setState({ location });
         return Promise.resolve(location)
     };
 
@@ -121,7 +119,16 @@ class TaskDetails extends React.Component {
         if (Platform.OS === 'android' && !Constants.isDevice) {
             Alert.alert('Emulator Detected', 'This feature only works on devices');
         } else {
-            this._getLocationAsync().then((location) => this.finalizeTask(location));
+            this._getLocationAsync()
+                .then((location) => this.finalizeTask(location))
+                .catch((error) => {
+                    if (error.code === 'E_LOCATION_SERVICES_DISABLED')
+                        Alert.alert(error.message, 'Please enable location services from your device\'s Privacy Settings to continue');
+                    else if (error === 'Permission Denied')
+                        Alert.alert(error, 'WAMS App needs access your device\'s location to use this function\n\nTip: Change App Permissions from your phone settings');
+                    else
+                        Alert.alert(error.message);
+                });
         }
     }
 
@@ -152,7 +159,7 @@ class TaskDetails extends React.Component {
         itemCode = itemCode.substr(0, itemCode.length - 1);
         status = status.substr(0, status.length - 1);
         statusItem = statusItem.substr(0, statusItem.length - 1);
-
+        
         /***** Double Check with user before finalizing action *****/
         Alert.alert('Save changes to DO Details?', "Are you sure you want to SAVE the Actions on these items?", [
             { text: 'Cancel', onPress: () => console.log('Save Cancelled'), style: 'cancel' },
