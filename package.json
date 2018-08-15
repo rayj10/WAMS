@@ -1,6 +1,6 @@
 {
   "name": "WAMS",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "private": true,
   "devDependencies": {
     "react-native-scripts": "1.14.0",
